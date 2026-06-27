@@ -1093,8 +1093,27 @@ export default function App() {
 
   const allProducts=[...dbProducts,...FALLBACK.filter(f=>!dbProducts.find(d=>d.name===f.name))];
 
-  const handleLogin=(u,prof)=>{ setUser(u); setProfile(prof); showToast(`Welcome, ${prof?.full_name?.split(" ")[0]||"there"}! 👋`,"🎉"); };
-  const handleLogout=async()=>{ await supabase.auth.signOut(); setUser(null); setProfile(null); dispatch({type:"CLEAR"}); setPage("shop"); showToast("Signed out successfully","👋"); };
+  // ── FIXED: handleLogin with seller redirect ──────────────────────────────
+  const handleLogin = (u, prof) => {
+    setUser(u);
+    setProfile(prof);
+    if (prof?.role === "seller") {
+      setPage("seller");
+      showToast(`Welcome back, ${prof?.full_name?.split(" ")[0] || "there"}! 🏪`, "🎉");
+    } else {
+      setPage("shop");
+      showToast(`Welcome, ${prof?.full_name?.split(" ")[0] || "there"}! 👋`, "🎉");
+    }
+  };
+
+  const handleLogout=async()=>{
+    await supabase.auth.signOut();
+    setUser(null);
+    setProfile(null);
+    dispatch({type:"CLEAR"});
+    setPage("shop");
+    showToast("Signed out successfully","👋");
+  };
 
   const handleAdd=(p)=>{
     dispatch({type:"ADD",product:p});
