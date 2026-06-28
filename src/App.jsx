@@ -1,5 +1,6 @@
 import { useState, useReducer, useRef, useCallback, useEffect } from "react";
 import { supabase } from "./supabase";
+import AdminDashboard from "./AdminDashboard";
 
 // ── CURRENCY ──────────────────────────────────────────────────────────────────
 const ZMW = (v) => `K ${(parseFloat(v)||0).toLocaleString("en-ZM",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
@@ -437,7 +438,7 @@ function BtnSpinner() {
 }
 
 // ── USER DROPDOWN ─────────────────────────────────────────────────────────────
-function UserMenu({ profile, onOrders, onSeller, onLogout }) {
+function UserMenu({ profile, onOrders, onSeller, onAdmin, onLogout }) {
   const [open,setOpen]=useState(false);
   const initials=(profile?.full_name||"U").split(" ").map(n=>n[0]).join("").toUpperCase().slice(0,2);
   return (
@@ -449,10 +450,19 @@ function UserMenu({ profile, onOrders, onSeller, onLogout }) {
           <div className="user-dd">
             <div className="dd-head">
               <div className="dd-name">{profile?.full_name||"User"}</div>
-              <div className="dd-role">{profile?.role==="seller"?"🏪 Seller":"🛍️ Buyer"}</div>
+              <div className="dd-role">
+                {profile?.role==="admin" ? "🛡️ Admin" : 
+                 profile?.role==="seller" ? "🏪 Seller" : 
+                 "🛍️ Buyer"}
+              </div>
             </div>
             <button className="dd-item" onClick={()=>{setOpen(false);onOrders();}}>📦 My Orders</button>
-            {profile?.role==="seller"&&<button className="dd-item" onClick={()=>{setOpen(false);onSeller();}}>🏪 Seller Dashboard</button>}
+            {profile?.role==="seller"&&
+              <button className="dd-item" onClick={()=>{setOpen(false);onSeller();}}>🏪 Seller Dashboard</button>
+            }
+            {profile?.role==="admin"&&
+              <button className="dd-item" onClick={()=>{setOpen(false);onAdmin();}}>🛡️ Admin Dashboard</button>
+            }
             <button className="dd-item danger" onClick={()=>{setOpen(false);onLogout();}}>🚪 Sign Out</button>
           </div>
         </>
@@ -1093,13 +1103,16 @@ export default function App() {
 
   const allProducts=[...dbProducts,...FALLBACK.filter(f=>!dbProducts.find(d=>d.name===f.name))];
 
-  // ── FIXED: handleLogin with seller redirect ──────────────────────────────
+  // ── FIXED: handleLogin with admin and seller redirect ────────────────────
   const handleLogin = (u, prof) => {
     setUser(u);
     setProfile(prof);
-    if (prof?.role === "seller") {
+    if (prof?.role === "admin") {
+      setPage("admin");
+      showToast(`Welcome, Admin ${prof?.full_name?.split(" ")[0] || "there"}! 🛡️`, "🎉");
+    } else if (prof?.role === "seller") {
       setPage("seller");
-      showToast(`Welcome back, ${prof?.full_name?.split(" ")[0] || "there"}! 🏪`, "🎉");
+      showToast(`Welcome, ${prof?.full_name?.split(" ")[0] || "there"}! 🏪`, "🎉");
     } else {
       setPage("shop");
       showToast(`Welcome, ${prof?.full_name?.split(" ")[0] || "there"}! 👋`, "🎉");
@@ -1133,6 +1146,9 @@ export default function App() {
   const cartCount=cart.reduce((s,i)=>s+i.qty,0);
 
   if(authLoading) return (<><style>{css}</style><Spinner text="Connecting to database…"/></>);
+  if(page==="admin") return (
+    <AdminDashboard user={user} profile={profile} onExit={()=>setPage("shop")}/>
+  );
   if(page==="seller") return (<><style>{css}</style><SellerDash user={user} profile={profile} onExit={()=>setPage("shop")} showToast={showToast}/><Toast toast={toast}/></>);
   if(!user) return (<><style>{css}</style><AuthPage onLogin={handleLogin}/><Toast toast={toast}/></>);
 
@@ -1147,7 +1163,7 @@ export default function App() {
           <button className="nav-btn primary" onClick={()=>{setCartOpen(true);setPage("shop");}}>
             🛒 {cartCount>0&&<span className="cart-badge">{cartCount}</span>}
           </button>
-          <UserMenu profile={profile} onOrders={()=>setPage("orders")} onSeller={()=>setPage("seller")} onLogout={handleLogout}/>
+          <UserMenu profile={profile} onOrders={()=>setPage("orders")} onSeller={()=>setPage("seller")} onAdmin={()=>setPage("admin")} onLogout={handleLogout}/>
         </div>
       </nav>
 
