@@ -1076,17 +1076,33 @@ export default function App() {
     supabase.auth.getSession().then(async({data:{session}})=>{
       if(session?.user){
         setUser(session.user);
-        const {data:prof}=await supabase.from("profiles").select("*").eq("id",session.user.id).single();
+        const {data:prof}=await supabase.from("profiles")
+          .select("*").eq("id",session.user.id).single();
         setProfile(prof);
+        // ── Redirect based on role on page load ──
+        if(prof?.role==="admin")        setPage("admin");
+        else if(prof?.role==="seller")  setPage("seller");
+        else                            setPage("shop");
       }
       setAuthLoading(false);
     });
     const {data:{subscription}}=supabase.auth.onAuthStateChange(async(event,session)=>{
       if(session?.user){
         setUser(session.user);
-        const {data:prof}=await supabase.from("profiles").select("*").eq("id",session.user.id).single();
+        const {data:prof}=await supabase.from("profiles")
+          .select("*").eq("id",session.user.id).single();
         setProfile(prof);
-      } else { setUser(null); setProfile(null); }
+        // Only redirect on actual sign in event not every state change
+        if(event==="SIGNED_IN"){
+          if(prof?.role==="admin")       setPage("admin");
+          else if(prof?.role==="seller") setPage("seller");
+          else                           setPage("shop");
+        }
+      } else {
+        setUser(null);
+        setProfile(null);
+        setPage("shop");
+      }
     });
     return ()=>subscription.unsubscribe();
   },[]);
@@ -1103,19 +1119,19 @@ export default function App() {
 
   const allProducts=[...dbProducts,...FALLBACK.filter(f=>!dbProducts.find(d=>d.name===f.name))];
 
-  // ── FIXED: handleLogin with admin and seller redirect ────────────────────
+  // ── handleLogin with role-based redirect ──────────────────────────────────
   const handleLogin = (u, prof) => {
     setUser(u);
     setProfile(prof);
-    if (prof?.role === "admin") {
+    if(prof?.role==="admin"){
       setPage("admin");
-      showToast(`Welcome, Admin ${prof?.full_name?.split(" ")[0] || "there"}! 🛡️`, "🎉");
-    } else if (prof?.role === "seller") {
+      showToast(`Welcome Admin ${prof?.full_name?.split(" ")[0]||""}! 🛡️`,"🎉");
+    } else if(prof?.role==="seller"){
       setPage("seller");
-      showToast(`Welcome, ${prof?.full_name?.split(" ")[0] || "there"}! 🏪`, "🎉");
+      showToast(`Welcome, ${prof?.full_name?.split(" ")[0]||""}! 🏪`,"🎉");
     } else {
       setPage("shop");
-      showToast(`Welcome, ${prof?.full_name?.split(" ")[0] || "there"}! 👋`, "🎉");
+      showToast(`Welcome, ${prof?.full_name?.split(" ")[0]||""}! 👋`,"🎉");
     }
   };
 
