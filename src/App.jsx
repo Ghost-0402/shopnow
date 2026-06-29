@@ -463,8 +463,29 @@ function AuthPage({ onLogin }) {
     try {
       const {data,error}=await supabase.auth.signInWithPassword({email:form.email.trim(),password:form.password});
       if(error) throw error;
-      const {data:prof}=await supabase.from("profiles").select("*").eq("id",data.user.id).single();
-      if(!prof) throw new Error("Profile not found. Please register again.");
+      
+      // ── NEW: auto-create profile if missing ──
+      let { data: prof } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", data.user.id)
+        .single();
+
+      if(!prof) {
+        const { data: newProf } = await supabase
+          .from("profiles")
+          .upsert({
+            id: data.user.id,
+            full_name: data.user.user_metadata?.full_name 
+                       || data.user.email.split("@")[0],
+            role: data.user.user_metadata?.role || "buyer"
+          })
+          .select()
+          .single();
+        prof = newProf;
+      }
+
+      if(!prof) throw new Error("Could not load profile. Try again.");
       onLogin(data.user, prof);
     } catch(e){ setErr(e.message||"Login failed."); }
     setLoading(false);
