@@ -5,24 +5,24 @@ import AdminDashboard from "./AdminDashboard";
 // ── CURRENCY ──────────────────────────────────────────────────────────────────
 const ZMW = (v) => `K ${(parseFloat(v)||0).toLocaleString("en-ZM",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 
-// ── FALLBACK PRODUCTS ─────────────────────────────────────────────────────────
+// ── PRODUCTS FALLBACK ─────────────────────────────────────────────────────────
 const FALLBACK = [
-  { id:"f1", name:"Arc Desk Lamp",        category:"Home",    price:2363, rating:4.8, reviews_count:214,  badge:"Bestseller", image_url:"🪔", description:"360° adjustable arm, warm/cool modes.", stock_qty:12, seller_name:"ShopNow Official" },
-  { id:"f2", name:"Merino Wool Tee",      category:"Fashion", price:1723, rating:4.6, reviews_count:389,  badge:"New",        image_url:"👕", description:"Ultra-soft 100% merino, odor-resistant.", stock_qty:8,  seller_name:"ShopNow Official" },
-  { id:"f3", name:"Ceramic Pour-Over",    category:"Kitchen", price:1431, rating:4.9, reviews_count:502,  badge:"Top Rated",  image_url:"☕", description:"Hand-thrown ceramic dripper + carafe.", stock_qty:20, seller_name:"ShopNow Official" },
-  { id:"f4", name:"Wireless Earbuds Pro", category:"Tech",    price:3949, rating:4.7, reviews_count:1203, badge:"Hot",        image_url:"🎧", description:"ANC, 30hr battery, IPX5.", stock_qty:5,  seller_name:"ShopNow Official" },
-  { id:"f5", name:"Linen Throw Blanket",  category:"Home",    price:2067, rating:4.5, reviews_count:167,  badge:"",           image_url:"🛋️", description:"Stone-washed linen, 130×170cm.", stock_qty:15, seller_name:"ShopNow Official" },
-  { id:"f6", name:"Leather Card Wallet",  category:"Fashion", price:1113, rating:4.8, reviews_count:723,  badge:"Bestseller", image_url:"👛", description:"Full-grain leather, slim 4mm, RFID.", stock_qty:30, seller_name:"ShopNow Official" },
-  { id:"f7", name:"Matcha Whisk Kit",     category:"Kitchen", price:1007, rating:4.7, reviews_count:298,  badge:"",           image_url:"🍵", description:"Bamboo chasen, chawan bowl, scoop.", stock_qty:18, seller_name:"ShopNow Official" },
-  { id:"f8", name:"USB-C Hub 8-in-1",    category:"Tech",    price:1564, rating:4.6, reviews_count:891,  badge:"New",        image_url:"🔌", description:"4K HDMI, 100W PD, SD/TF, 3×USB-A.", stock_qty:22, seller_name:"ShopNow Official" },
-  { id:"f9", name:"Soy Candle Set",       category:"Home",    price:1219, rating:4.9, reviews_count:445,  badge:"Top Rated",  image_url:"🕯️", description:"Set of 3: cedar, fig, bergamot. 40hr burn.", stock_qty:10, seller_name:"ShopNow Official" },
-  { id:"f10",name:"Slim Fit Chinos",      category:"Fashion", price:2597, rating:4.5, reviews_count:312,  badge:"",           image_url:"👖", description:"Stretch cotton, tapered cut, 5 colors.", stock_qty:7,  seller_name:"ShopNow Official" },
-  { id:"f11",name:"Cold Brew Maker",      category:"Kitchen", price:1193, rating:4.8, reviews_count:567,  badge:"Hot",        image_url:"🫙", description:"1L borosilicate glass, fine-mesh filter.", stock_qty:14, seller_name:"ShopNow Official" },
-  { id:"f12",name:"Mechanical Keyboard",  category:"Tech",    price:3419, rating:4.7, reviews_count:2041, badge:"Bestseller", image_url:"⌨️", description:"TKL, hot-swap switches, per-key RGB.", stock_qty:6,  seller_name:"ShopNow Official" },
+  { id:"f1",  name:"Arc Desk Lamp",        category:"Home",    price:2363, rating:4.8, reviews_count:214,  badge:"Bestseller", image_url:"🪔", description:"360° adjustable arm, warm/cool modes.", stock_qty:12, seller_name:"ShopNow Official" },
+  { id:"f2",  name:"Merino Wool Tee",      category:"Fashion", price:1723, rating:4.6, reviews_count:389,  badge:"New",        image_url:"👕", description:"Ultra-soft 100% merino, odor-resistant.", stock_qty:8,  seller_name:"ShopNow Official" },
+  { id:"f3",  name:"Ceramic Pour-Over",    category:"Kitchen", price:1431, rating:4.9, reviews_count:502,  badge:"Top Rated",  image_url:"☕", description:"Hand-thrown ceramic dripper + carafe.", stock_qty:20, seller_name:"ShopNow Official" },
+  { id:"f4",  name:"Wireless Earbuds Pro", category:"Tech",    price:3949, rating:4.7, reviews_count:1203, badge:"Hot",        image_url:"🎧", description:"ANC, 30hr battery, IPX5.", stock_qty:5,  seller_name:"ShopNow Official" },
+  { id:"f5",  name:"Linen Throw Blanket",  category:"Home",    price:2067, rating:4.5, reviews_count:167,  badge:"",           image_url:"🛋️", description:"Stone-washed linen, 130×170cm.", stock_qty:15, seller_name:"ShopNow Official" },
+  { id:"f6",  name:"Leather Card Wallet",  category:"Fashion", price:1113, rating:4.8, reviews_count:723,  badge:"Bestseller", image_url:"👛", description:"Full-grain leather, slim 4mm, RFID.", stock_qty:30, seller_name:"ShopNow Official" },
+  { id:"f7",  name:"Matcha Whisk Kit",     category:"Kitchen", price:1007, rating:4.7, reviews_count:298,  badge:"",           image_url:"🍵", description:"Bamboo chasen, chawan bowl, scoop.", stock_qty:18, seller_name:"ShopNow Official" },
+  { id:"f8",  name:"USB-C Hub 8-in-1",    category:"Tech",    price:1564, rating:4.6, reviews_count:891,  badge:"New",        image_url:"🔌", description:"4K HDMI, 100W PD, SD/TF, 3×USB-A.", stock_qty:22, seller_name:"ShopNow Official" },
+  { id:"f9",  name:"Soy Candle Set",       category:"Home",    price:1219, rating:4.9, reviews_count:445,  badge:"Top Rated",  image_url:"🕯️", description:"Set of 3: cedar, fig, bergamot.", stock_qty:10, seller_name:"ShopNow Official" },
+  { id:"f10", name:"Slim Fit Chinos",      category:"Fashion", price:2597, rating:4.5, reviews_count:312,  badge:"",           image_url:"👖", description:"Stretch cotton, tapered cut, 5 colors.", stock_qty:7,  seller_name:"ShopNow Official" },
+  { id:"f11", name:"Cold Brew Maker",      category:"Kitchen", price:1193, rating:4.8, reviews_count:567,  badge:"Hot",        image_url:"🫙", description:"1L borosilicate glass, fine-mesh filter.", stock_qty:14, seller_name:"ShopNow Official" },
+  { id:"f12", name:"Mechanical Keyboard",  category:"Tech",    price:3419, rating:4.7, reviews_count:2041, badge:"Bestseller", image_url:"⌨️", description:"TKL, hot-swap switches, per-key RGB.", stock_qty:6,  seller_name:"ShopNow Official" },
 ];
 
-const CATEGORIES = ["All","Home","Fashion","Kitchen","Tech"];
-const CITIES = ["Lusaka","Kitwe","Ndola","Livingstone","Chipata","Solwezi","Kabwe","Chingola"];
+const CATEGORIES  = ["All","Home","Fashion","Kitchen","Tech"];
+const CITIES      = ["Lusaka","Kitwe","Ndola","Livingstone","Chipata","Solwezi","Kabwe","Chingola"];
 const SELLER_CATS = ["Home & Living","Fashion","Kitchen","Electronics & Tech","Health & Beauty","Sports","Baby & Kids","Food","Other"];
 
 // ── CART REDUCER ──────────────────────────────────────────────────────────────
@@ -38,6 +38,14 @@ function cartReducer(state, action) {
     case "CLEAR":  return [];
     default: return state;
   }
+}
+
+// ── REDIRECT HELPER ───────────────────────────────────────────────────────────
+// Single function used everywhere to decide where to send a user
+function getPageForRole(role) {
+  if(role === "admin")  return "admin";
+  if(role === "seller") return "seller";
+  return "shop";
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -58,10 +66,8 @@ const css = `
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   @keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
   @keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes popIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
   @keyframes toastIn{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-  /* LOADING */
   .loading-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f0f0f 0%,#1e1b4b 60%,#312e81 100%);color:#fff;gap:16px;}
   .loading-logo{font-family:'DM Serif Display';font-size:36px;}
   .loading-logo span{color:#818cf8;}
@@ -110,7 +116,7 @@ const css = `
   .user-menu{position:relative;}
   .user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid transparent;transition:border-color var(--tr);}
   .user-av:hover{border-color:var(--accent);}
-  .user-dd{position:absolute;right:0;top:42px;background:var(--white);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.15);min-width:200px;padding:6px;z-index:200;animation:ddIn .15s;}
+  .user-dd{position:absolute;right:0;top:42px;background:var(--white);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.15);min-width:210px;padding:6px;z-index:200;animation:ddIn .15s;}
   .dd-head{padding:10px 12px;border-bottom:1px solid var(--border);margin-bottom:4px;}
   .dd-name{font-weight:600;font-size:14px;}
   .dd-email{font-size:11px;color:var(--slate);}
@@ -176,13 +182,13 @@ const css = `
   .card-desc{font-size:11px;color:var(--slate);line-height:1.4;flex:1;margin-bottom:10px;}
   .card-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;}
   .card-price{font-family:'DM Serif Display';font-size:17px;}
-  .card-stars{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--slate);}
+  .card-stars{font-size:11px;color:var(--slate);}
   .stars{color:#f59e0b;font-size:12px;}
   .add-btn{padding:8px 14px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr);width:100%;margin-top:8px;}
   .add-btn:hover{background:#1d4ed8;}
   .add-btn.added{background:var(--green);}
 
-  /* CART DRAWER */
+  /* CART */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;animation:fadeIn .2s;}
   .drawer{position:fixed;right:0;top:0;bottom:0;width:min(400px,100vw);background:var(--white);z-index:201;box-shadow:-8px 0 40px rgba(0,0,0,.12);display:flex;flex-direction:column;animation:slideIn .25s cubic-bezier(.4,0,.2,1);}
   .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);}
@@ -210,7 +216,7 @@ const css = `
   .checkout-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all var(--tr);}
   .checkout-btn:hover{opacity:.9;}
 
-  /* PAGES */
+  /* CHECKOUT */
   .page{max-width:900px;margin:0 auto;padding:40px 24px;}
   .page h2{font-family:'DM Serif Display';font-size:32px;margin-bottom:24px;}
   .back-btn{background:none;border:none;cursor:pointer;color:var(--slate);font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:5px;padding:0;}
@@ -243,10 +249,7 @@ const css = `
   .order-num{font-weight:700;font-size:14px;}
   .order-date{font-size:12px;color:var(--slate);}
   .order-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:40px;background:var(--goldBg);color:var(--gold);}
-  .order-badge.delivered{background:var(--greenBg);color:var(--green);}
-  .order-items-txt{font-size:13px;color:var(--slate);margin-bottom:8px;}
-  .order-total-txt{font-weight:700;font-size:14px;}
-  .order-pay-txt{font-size:12px;color:var(--slate);margin-top:2px;}
+  .order-badge.Delivered{background:var(--greenBg);color:var(--green);}
 
   /* SUCCESS */
   .success-page{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;}
@@ -299,7 +302,6 @@ const css = `
   .field:last-child{margin-bottom:0;}
   .field label{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;margin-bottom:5px;}
   .req{color:var(--red);}
-  .hint{font-size:10px;color:var(--slate);font-weight:400;margin-left:auto;}
   .input,.select,.textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--white);outline:none;transition:border-color var(--tr);}
   .input:focus,.select:focus,.textarea:focus{border-color:var(--accent);}
   .textarea{min-height:90px;resize:vertical;line-height:1.5;}
@@ -383,10 +385,8 @@ const css = `
   .act-btns{display:flex;gap:5px;}
   .act-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all var(--tr);}
   .act-btn:hover{border-color:var(--accent);background:#eff6ff;}
-
-  /* MODAL */
   .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .2s;}
-  .modal{background:var(--white);border-radius:18px;padding:36px 32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.2);animation:popIn .25s cubic-bezier(.4,0,.2,1);}
+  .modal{background:var(--white);border-radius:18px;padding:36px 32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.2);}
   .modal-icon{font-size:56px;margin-bottom:14px;}
   .modal h2{font-family:'DM Serif Display';font-size:26px;margin-bottom:7px;}
   .modal p{font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:22px;}
@@ -394,11 +394,7 @@ const css = `
   .m-btn{flex:1;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--tr);}
   .m-btn.primary{background:var(--accent);color:#fff;border:none;}
   .m-btn.secondary{background:var(--smoke);color:var(--ink);border:1.5px solid var(--border);}
-
-  /* TOAST */
   .toast{position:fixed;bottom:22px;right:22px;background:var(--ink);color:#fff;padding:11px 16px;border-radius:9px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:toastIn .25s;z-index:400;}
-
-  /* FOOTER */
   .footer{background:var(--ink);color:#9ca3af;padding:40px;}
   .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
   .footer-brand h3{font-family:'DM Serif Display';font-size:20px;color:#fff;margin-bottom:10px;}
@@ -409,38 +405,29 @@ const css = `
   .footer-col a:hover{color:#fff;}
   .footer-bottom{border-top:1px solid #1f2937;padding-top:20px;display:flex;justify-content:space-between;font-size:11px;flex-wrap:wrap;gap:6px;}
 
-  /* RESPONSIVE */
   @media(max-width:900px){.co-grid,.form-grid{grid-template-columns:1fr}.preview-sticky{position:static}.s-stats{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr}}
-  @media(max-width:680px){.sidebar,.s-sidebar{display:none}.stats-bar .stat{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}.t-head,.t-row{grid-template-columns:2fr 1fr 80px}.t-head>*:nth-child(2),.t-row>*:nth-child(2),.t-head>*:nth-child(3),.t-row>*:nth-child(3){display:none}.nav-search{max-width:160px}.hero{padding:44px 20px}.footer-grid{grid-template-columns:1fr}}
+  @media(max-width:680px){.sidebar,.s-sidebar{display:none}.stats-bar .stat{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}.t-head,.t-row{grid-template-columns:2fr 1fr 80px}.nav-search{max-width:160px}.hero{padding:44px 20px}.footer-grid{grid-template-columns:1fr}}
 `;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
-function Stars({ rating }) {
-  const f=Math.floor(rating||4.5), h=(rating||4.5)%1>=.5;
+function Stars({ r }) {
+  const f=Math.floor(r||4.5), h=(r||4.5)%1>=.5;
   return <span className="stars">{"★".repeat(f)}{h?"½":""}{"☆".repeat(5-f-(h?1:0))}</span>;
 }
-function Toast({ toast }) {
-  if(!toast) return null;
-  return <div className="toast"><span>{toast.icon}</span>{toast.msg}</div>;
-}
-function Spinner({ text="Loading…", dark=false }) {
+function Toast({ t }) { if(!t) return null; return <div className="toast"><span>{t.icon}</span>{t.msg}</div>; }
+function Spin({ dark=false }) {
   if(dark) return <div style={{display:"flex",justifyContent:"center",padding:40}}><div className="spinner dark"/></div>;
-  return (
-    <div className="loading-screen">
-      <div className="loading-logo">Shop<span>Now</span></div>
-      <div className="spinner"/>
-      <div className="loading-text">{text}</div>
-    </div>
-  );
+  return <div className="loading-screen"><div className="loading-logo">Shop<span>Now</span></div><div className="spinner"/><div className="loading-text">Loading…</div></div>;
 }
-function BtnSpinner() {
+function BtnSpin() {
   return <div style={{width:15,height:15,border:"2px solid rgba(255,255,255,.3)",borderTopColor:"#fff",borderRadius:"50%",animation:"spin .7s linear infinite",flexShrink:0}}/>;
 }
 
 // ── USER DROPDOWN ─────────────────────────────────────────────────────────────
-function UserMenu({ profile, onOrders, onSeller, onAdmin, onLogout }) {
+function UserMenu({ profile, onPage, onLogout }) {
   const [open,setOpen]=useState(false);
   const initials=(profile?.full_name||"U").split(" ").map(n=>n[0]).join("").toUpperCase().slice(0,2);
+  const roleLabel = profile?.role==="admin" ? "🛡️ Admin" : profile?.role==="seller" ? "🏪 Seller" : "🛍️ Buyer";
   return (
     <div className="user-menu">
       <div className="user-av" onClick={()=>setOpen(o=>!o)}>{initials}</div>
@@ -450,19 +437,11 @@ function UserMenu({ profile, onOrders, onSeller, onAdmin, onLogout }) {
           <div className="user-dd">
             <div className="dd-head">
               <div className="dd-name">{profile?.full_name||"User"}</div>
-              <div className="dd-role">
-                {profile?.role==="admin" ? "🛡️ Admin" : 
-                 profile?.role==="seller" ? "🏪 Seller" : 
-                 "🛍️ Buyer"}
-              </div>
+              <div className="dd-role">{roleLabel}</div>
             </div>
-            <button className="dd-item" onClick={()=>{setOpen(false);onOrders();}}>📦 My Orders</button>
-            {profile?.role==="seller"&&
-              <button className="dd-item" onClick={()=>{setOpen(false);onSeller();}}>🏪 Seller Dashboard</button>
-            }
-            {profile?.role==="admin"&&
-              <button className="dd-item" onClick={()=>{setOpen(false);onAdmin();}}>🛡️ Admin Dashboard</button>
-            }
+            <button className="dd-item" onClick={()=>{setOpen(false);onPage("orders");}}>📦 My Orders</button>
+            {profile?.role==="seller"&&<button className="dd-item" onClick={()=>{setOpen(false);onPage("seller");}}>🏪 Seller Dashboard</button>}
+            {profile?.role==="admin"&&<button className="dd-item" onClick={()=>{setOpen(false);onPage("admin");}}>🛡️ Admin Dashboard</button>}
             <button className="dd-item danger" onClick={()=>{setOpen(false);onLogout();}}>🚪 Sign Out</button>
           </div>
         </>
@@ -471,24 +450,23 @@ function UserMenu({ profile, onOrders, onSeller, onAdmin, onLogout }) {
   );
 }
 
-// ── AUTH ──────────────────────────────────────────────────────────────────────
+// ── AUTH PAGE ─────────────────────────────────────────────────────────────────
 function AuthPage({ onLogin }) {
   const [tab,setTab]=useState("login");
   const [role,setRole]=useState("buyer");
   const [form,setForm]=useState({name:"",email:"",password:"",confirm:""});
-  const [err,setErr]=useState("");
-  const [ok,setOk]=useState("");
-  const [loading,setLoading]=useState(false);
+  const [err,setErr]=useState(""); const [ok,setOk]=useState(""); const [loading,setLoading]=useState(false);
   const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
 
   const login=async()=>{
     setErr(""); setLoading(true);
     try {
-      const {data,error}=await supabase.auth.signInWithPassword({email:form.email,password:form.password});
+      const {data,error}=await supabase.auth.signInWithPassword({email:form.email.trim(),password:form.password});
       if(error) throw error;
       const {data:prof}=await supabase.from("profiles").select("*").eq("id",data.user.id).single();
+      if(!prof) throw new Error("Profile not found. Please register again.");
       onLogin(data.user, prof);
-    } catch(e){ setErr(e.message||"Login failed. Check your email and password."); }
+    } catch(e){ setErr(e.message||"Login failed."); }
     setLoading(false);
   };
 
@@ -499,14 +477,20 @@ function AuthPage({ onLogin }) {
     if(form.password!==form.confirm) return setErr("Passwords do not match.");
     setLoading(true);
     try {
-      const {data,error}=await supabase.auth.signUp({email:form.email,password:form.password});
+      const {data,error}=await supabase.auth.signUp({
+        email:form.email.trim(),
+        password:form.password,
+        options:{ data:{ full_name:form.name, role } }
+      });
       if(error) throw error;
       if(data.user){
-        await supabase.from("profiles").insert({id:data.user.id,full_name:form.name,role});
+        await supabase.from("profiles").upsert({
+          id:data.user.id, full_name:form.name, role
+        },{onConflict:"id"});
       }
-      setOk("Account created! Check your email to confirm, then sign in.");
+      setOk("Account created! You can now sign in.");
       setTab("login"); setForm(f=>({...f,password:"",confirm:""}));
-    } catch(e){ setErr(e.message||"Registration failed. Try again."); }
+    } catch(e){ setErr(e.message||"Registration failed."); }
     setLoading(false);
   };
 
@@ -543,14 +527,11 @@ function AuthPage({ onLogin }) {
         {err&&<div className="auth-err">⚠️ {err}</div>}
         {ok&&<div className="auth-ok">✅ {ok}</div>}
         <button className="auth-btn" onClick={tab==="login"?login:register} disabled={loading}>
-          {loading&&<BtnSpinner/>}
-          {loading?"Please wait…":tab==="login"?"Sign In →":"Create Account →"}
+          {loading&&<BtnSpin/>}{loading?"Please wait…":tab==="login"?"Sign In →":"Create Account →"}
         </button>
         <div className="auth-switch">
-          {tab==="login"
-            ?<>No account? <span onClick={()=>{setTab("register");setErr("");}}>Create one free</span></>
-            :<>Have an account? <span onClick={()=>{setTab("login");setErr("");}}>Sign in</span></>
-          }
+          {tab==="login"?<>No account? <span onClick={()=>{setTab("register");setErr("");}}>Create one free</span></>
+            :<>Have an account? <span onClick={()=>{setTab("login");setErr("");}}>Sign in</span></>}
         </div>
       </div>
     </div>
@@ -559,12 +540,12 @@ function AuthPage({ onLogin }) {
 
 // ── PRODUCT CARD ──────────────────────────────────────────────────────────────
 function ProductCard({ product, onAdd, justAdded }) {
-  const isEmoji=product.image_url&&product.image_url.length<=4;
+  const isE=product.image_url&&product.image_url.length<=4;
   const bc=product.badge?`badge-${product.badge.split(" ")[0]}`:"";
   return (
     <div className="card">
       <div className="card-img">
-        {isEmoji?<span>{product.image_url}</span>:product.image_url?<img src={product.image_url} alt={product.name}/>:<span>🛍️</span>}
+        {isE?<span>{product.image_url}</span>:product.image_url?<img src={product.image_url} alt={product.name}/>:<span>🛍️</span>}
         {product.badge&&<span className={`card-badge ${bc}`}>{product.badge}</span>}
       </div>
       <div className="card-body">
@@ -574,7 +555,7 @@ function ProductCard({ product, onAdd, justAdded }) {
         <div className="card-desc">{product.description}</div>
         <div className="card-foot">
           <div className="card-price">{ZMW(product.price)}</div>
-          <div className="card-stars"><Stars rating={product.rating}/></div>
+          <div className="card-stars"><Stars r={product.rating}/> {product.rating||4.5}</div>
         </div>
         {product.stock_qty<=8&&product.stock_qty>0&&<div style={{fontSize:10,color:"var(--red)",fontWeight:500,marginTop:3}}>⚡ Only {product.stock_qty} left</div>}
         {product.stock_qty===0&&<div style={{fontSize:10,color:"var(--red)",fontWeight:500,marginTop:3}}>❌ Out of stock</div>}
@@ -589,63 +570,53 @@ function ProductCard({ product, onAdd, justAdded }) {
 // ── CART DRAWER ───────────────────────────────────────────────────────────────
 function CartDrawer({ cart, dispatch, onClose, onCheckout }) {
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const ship=sub>5000?0:150;
-  const total=sub+ship;
+  const ship=sub>5000?0:150; const total=sub+ship;
   return (
-    <>
-      <div className="overlay" onClick={onClose}/>
-      <div className="drawer">
-        <div className="drawer-head">
-          <h2>🛒 Cart ({cart.reduce((s,i)=>s+i.qty,0)})</h2>
-          <button className="close-btn" onClick={onClose}>✕</button>
-        </div>
-        <div className="drawer-items">
-          {cart.length===0
-            ?<div className="empty-cart"><span>🛍️</span><p>Your cart is empty</p></div>
-            :cart.map(item=>{
-              const isE=item.image_url&&item.image_url.length<=4;
-              return (
-                <div key={item.id} className="cart-item">
-                  <div className="ci-img">{isE?<span>{item.image_url}</span>:item.image_url?<img src={item.image_url} alt=""/>:<span>🛍️</span>}</div>
-                  <div className="ci-info">
-                    <div className="ci-name">{item.name}</div>
-                    <div className="ci-price">{ZMW(item.price)} each</div>
-                    <div className="qty-ctrl">
-                      <button className="qty-btn" onClick={()=>dispatch({type:"QTY",id:item.id,delta:-1})}>−</button>
-                      <span className="qty-n">{item.qty}</span>
-                      <button className="qty-btn" onClick={()=>dispatch({type:"QTY",id:item.id,delta:1})}>+</button>
-                      <span style={{marginLeft:"auto",fontWeight:600,fontSize:13}}>{ZMW(item.price*item.qty)}</span>
-                    </div>
+    <><div className="overlay" onClick={onClose}/>
+    <div className="drawer">
+      <div className="drawer-head"><h2>🛒 Cart ({cart.reduce((s,i)=>s+i.qty,0)})</h2><button className="close-btn" onClick={onClose}>✕</button></div>
+      <div className="drawer-items">
+        {cart.length===0?<div className="empty-cart"><span>🛍️</span><p>Your cart is empty</p></div>
+          :cart.map(item=>{
+            const isE=item.image_url&&item.image_url.length<=4;
+            return (
+              <div key={item.id} className="cart-item">
+                <div className="ci-img">{isE?<span>{item.image_url}</span>:item.image_url?<img src={item.image_url} alt=""/>:<span>🛍️</span>}</div>
+                <div className="ci-info">
+                  <div className="ci-name">{item.name}</div>
+                  <div className="ci-price">{ZMW(item.price)} each</div>
+                  <div className="qty-ctrl">
+                    <button className="qty-btn" onClick={()=>dispatch({type:"QTY",id:item.id,delta:-1})}>−</button>
+                    <span className="qty-n">{item.qty}</span>
+                    <button className="qty-btn" onClick={()=>dispatch({type:"QTY",id:item.id,delta:1})}>+</button>
+                    <span style={{marginLeft:"auto",fontWeight:600,fontSize:13}}>{ZMW(item.price*item.qty)}</span>
                   </div>
-                  <button className="rm-btn" onClick={()=>dispatch({type:"REMOVE",id:item.id})}>🗑</button>
                 </div>
-              );
-            })
-          }
-        </div>
-        {cart.length>0&&(
-          <div className="drawer-foot">
-            <div className="sub-row"><span>Subtotal</span><span>{ZMW(sub)}</span></div>
-            <div className="sub-row"><span>Delivery</span><span>{ship===0?"Free 🎉":ZMW(ship)}</span></div>
-            {ship>0&&<div className="sub-row" style={{color:"var(--accent)",fontSize:11}}>Spend {ZMW(5000-sub)} more for free delivery!</div>}
-            <div className="total-row"><span>Total</span><span>{ZMW(total)}</span></div>
-            <button className="checkout-btn" onClick={onCheckout}>Proceed to Checkout →</button>
-          </div>
-        )}
+                <button className="rm-btn" onClick={()=>dispatch({type:"REMOVE",id:item.id})}>🗑</button>
+              </div>
+            );
+          })}
       </div>
-    </>
+      {cart.length>0&&(
+        <div className="drawer-foot">
+          <div className="sub-row"><span>Subtotal</span><span>{ZMW(sub)}</span></div>
+          <div className="sub-row"><span>Delivery</span><span>{ship===0?"Free 🎉":ZMW(ship)}</span></div>
+          {ship>0&&<div className="sub-row" style={{color:"var(--accent)",fontSize:11}}>Spend {ZMW(5000-sub)} more for free delivery!</div>}
+          <div className="total-row"><span>Total</span><span>{ZMW(total)}</span></div>
+          <button className="checkout-btn" onClick={onCheckout}>Proceed to Checkout →</button>
+        </div>
+      )}
+    </div></>
   );
 }
 
 // ── CHECKOUT ──────────────────────────────────────────────────────────────────
 function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
-  const [pay,setPay]=useState("airtel");
-  const [loading,setLoading]=useState(false);
+  const [pay,setPay]=useState("airtel"); const [loading,setLoading]=useState(false);
   const [form,setForm]=useState({fname:profile?.full_name?.split(" ")[0]||"",lname:profile?.full_name?.split(" ")[1]||"",phone:"",address:"",city:"Lusaka",mobile:""});
   const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const ship=sub>5000?0:150;
-  const total=sub+ship;
+  const ship=sub>5000?0:150; const total=sub+ship;
   const PAYS=[{id:"airtel",icon:"📱",label:"Airtel Money"},{id:"mtn",icon:"🟡",label:"MTN Money"},{id:"zamtel",icon:"🟢",label:"Zamtel"},{id:"visa",icon:"💳",label:"Visa/MC"}];
 
   const place=async()=>{
@@ -654,17 +625,16 @@ function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
     try {
       const orderNum=`ORD-${Date.now()}`;
       const {data:order,error}=await supabase.from("orders").insert({
-        buyer_id:user.id, order_number:orderNum, status:"Processing",
-        total_amount:total,
+        buyer_id:user.id,order_number:orderNum,status:"Processing",total_amount:total,
         shipping_address:{name:`${form.fname} ${form.lname}`,phone:form.phone,line1:form.address,city:form.city},
-        payment_method:pay, payment_status:"pending",
+        payment_method:pay,payment_status:"pending",
       }).select().single();
       if(error) throw error;
       await supabase.from("order_items").insert(
         cart.map(i=>({order_id:order.id,product_id:typeof i.id==="string"&&i.id.startsWith("f")?null:i.id,product_name:i.name,product_image:i.image_url,quantity:i.qty,unit_price:i.price}))
       );
-      onSuccess(orderNum);
-    } catch(e){ showToast("Order failed: "+e.message,"❌"); }
+      onSuccess(orderNum,total,pay);
+    } catch(e){ showToast("Error: "+e.message,"❌"); }
     setLoading(false);
   };
 
@@ -680,11 +650,9 @@ function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
               <div className="fg"><label>First Name *</label><input className="fi" value={form.fname} onChange={set("fname")}/></div>
               <div className="fg"><label>Last Name</label><input className="fi" value={form.lname} onChange={set("lname")}/></div>
             </div>
-            <div className="fg"><label>Phone Number *</label><input className="fi" placeholder="+260 97 000 0000" value={form.phone} onChange={set("phone")}/></div>
-            <div className="fg"><label>Delivery Address *</label><input className="fi" placeholder="House no, Street name" value={form.address} onChange={set("address")}/></div>
-            <div className="fg"><label>City</label>
-              <select className="fi" value={form.city} onChange={set("city")}>{CITIES.map(c=><option key={c}>{c}</option>)}</select>
-            </div>
+            <div className="fg"><label>Phone *</label><input className="fi" placeholder="+260 97 000 0000" value={form.phone} onChange={set("phone")}/></div>
+            <div className="fg"><label>Address *</label><input className="fi" placeholder="House no, Street" value={form.address} onChange={set("address")}/></div>
+            <div className="fg"><label>City</label><select className="fi" value={form.city} onChange={set("city")}>{CITIES.map(c=><option key={c}>{c}</option>)}</select></div>
           </div>
           <div className="co-sec">
             <h3>💰 Payment Method</h3>
@@ -694,8 +662,8 @@ function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
               </button>
             ))}</div>
             {(pay==="airtel"||pay==="mtn"||pay==="zamtel")&&(
-              <><div className="fg"><label>Mobile Money Number *</label><input className="fi" placeholder="+260 97 000 0000" value={form.mobile} onChange={set("mobile")}/></div>
-              <div className="zmw-note">📲 You'll receive a payment prompt. Enter PIN to confirm {ZMW(total)}.</div></>
+              <><div className="fg"><label>Mobile Number *</label><input className="fi" placeholder="+260 97 000 0000" value={form.mobile} onChange={set("mobile")}/></div>
+              <div className="zmw-note">📲 Enter your number. You'll receive a payment prompt for {ZMW(total)}.</div></>
             )}
             {pay==="visa"&&(
               <><div className="fg"><label>Card Number</label><input className="fi" placeholder="4242 4242 4242 4242"/></div>
@@ -710,7 +678,7 @@ function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
             <div className="sum-item"><span>Delivery</span><span>{ship===0?"Free":ZMW(ship)}</span></div>
             <div className="sum-total"><span>Total</span><span>{ZMW(total)}</span></div>
             <button className="place-btn" onClick={place} disabled={loading}>
-              {loading&&<BtnSpinner/>}{loading?"Placing Order…":"Place Order →"}
+              {loading&&<BtnSpin/>}{loading?"Placing Order…":"Place Order →"}
             </button>
             <div className="secure">🔒 Secured &amp; Protected</div>
           </div>
@@ -722,8 +690,7 @@ function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
 
 // ── ORDERS PAGE ───────────────────────────────────────────────────────────────
 function OrdersPage({ user, onBack }) {
-  const [orders,setOrders]=useState([]);
-  const [loading,setLoading]=useState(true);
+  const [orders,setOrders]=useState([]); const [loading,setLoading]=useState(true);
   useEffect(()=>{
     supabase.from("orders").select("*, order_items(*)").eq("buyer_id",user.id).order("created_at",{ascending:false})
       .then(({data})=>{setOrders(data||[]);setLoading(false);});
@@ -732,19 +699,19 @@ function OrdersPage({ user, onBack }) {
     <div className="orders-page">
       <button className="back-btn" onClick={onBack}>← Back to Shop</button>
       <h2>My Orders</h2>
-      {loading?<Spinner dark/>
+      {loading?<Spin dark/>
         :orders.length===0
-          ?<div style={{textAlign:"center",padding:"60px 0",color:"var(--slate)"}}><div style={{fontSize:48,marginBottom:12}}>📦</div><p style={{fontWeight:600,marginBottom:4}}>No orders yet</p><p style={{fontSize:13}}>Start shopping to see your orders here!</p></div>
+          ?<div style={{textAlign:"center",padding:"60px 0",color:"var(--slate)"}}><div style={{fontSize:48,marginBottom:12}}>📦</div><p style={{fontWeight:600}}>No orders yet</p></div>
           :orders.map(o=>(
             <div key={o.id} className="order-card">
               <div className="order-head">
                 <span className="order-num">{o.order_number}</span>
                 <span className="order-date">{new Date(o.created_at).toLocaleDateString("en-ZM",{day:"numeric",month:"short",year:"numeric"})}</span>
-                <span className={`order-badge ${o.status==="Delivered"?"delivered":""}`}>{o.status}</span>
+                <span className={`order-badge ${o.status}`}>{o.status}</span>
               </div>
-              <div className="order-items-txt">{o.order_items?.map(i=>`${i.product_name} ×${i.quantity}`).join(" · ")}</div>
-              <div className="order-total-txt">Total: {ZMW(o.total_amount)}</div>
-              <div className="order-pay-txt">via {o.payment_method}</div>
+              <div style={{fontSize:13,color:"var(--slate)",marginBottom:6}}>{o.order_items?.map(i=>`${i.product_name} ×${i.quantity}`).join(" · ")}</div>
+              <div style={{fontWeight:700,fontSize:14}}>Total: {ZMW(o.total_amount)}</div>
+              <div style={{fontSize:12,color:"var(--slate)",marginTop:2}}>via {o.payment_method?.toUpperCase()}</div>
             </div>
           ))
       }
@@ -754,15 +721,10 @@ function OrdersPage({ user, onBack }) {
 
 // ── SELLER DASHBOARD ──────────────────────────────────────────────────────────
 function SellerDash({ user, profile, onExit, showToast }) {
-  const [nav,setNav]=useState("products");
-  const [tab,setTab]=useState("list");
-  const [products,setProducts]=useState([]);
-  const [loading,setLoading]=useState(true);
-  const [saving,setSaving]=useState(false);
-  const [showModal,setShowModal]=useState(false);
-  const [drag,setDrag]=useState(false);
-  const [images,setImages]=useState([]);
-  const [primaryImg,setPrimaryImg]=useState(0);
+  const [nav,setNav]=useState("products"); const [tab,setTab]=useState("list");
+  const [products,setProducts]=useState([]); const [loading,setLoading]=useState(true); const [saving,setSaving]=useState(false);
+  const [showModal,setShowModal]=useState(false); const [drag,setDrag]=useState(false);
+  const [images,setImages]=useState([]); const [primaryImg,setPrimaryImg]=useState(0);
   const [settings,setSettings]=useState({published:true,freeShipping:false,trackInventory:true});
   const [form,setForm]=useState({name:"",category:"",price:"",comparePrice:"",sku:"",stock:"",description:""});
   const fileRef=useRef(); const addRef=useRef();
@@ -782,15 +744,12 @@ function SellerDash({ user, profile, onExit, showToast }) {
 
   const handleFiles=useCallback((files)=>{
     const imgs=Array.from(files).slice(0,8-images.length).map(f=>({url:URL.createObjectURL(f),file:f}));
-    setImages(p=>[...p,...imgs]);
-    showToast(`${imgs.length} image${imgs.length>1?"s":""} added`,"🖼️");
+    setImages(p=>[...p,...imgs]); showToast(`${imgs.length} image(s) added`,"🖼️");
   },[images]);
 
   const checks=[
-    {label:"Product name",done:form.name.length>2},
-    {label:"Category",done:!!form.category},
-    {label:"Price set",done:!!form.price},
-    {label:"Description",done:form.description.length>10},
+    {label:"Product name",done:form.name.length>2},{label:"Category",done:!!form.category},
+    {label:"Price set",done:!!form.price},{label:"Description",done:form.description.length>10},
     {label:"Stock quantity",done:!!form.stock},
   ];
   const pct=Math.round(checks.filter(c=>c.done).length/checks.length*100);
@@ -806,15 +765,14 @@ function SellerDash({ user, profile, onExit, showToast }) {
         seller=ns;
       }
       const {error}=await supabase.from("products").insert({
-        seller_id:seller.id, name:form.name, description:form.description,
-        price:parseFloat(form.price), compare_price:form.comparePrice?parseFloat(form.comparePrice):null,
-        category:form.category||"Other", stock_qty:parseInt(form.stock)||0,
-        badge:draft?"":"New", status:draft?"draft":"active", image_url:"🛍️",
+        seller_id:seller.id,name:form.name,description:form.description,
+        price:parseFloat(form.price),compare_price:form.comparePrice?parseFloat(form.comparePrice):null,
+        category:form.category||"Other",stock_qty:parseInt(form.stock)||0,
+        badge:draft?"":"New",status:draft?"draft":"active",image_url:"🛍️",
       });
       if(error) throw error;
-      showToast(draft?"Saved as draft!":"Product published! 🎉","✅");
-      setForm({name:"",category:"",price:"",comparePrice:"",sku:"",stock:"",description:""});
-      setImages([]); setSaving(false);
+      showToast(draft?"Saved as draft!":"Product published!","✅");
+      setForm({name:"",category:"",price:"",comparePrice:"",sku:"",stock:"",description:""}); setImages([]);
       if(!draft) setShowModal(true);
       loadProducts(); setTab("list");
     } catch(e){ showToast("Error: "+e.message,"❌"); }
@@ -824,8 +782,7 @@ function SellerDash({ user, profile, onExit, showToast }) {
   const deleteProduct=async(id)=>{
     if(!window.confirm("Delete this product?")) return;
     await supabase.from("products").delete().eq("id",id);
-    setProducts(prev=>prev.filter(p=>p.id!==id));
-    showToast("Product deleted","🗑️");
+    setProducts(prev=>prev.filter(p=>p.id!==id)); showToast("Deleted","🗑️");
   };
 
   return (
@@ -846,7 +803,6 @@ function SellerDash({ user, profile, onExit, showToast }) {
           <button className="s-item" style={{marginTop:8,color:"#f87171"}} onClick={onExit}>🛍️ Back to Shop</button>
         </div>
       </aside>
-
       <div className="s-main">
         <header className="s-topbar">
           <div><h2>Products</h2><p>Manage your listings</p></div>
@@ -857,19 +813,13 @@ function SellerDash({ user, profile, onExit, showToast }) {
         </header>
         <div className="s-content">
           <div className="s-stats">
-            {[
-              {icon:"📦",label:"Total Products",value:products.length,bg:"#eff6ff"},
-              {icon:"✅",label:"Active",value:products.filter(p=>p.status==="active").length,bg:"#f0fdf4"},
-              {icon:"📝",label:"Drafts",value:products.filter(p=>p.status==="draft").length,bg:"#fffbeb"},
-              {icon:"💰",label:"Revenue",value:"K —",bg:"#fdf4ff"},
-            ].map(s=>(
+            {[{icon:"📦",label:"Products",value:products.length,bg:"#eff6ff"},{icon:"✅",label:"Active",value:products.filter(p=>p.status==="active").length,bg:"#f0fdf4"},{icon:"📝",label:"Drafts",value:products.filter(p=>p.status==="draft").length,bg:"#fffbeb"},{icon:"💰",label:"Revenue",value:"K —",bg:"#fdf4ff"}].map(s=>(
               <div key={s.label} className="s-stat">
                 <div className="s-stat-top"><div className="s-icon" style={{background:s.bg}}>{s.icon}</div></div>
                 <div className="s-num">{s.value}</div><div className="s-lbl">{s.label}</div>
               </div>
             ))}
           </div>
-
           <div className="tabs">
             <button className={`tab ${tab==="add"?"active":""}`} onClick={()=>setTab("add")}>➕ Add Product</button>
             <button className={`tab ${tab==="list"?"active":""}`} onClick={()=>setTab("list")}>📋 My Products ({products.length})</button>
@@ -879,30 +829,24 @@ function SellerDash({ user, profile, onExit, showToast }) {
             <div className="form-grid">
               <div>
                 <div className="f-card">
-                  <div className="f-card-head"><div className="f-icon" style={{background:"#eff6ff"}}>📝</div><div><h3>Basic Info</h3><p>Name, description, category</p></div></div>
+                  <div className="f-card-head"><div className="f-icon" style={{background:"#eff6ff"}}>📝</div><div><h3>Basic Info</h3></div></div>
                   <div className="f-body">
                     <div className="field"><label>Product Name <span className="req">*</span></label><input className="input" placeholder="e.g. Handmade Zambian Basket" value={form.name} onChange={set("name")}/></div>
-                    <div className="field"><label>Description <span className="req">*</span></label><textarea className="textarea" placeholder="Describe your product in detail…" value={form.description} onChange={set("description")}/></div>
+                    <div className="field"><label>Description <span className="req">*</span></label><textarea className="textarea" placeholder="Describe your product…" value={form.description} onChange={set("description")}/></div>
                     <div className="field"><label>Category</label>
-                      <select className="select" value={form.category} onChange={set("category")}>
-                        <option value="">Select a category…</option>{SELLER_CATS.map(c=><option key={c}>{c}</option>)}
-                      </select>
+                      <select className="select" value={form.category} onChange={set("category")}><option value="">Select…</option>{SELLER_CATS.map(c=><option key={c}>{c}</option>)}</select>
                     </div>
                   </div>
                 </div>
-
                 <div className="f-card">
-                  <div className="f-card-head"><div className="f-icon" style={{background:"#fdf4ff"}}>🖼️</div><div><h3>Product Images</h3><p>Upload up to 8 photos</p></div></div>
+                  <div className="f-card-head"><div className="f-icon" style={{background:"#fdf4ff"}}>🖼️</div><div><h3>Images</h3></div></div>
                   <div className="f-body">
                     {images.length===0?(
-                      <div className={`img-zone ${drag?"drag":""}`}
-                        onDragOver={e=>{e.preventDefault();setDrag(true);}} onDragLeave={()=>setDrag(false)}
-                        onDrop={e=>{e.preventDefault();setDrag(false);handleFiles(e.dataTransfer.files);}}
-                        onClick={()=>fileRef.current.click()}>
+                      <div className={`img-zone ${drag?"drag":""}`} onDragOver={e=>{e.preventDefault();setDrag(true);}} onDragLeave={()=>setDrag(false)} onDrop={e=>{e.preventDefault();setDrag(false);handleFiles(e.dataTransfer.files);}} onClick={()=>fileRef.current.click()}>
                         <input ref={fileRef} type="file" accept="image/*" multiple style={{position:"absolute",inset:0,opacity:0,cursor:"pointer"}} onChange={e=>handleFiles(e.target.files)}/>
                         <div style={{fontSize:36,marginBottom:8}}>📸</div>
-                        <div style={{fontWeight:600,fontSize:13,marginBottom:3}}>Drop images here or click to browse</div>
-                        <div style={{fontSize:12,color:"var(--slate)"}}>JPG, PNG, WebP — Max 5MB each</div>
+                        <div style={{fontWeight:600,fontSize:13,marginBottom:3}}>Drop images or click to browse</div>
+                        <div style={{fontSize:12,color:"var(--slate)"}}>JPG, PNG, WebP — Max 5MB</div>
                       </div>
                     ):(
                       <>
@@ -919,45 +863,32 @@ function SellerDash({ user, profile, onExit, showToast }) {
                           ))}
                           {images.length<8&&<div className="add-more" onClick={()=>addRef.current.click()}><input ref={addRef} type="file" accept="image/*" multiple style={{display:"none"}} onChange={e=>handleFiles(e.target.files)}/><span style={{fontSize:20}}>+</span>Add</div>}
                         </div>
-                        <p style={{fontSize:11,color:"var(--slate)",marginTop:8}}>💡 Hover to set cover or remove.</p>
                       </>
                     )}
                   </div>
                 </div>
-
                 <div className="f-card">
-                  <div className="f-card-head"><div className="f-icon" style={{background:"#f0fdf4"}}>💰</div><div><h3>Pricing (ZMW)</h3><p>Set your selling price</p></div></div>
+                  <div className="f-card-head"><div className="f-icon" style={{background:"#f0fdf4"}}>💰</div><div><h3>Pricing (ZMW)</h3></div></div>
                   <div className="f-body">
                     <div className="f-row">
-                      <div className="field"><label>Selling Price <span className="req">*</span></label>
-                        <div className="pfx"><span className="pfx-l">K</span><input className="pfx-i" type="number" min="0" placeholder="0.00" value={form.price} onChange={set("price")}/></div></div>
-                      <div className="field"><label>Compare-at Price</label>
-                        <div className="pfx"><span className="pfx-l">K</span><input className="pfx-i" type="number" min="0" placeholder="Was price" value={form.comparePrice} onChange={set("comparePrice")}/></div></div>
+                      <div className="field"><label>Selling Price <span className="req">*</span></label><div className="pfx"><span className="pfx-l">K</span><input className="pfx-i" type="number" min="0" placeholder="0.00" value={form.price} onChange={set("price")}/></div></div>
+                      <div className="field"><label>Compare-at</label><div className="pfx"><span className="pfx-l">K</span><input className="pfx-i" type="number" min="0" placeholder="Was price" value={form.comparePrice} onChange={set("comparePrice")}/></div></div>
                     </div>
-                    {form.price&&form.comparePrice&&parseFloat(form.comparePrice)>parseFloat(form.price)&&(
-                      <div style={{background:"var(--greenBg)",border:"1px solid #bbf7d0",borderRadius:8,padding:"7px 11px",fontSize:12,color:"var(--green)"}}>
-                        🎉 {Math.round((1-parseFloat(form.price)/parseFloat(form.comparePrice))*100)}% discount badge will show!
-                      </div>
-                    )}
                   </div>
                 </div>
-
                 <div className="f-card">
-                  <div className="f-card-head"><div className="f-icon" style={{background:"#fffbeb"}}>📦</div><div><h3>Inventory</h3><p>Stock quantity and SKU</p></div></div>
+                  <div className="f-card-head"><div className="f-icon" style={{background:"#fffbeb"}}>📦</div><div><h3>Inventory</h3></div></div>
                   <div className="f-body">
                     <div className="f-row">
-                      <div className="field"><label>SKU Code</label><input className="input" placeholder="e.g. HMB-001" value={form.sku} onChange={set("sku")}/></div>
+                      <div className="field"><label>SKU</label><input className="input" placeholder="HMB-001" value={form.sku} onChange={set("sku")}/></div>
                       <div className="field"><label>Stock Qty <span className="req">*</span></label><input className="input" type="number" min="0" placeholder="0" value={form.stock} onChange={set("stock")}/></div>
                     </div>
-                    {form.stock!==""&&parseInt(form.stock)===0&&<div style={{background:"var(--redBg)",border:"1px solid #fecaca",borderRadius:8,padding:"7px 11px",fontSize:12,color:"var(--red)",marginTop:4}}>⚠️ Stock 0 — will show as Out of Stock</div>}
-                    {form.stock!==""&&parseInt(form.stock)>0&&parseInt(form.stock)<=5&&<div style={{background:"var(--goldBg)",border:"1px solid #fde68a",borderRadius:8,padding:"7px 11px",fontSize:12,color:"var(--gold)",marginTop:4}}>⚡ Low stock — buyers will see urgency warning</div>}
                   </div>
                 </div>
-
                 <div className="f-card">
                   <div className="f-card-head"><div className="f-icon" style={{background:"#f0fdf4"}}>⚙️</div><div><h3>Settings</h3></div></div>
                   <div className="f-body">
-                    {[{key:"published",label:"Publish immediately",desc:"Make visible to buyers now"},{key:"freeShipping",label:"Free delivery",desc:"Offer free delivery on this item"},{key:"trackInventory",label:"Track inventory",desc:"Auto-reduce stock on each sale"}].map(s=>(
+                    {[{key:"published",label:"Publish immediately",desc:"Make visible to buyers now"},{key:"freeShipping",label:"Free delivery",desc:"Offer free delivery"},{key:"trackInventory",label:"Track inventory",desc:"Auto-reduce stock on each sale"}].map(s=>(
                       <div key={s.key} className="toggle-row">
                         <div><div className="toggle-lbl">{s.label}</div><div className="toggle-desc">{s.desc}</div></div>
                         <label className="toggle"><input type="checkbox" checked={settings[s.key]} onChange={e=>setSettings(p=>({...p,[s.key]:e.target.checked}))}/><span className="tslider"/></label>
@@ -965,15 +896,11 @@ function SellerDash({ user, profile, onExit, showToast }) {
                     ))}
                   </div>
                 </div>
-
                 <div className="sub-area">
                   <button className="sub-btn draft" onClick={()=>publish(true)} disabled={saving}>💾 Save Draft</button>
-                  <button className="sub-btn publish" onClick={()=>publish(false)} disabled={saving}>
-                    {saving?<><BtnSpinner/> Saving…</>:"🚀 Publish Product"}
-                  </button>
+                  <button className="sub-btn publish" onClick={()=>publish(false)} disabled={saving}>{saving?<><BtnSpin/> Saving…</>:"🚀 Publish Product"}</button>
                 </div>
               </div>
-
               <div className="preview-sticky">
                 <div className="prev-lbl">👁️ Live Preview</div>
                 <div className="p-card">
@@ -993,12 +920,11 @@ function SellerDash({ user, profile, onExit, showToast }) {
                   </div>
                 </div>
                 <div className="completeness">
-                  <div className="comp-head"><span>Listing Completeness</span><span className="comp-pct">{pct}%</span></div>
+                  <div className="comp-head"><span>Completeness</span><span className="comp-pct">{pct}%</span></div>
                   <div className="prog-track"><div className="prog-fill" style={{width:`${pct}%`}}/></div>
                   <div className="comp-items">{checks.map(c=>(
                     <div key={c.label} className={`c-item ${c.done?"done":""}`}><div className={`c-dot ${c.done?"done":"todo"}`}>{c.done?"✓":"·"}</div>{c.label}</div>
                   ))}</div>
-                  {pct===100&&<div style={{marginTop:10,background:"var(--greenBg)",border:"1px solid #bbf7d0",borderRadius:8,padding:"7px 11px",fontSize:11,color:"var(--green)",textAlign:"center",fontWeight:600}}>🎉 Perfect listing! Ready to publish.</div>}
                 </div>
               </div>
             </div>
@@ -1007,9 +933,9 @@ function SellerDash({ user, profile, onExit, showToast }) {
           {tab==="list"&&(
             <div className="prod-table">
               <div className="t-head"><span>Product</span><span>Price</span><span>Stock</span><span>Status</span><span>Actions</span></div>
-              {loading?<Spinner dark/>
+              {loading?<Spin dark/>
                 :products.length===0
-                  ?<div style={{padding:"40px 18px",textAlign:"center",color:"var(--slate)"}}><div style={{fontSize:40,marginBottom:10}}>📦</div><p>No products yet — add your first one!</p></div>
+                  ?<div style={{padding:"40px",textAlign:"center",color:"var(--slate)"}}><div style={{fontSize:40,marginBottom:10}}>📦</div><p>No products yet!</p></div>
                   :products.map(p=>(
                     <div key={p.id} className="t-row">
                       <div className="p-info">
@@ -1022,8 +948,8 @@ function SellerDash({ user, profile, onExit, showToast }) {
                       </div>
                       <div><span className={`s-pill ${p.status==="draft"?"draft":"active"}`}>{p.status==="draft"?"✏️ Draft":"✅ Active"}</span></div>
                       <div className="act-btns">
-                        <button className="act-btn" title="Edit" onClick={()=>setTab("add")}>✏️</button>
-                        <button className="act-btn" title="Delete" onClick={()=>deleteProduct(p.id)}>🗑</button>
+                        <button className="act-btn" onClick={()=>setTab("add")}>✏️</button>
+                        <button className="act-btn" onClick={()=>deleteProduct(p.id)}>🗑</button>
                       </div>
                     </div>
                   ))
@@ -1032,19 +958,15 @@ function SellerDash({ user, profile, onExit, showToast }) {
           )}
         </div>
       </div>
-
       {showModal&&(
-        <div className="modal-ov">
-          <div className="modal">
-            <div className="modal-icon">🎉</div>
-            <h2>Product Published!</h2>
-            <p>Your product is now live on ShopNow and saved to the database!</p>
-            <div className="modal-btns">
-              <button className="m-btn secondary" onClick={()=>{setShowModal(false);setTab("list");}}>View All</button>
-              <button className="m-btn primary" onClick={()=>setShowModal(false)}>Add Another</button>
-            </div>
+        <div className="modal-ov"><div className="modal">
+          <div className="modal-icon">🎉</div><h2>Product Published!</h2>
+          <p>Live on ShopNow and saved to the database!</p>
+          <div className="modal-btns">
+            <button className="m-btn secondary" onClick={()=>{setShowModal(false);setTab("list");}}>View All</button>
+            <button className="m-btn primary" onClick={()=>setShowModal(false)}>Add Another</button>
           </div>
-        </div>
+        </div></div>
       )}
     </div>
   );
@@ -1054,103 +976,98 @@ function SellerDash({ user, profile, onExit, showToast }) {
 // MAIN APP
 // ══════════════════════════════════════════════════════════════════════════════
 export default function App() {
-  const [authLoading,setAuthLoading]=useState(true);
-  const [user,setUser]=useState(null);
-  const [profile,setProfile]=useState(null);
-  const [page,setPage]=useState("shop");
-  const [cart,dispatch]=useReducer(cartReducer,[]);
-  const [cartOpen,setCartOpen]=useState(false);
-  const [dbProducts,setDbProducts]=useState([]);
-  const [category,setCategory]=useState("All");
-  const [search,setSearch]=useState("");
-  const [maxPrice,setMaxPrice]=useState(10000);
-  const [sort,setSort]=useState("default");
-  const [justAdded,setJustAdded]=useState(null);
-  const [toast,setToast]=useState(null);
-  const [orderNum,setOrderNum]=useState("");
+  const [authLoading,setAuthLoading] = useState(true);
+  const [user,setUser]               = useState(null);
+  const [profile,setProfile]         = useState(null);
+  const [page,setPage]               = useState("shop");
+  const [cart,dispatch]              = useReducer(cartReducer,[]);
+  const [cartOpen,setCartOpen]       = useState(false);
+  const [dbProducts,setDbProducts]   = useState([]);
+  const [category,setCategory]       = useState("All");
+  const [search,setSearch]           = useState("");
+  const [maxPrice,setMaxPrice]       = useState(10000);
+  const [sort,setSort]               = useState("default");
+  const [justAdded,setJustAdded]     = useState(null);
+  const [toast,setToast]             = useState(null);
+  const [orderData,setOrderData]     = useState(null);
 
   const showToast=(msg,icon="✅")=>{ setToast({msg,icon}); setTimeout(()=>setToast(null),2800); };
 
-  // ── Session management ────────────────────────────────────────────────────
+  // ── Load profile and redirect based on role ───────────────────────────────
+  const loadProfileAndRedirect = async (authUser) => {
+    try {
+      const { data: prof } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", authUser.id)
+        .single();
+
+      setUser(authUser);
+      setProfile(prof);
+
+      // ── THIS IS THE KEY FIX ──
+      const role = prof?.role || "buyer";
+      setPage(getPageForRole(role));
+
+      return prof;
+    } catch(e) {
+      console.error("Profile load error:", e);
+      setPage("shop");
+      return null;
+    }
+  };
+
+  // ── Check session on mount ────────────────────────────────────────────────
   useEffect(()=>{
     supabase.auth.getSession().then(async({data:{session}})=>{
       if(session?.user){
-        setUser(session.user);
-        const {data:prof}=await supabase.from("profiles")
-          .select("*").eq("id",session.user.id).single();
-        setProfile(prof);
-        // ── Redirect based on role on page load ──
-        if(prof?.role==="admin")        setPage("admin");
-        else if(prof?.role==="seller")  setPage("seller");
-        else                            setPage("shop");
+        await loadProfileAndRedirect(session.user);
       }
       setAuthLoading(false);
     });
-    const {data:{subscription}}=supabase.auth.onAuthStateChange(async(event,session)=>{
-      if(session?.user){
-        setUser(session.user);
-        const {data:prof}=await supabase.from("profiles")
-          .select("*").eq("id",session.user.id).single();
-        setProfile(prof);
-        // Only redirect on actual sign in event not every state change
-        if(event==="SIGNED_IN"){
-          if(prof?.role==="admin")       setPage("admin");
-          else if(prof?.role==="seller") setPage("seller");
-          else                           setPage("shop");
-        }
-      } else {
-        setUser(null);
-        setProfile(null);
-        setPage("shop");
+
+    const {data:{subscription}} = supabase.auth.onAuthStateChange(async(event, session)=>{
+      if(event === "SIGNED_OUT"){
+        setUser(null); setProfile(null); setPage("shop"); dispatch({type:"CLEAR"});
       }
     });
     return ()=>subscription.unsubscribe();
   },[]);
 
-  // ── Load products from Supabase ───────────────────────────────────────────
+  // ── Load products ─────────────────────────────────────────────────────────
   useEffect(()=>{
     supabase.from("products").select("*, sellers(store_name)").eq("status","active").order("created_at",{ascending:false})
-      .then(({data})=>{
-        if(data&&data.length>0){
-          setDbProducts(data.map(p=>({...p,seller_name:p.sellers?.store_name||"Seller"})));
-        }
-      });
-  },[page]);
+      .then(({data})=>{ if(data?.length>0) setDbProducts(data.map(p=>({...p,seller_name:p.sellers?.store_name||"Seller"}))); });
+  },[]);
 
-  const allProducts=[...dbProducts,...FALLBACK.filter(f=>!dbProducts.find(d=>d.name===f.name))];
+  const allProducts = [...dbProducts,...FALLBACK.filter(f=>!dbProducts.find(d=>d.name===f.name))];
 
-  // ── handleLogin with role-based redirect ──────────────────────────────────
-  const handleLogin = (u, prof) => {
-    setUser(u);
+  // ── Login handler ─────────────────────────────────────────────────────────
+  const handleLogin = async (authUser, prof) => {
+    setUser(authUser);
     setProfile(prof);
-    if(prof?.role==="admin"){
-      setPage("admin");
-      showToast(`Welcome Admin ${prof?.full_name?.split(" ")[0]||""}! 🛡️`,"🎉");
-    } else if(prof?.role==="seller"){
-      setPage("seller");
-      showToast(`Welcome, ${prof?.full_name?.split(" ")[0]||""}! 🏪`,"🎉");
-    } else {
-      setPage("shop");
-      showToast(`Welcome, ${prof?.full_name?.split(" ")[0]||""}! 👋`,"🎉");
-    }
+    const role = prof?.role || "buyer";
+    const destination = getPageForRole(role);
+    setPage(destination);
+    const welcomeMap = { admin:"Admin", seller:"Seller", buyer:"" };
+    showToast(`Welcome${welcomeMap[role]?" "+welcomeMap[role]:""}, ${prof?.full_name?.split(" ")[0]||"there"}! ${role==="admin"?"🛡️":role==="seller"?"🏪":"👋"}`,"🎉");
   };
 
-  const handleLogout=async()=>{
+  const handleLogout = async () => {
     await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
+    setUser(null); setProfile(null);
     dispatch({type:"CLEAR"});
     setPage("shop");
     showToast("Signed out successfully","👋");
   };
 
-  const handleAdd=(p)=>{
+  const handleAdd = (p) => {
     dispatch({type:"ADD",product:p});
     setJustAdded(p.id); setTimeout(()=>setJustAdded(null),1500);
-    showToast(`${p.name} added to cart`,"🛒");
+    showToast(`${p.name} added`,"🛒");
   };
 
-  let filtered=allProducts.filter(p=>
+  let filtered = allProducts.filter(p=>
     (category==="All"||p.category===category)&&
     p.price<=maxPrice&&
     (p.name.toLowerCase().includes(search.toLowerCase())||p.category.toLowerCase().includes(search.toLowerCase()))
@@ -1159,30 +1076,49 @@ export default function App() {
   if(sort==="price-desc") filtered.sort((a,b)=>b.price-a.price);
   if(sort==="rating")     filtered.sort((a,b)=>(b.rating||4.5)-(a.rating||4.5));
 
-  const cartCount=cart.reduce((s,i)=>s+i.qty,0);
+  const cartCount = cart.reduce((s,i)=>s+i.qty,0);
 
-  if(authLoading) return (<><style>{css}</style><Spinner text="Connecting to database…"/></>);
+  // ── RENDER ─────────────────────────────────────────────────────────────────
+  if(authLoading) return (<><style>{css}</style><Spin/></>);
+
+  // Admin
   if(page==="admin") return (
-    <AdminDashboard user={user} profile={profile} onExit={()=>setPage("shop")}/>
+    <>
+      <style>{css}</style>
+      <AdminDashboard user={user} profile={profile} onExit={()=>setPage("shop")}/>
+      <Toast t={toast}/>
+    </>
   );
-  if(page==="seller") return (<><style>{css}</style><SellerDash user={user} profile={profile} onExit={()=>setPage("shop")} showToast={showToast}/><Toast toast={toast}/></>);
-  if(!user) return (<><style>{css}</style><AuthPage onLogin={handleLogin}/><Toast toast={toast}/></>);
+
+  // Auth
+  if(!user) return (<><style>{css}</style><AuthPage onLogin={handleLogin}/><Toast t={toast}/></>);
+
+  // Seller
+  if(page==="seller") return (
+    <>
+      <style>{css}</style>
+      <SellerDash user={user} profile={profile} onExit={()=>setPage("shop")} showToast={showToast}/>
+      <Toast t={toast}/>
+    </>
+  );
 
   return (
     <>
       <style>{css}</style>
+
+      {/* NAV */}
       <nav className="nav">
         <div className="nav-logo" onClick={()=>setPage("shop")}>Shop<span>Now</span></div>
         {page==="shop"&&(<div className="nav-search"><span style={{color:"#9ca3af"}}>🔍</span><input placeholder="Search products…" value={search} onChange={e=>setSearch(e.target.value)}/></div>)}
         <div className="nav-actions">
           {profile?.role==="seller"&&<button className="nav-btn" onClick={()=>setPage("seller")}>🏪 My Store</button>}
-          <button className="nav-btn primary" onClick={()=>{setCartOpen(true);setPage("shop");}}>
-            🛒 {cartCount>0&&<span className="cart-badge">{cartCount}</span>}
-          </button>
-          <UserMenu profile={profile} onOrders={()=>setPage("orders")} onSeller={()=>setPage("seller")} onAdmin={()=>setPage("admin")} onLogout={handleLogout}/>
+          {profile?.role==="admin"&&<button className="nav-btn" style={{borderColor:"#7c3aed",color:"#7c3aed"}} onClick={()=>setPage("admin")}>🛡️ Admin</button>}
+          <button className="nav-btn primary" onClick={()=>{setCartOpen(true);if(page!=="shop")setPage("shop");}}>🛒 {cartCount>0&&<span className="cart-badge">{cartCount}</span>}</button>
+          <UserMenu profile={profile} onPage={setPage} onLogout={handleLogout}/>
         </div>
       </nav>
 
+      {/* SHOP */}
       {page==="shop"&&(
         <>
           <div className="hero">
@@ -1240,7 +1176,7 @@ export default function App() {
           </div>
           <footer className="footer">
             <div className="footer-grid">
-              <div className="footer-brand"><h3>Shop<span>Now</span></h3><p>Zambia's modern marketplace. Quality products, zero compromise. Pay with mobile money.</p></div>
+              <div className="footer-brand"><h3>Shop<span>Now</span></h3><p>Zambia's modern marketplace. Quality products, zero compromise.</p></div>
               {[{title:"Shop",links:["All Products","Home","Fashion","Kitchen","Tech"]},{title:"Sell",links:["Start Selling","Seller FAQ","Pricing"]},{title:"Help",links:["Help Center","Returns","Track Order","Contact"]}].map(col=>(
                 <div key={col.title} className="footer-col"><h4>{col.title}</h4>{col.links.map(l=><a key={l}>{l}</a>)}</div>
               ))}
@@ -1251,23 +1187,24 @@ export default function App() {
       )}
 
       {page==="orders"&&<OrdersPage user={user} onBack={()=>setPage("shop")}/>}
-      {page==="checkout"&&<CheckoutPage cart={cart} user={user} profile={profile} onSuccess={(num)=>{setOrderNum(num);setPage("success");}} onBack={()=>{setCartOpen(true);setPage("shop");}} showToast={showToast}/>}
-      {page==="success"&&(
+      {page==="checkout"&&<CheckoutPage cart={cart} user={user} profile={profile} onSuccess={(num,total,pay)=>{setOrderData({num,total,pay});setPage("success");}} onBack={()=>{setCartOpen(true);setPage("shop");}} showToast={showToast}/>}
+
+      {page==="success"&&orderData&&(
         <div className="success-page">
           <div className="success-icon">🎊</div>
           <h2>Order Placed!</h2>
-          <p>Saved to your account. You'll receive an SMS confirmation shortly.</p>
-          <p style={{fontSize:12,color:"#9ca3af"}}>Order: <strong style={{color:"var(--accent)"}}>{orderNum}</strong></p>
-          <p style={{fontSize:12,color:"#9ca3af",marginBottom:28}}>Estimated delivery: 1–3 business days</p>
+          <p>Your order has been saved. You'll receive confirmation shortly.</p>
+          <p style={{fontSize:12,color:"#9ca3af"}}>Order: <strong style={{color:"var(--accent)"}}>{orderData.num}</strong></p>
+          <p style={{fontSize:12,color:"#9ca3af",marginBottom:28}}>Total: <strong>{ZMW(orderData.total)}</strong> via {orderData.pay}</p>
           <div style={{display:"flex",gap:10,flexWrap:"wrap",justifyContent:"center"}}>
             <button className="hero-cta shop" style={{border:"1.5px solid #e5e7eb"}} onClick={()=>{dispatch({type:"CLEAR"});setPage("shop");}}>← Continue Shopping</button>
-            <button className="hero-cta sell" onClick={()=>{dispatch({type:"CLEAR"});setPage("orders");}}>View My Orders</button>
+            <button className="hero-cta sell" onClick={()=>{dispatch({type:"CLEAR"});setPage("orders");}}>📦 View Orders</button>
           </div>
         </div>
       )}
 
-      {cartOpen&&page==="shop"&&<CartDrawer cart={cart} dispatch={dispatch} onClose={()=>setCartOpen(false)} onCheckout={()=>{setCartOpen(false);setPage("checkout");}}/>}
-      <Toast toast={toast}/>
+      {cartOpen&&<CartDrawer cart={cart} dispatch={dispatch} onClose={()=>setCartOpen(false)} onCheckout={()=>{setCartOpen(false);setPage("checkout");}}/>}
+      <Toast t={toast}/>
     </>
   );
 }
