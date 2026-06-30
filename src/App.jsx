@@ -3,48 +3,47 @@ import { supabase } from "./supabase";
 import AdminDashboard from "./AdminDashboard";
 
 // ── CURRENCY ──────────────────────────────────────────────────────────────────
-const ZMW = (v) => `K ${(parseFloat(v)||0).toLocaleString("en-ZM",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+const ZMW = (v) => `K ${(parseFloat(v) || 0).toLocaleString("en-ZM", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-// ── PRODUCTS FALLBACK ─────────────────────────────────────────────────────────
+// ── FALLBACK PRODUCTS ─────────────────────────────────────────────────────────
 const FALLBACK = [
-  { id:"f1",  name:"Arc Desk Lamp",        category:"Home",    price:2363, rating:4.8, reviews_count:214,  badge:"Bestseller", image_url:"🪔", description:"360° adjustable arm, warm/cool modes.", stock_qty:12, seller_name:"ShopNow Official" },
-  { id:"f2",  name:"Merino Wool Tee",      category:"Fashion", price:1723, rating:4.6, reviews_count:389,  badge:"New",        image_url:"👕", description:"Ultra-soft 100% merino, odor-resistant.", stock_qty:8,  seller_name:"ShopNow Official" },
-  { id:"f3",  name:"Ceramic Pour-Over",    category:"Kitchen", price:1431, rating:4.9, reviews_count:502,  badge:"Top Rated",  image_url:"☕", description:"Hand-thrown ceramic dripper + carafe.", stock_qty:20, seller_name:"ShopNow Official" },
-  { id:"f4",  name:"Wireless Earbuds Pro", category:"Tech",    price:3949, rating:4.7, reviews_count:1203, badge:"Hot",        image_url:"🎧", description:"ANC, 30hr battery, IPX5.", stock_qty:5,  seller_name:"ShopNow Official" },
-  { id:"f5",  name:"Linen Throw Blanket",  category:"Home",    price:2067, rating:4.5, reviews_count:167,  badge:"",           image_url:"🛋️", description:"Stone-washed linen, 130×170cm.", stock_qty:15, seller_name:"ShopNow Official" },
-  { id:"f6",  name:"Leather Card Wallet",  category:"Fashion", price:1113, rating:4.8, reviews_count:723,  badge:"Bestseller", image_url:"👛", description:"Full-grain leather, slim 4mm, RFID.", stock_qty:30, seller_name:"ShopNow Official" },
-  { id:"f7",  name:"Matcha Whisk Kit",     category:"Kitchen", price:1007, rating:4.7, reviews_count:298,  badge:"",           image_url:"🍵", description:"Bamboo chasen, chawan bowl, scoop.", stock_qty:18, seller_name:"ShopNow Official" },
-  { id:"f8",  name:"USB-C Hub 8-in-1",    category:"Tech",    price:1564, rating:4.6, reviews_count:891,  badge:"New",        image_url:"🔌", description:"4K HDMI, 100W PD, SD/TF, 3×USB-A.", stock_qty:22, seller_name:"ShopNow Official" },
-  { id:"f9",  name:"Soy Candle Set",       category:"Home",    price:1219, rating:4.9, reviews_count:445,  badge:"Top Rated",  image_url:"🕯️", description:"Set of 3: cedar, fig, bergamot.", stock_qty:10, seller_name:"ShopNow Official" },
-  { id:"f10", name:"Slim Fit Chinos",      category:"Fashion", price:2597, rating:4.5, reviews_count:312,  badge:"",           image_url:"👖", description:"Stretch cotton, tapered cut, 5 colors.", stock_qty:7,  seller_name:"ShopNow Official" },
-  { id:"f11", name:"Cold Brew Maker",      category:"Kitchen", price:1193, rating:4.8, reviews_count:567,  badge:"Hot",        image_url:"🫙", description:"1L borosilicate glass, fine-mesh filter.", stock_qty:14, seller_name:"ShopNow Official" },
-  { id:"f12", name:"Mechanical Keyboard",  category:"Tech",    price:3419, rating:4.7, reviews_count:2041, badge:"Bestseller", image_url:"⌨️", description:"TKL, hot-swap switches, per-key RGB.", stock_qty:6,  seller_name:"ShopNow Official" },
+  { id: "f1",  name: "Arc Desk Lamp",        category: "Home",    price: 2363, rating: 4.8, reviews_count: 214,  badge: "Bestseller", image_url: "🪔", description: "360° adjustable arm, warm/cool modes.", stock_qty: 12, seller_name: "ShopNow Official" },
+  { id: "f2",  name: "Merino Wool Tee",      category: "Fashion", price: 1723, rating: 4.6, reviews_count: 389,  badge: "New",        image_url: "👕", description: "Ultra-soft 100% merino, odor-resistant.", stock_qty: 8,  seller_name: "ShopNow Official" },
+  { id: "f3",  name: "Ceramic Pour-Over",    category: "Kitchen", price: 1431, rating: 4.9, reviews_count: 502,  badge: "Top Rated",  image_url: "☕", description: "Hand-thrown ceramic dripper + carafe.", stock_qty: 20, seller_name: "ShopNow Official" },
+  { id: "f4",  name: "Wireless Earbuds Pro", category: "Tech",    price: 3949, rating: 4.7, reviews_count: 1203, badge: "Hot",        image_url: "🎧", description: "ANC, 30hr battery, IPX5.", stock_qty: 5,  seller_name: "ShopNow Official" },
+  { id: "f5",  name: "Linen Throw Blanket",  category: "Home",    price: 2067, rating: 4.5, reviews_count: 167,  badge: "",           image_url: "🛋️", description: "Stone-washed linen, 130x170cm.", stock_qty: 15, seller_name: "ShopNow Official" },
+  { id: "f6",  name: "Leather Card Wallet",  category: "Fashion", price: 1113, rating: 4.8, reviews_count: 723,  badge: "Bestseller", image_url: "👛", description: "Full-grain leather, slim 4mm, RFID.", stock_qty: 30, seller_name: "ShopNow Official" },
+  { id: "f7",  name: "Matcha Whisk Kit",     category: "Kitchen", price: 1007, rating: 4.7, reviews_count: 298,  badge: "",           image_url: "🍵", description: "Bamboo chasen, chawan bowl, scoop.", stock_qty: 18, seller_name: "ShopNow Official" },
+  { id: "f8",  name: "USB-C Hub 8-in-1",    category: "Tech",    price: 1564, rating: 4.6, reviews_count: 891,  badge: "New",        image_url: "🔌", description: "4K HDMI, 100W PD, SD/TF, 3xUSB-A.", stock_qty: 22, seller_name: "ShopNow Official" },
+  { id: "f9",  name: "Soy Candle Set",       category: "Home",    price: 1219, rating: 4.9, reviews_count: 445,  badge: "Top Rated",  image_url: "🕯️", description: "Set of 3: cedar, fig, bergamot.", stock_qty: 10, seller_name: "ShopNow Official" },
+  { id: "f10", name: "Slim Fit Chinos",      category: "Fashion", price: 2597, rating: 4.5, reviews_count: 312,  badge: "",           image_url: "👖", description: "Stretch cotton, tapered cut, 5 colors.", stock_qty: 7,  seller_name: "ShopNow Official" },
+  { id: "f11", name: "Cold Brew Maker",      category: "Kitchen", price: 1193, rating: 4.8, reviews_count: 567,  badge: "Hot",        image_url: "🫙", description: "1L borosilicate glass, fine-mesh filter.", stock_qty: 14, seller_name: "ShopNow Official" },
+  { id: "f12", name: "Mechanical Keyboard",  category: "Tech",    price: 3419, rating: 4.7, reviews_count: 2041, badge: "Bestseller", image_url: "⌨️", description: "TKL, hot-swap switches, per-key RGB.", stock_qty: 6,  seller_name: "ShopNow Official" },
 ];
 
-const CATEGORIES  = ["All","Home","Fashion","Kitchen","Tech"];
-const CITIES      = ["Lusaka","Kitwe","Ndola","Livingstone","Chipata","Solwezi","Kabwe","Chingola"];
-const SELLER_CATS = ["Home & Living","Fashion","Kitchen","Electronics & Tech","Health & Beauty","Sports","Baby & Kids","Food","Other"];
+const CATEGORIES  = ["All", "Home", "Fashion", "Kitchen", "Tech"];
+const CITIES      = ["Lusaka", "Kitwe", "Ndola", "Livingstone", "Chipata", "Solwezi", "Kabwe", "Chingola"];
+const SELLER_CATS = ["Home & Living", "Fashion", "Kitchen", "Electronics & Tech", "Health & Beauty", "Sports", "Baby & Kids", "Food", "Other"];
 
 // ── CART REDUCER ──────────────────────────────────────────────────────────────
 function cartReducer(state, action) {
-  switch(action.type) {
+  switch (action.type) {
     case "ADD": {
-      const ex = state.find(i=>i.id===action.product.id);
-      if(ex) return state.map(i=>i.id===action.product.id?{...i,qty:i.qty+1}:i);
-      return [...state,{...action.product,qty:1}];
+      const ex = state.find((i) => i.id === action.product.id);
+      if (ex) return state.map((i) => (i.id === action.product.id ? { ...i, qty: i.qty + 1 } : i));
+      return [...state, { ...action.product, qty: 1 }];
     }
-    case "REMOVE": return state.filter(i=>i.id!==action.id);
-    case "QTY":    return state.map(i=>i.id===action.id?{...i,qty:Math.max(1,i.qty+action.delta)}:i);
+    case "REMOVE": return state.filter((i) => i.id !== action.id);
+    case "QTY":    return state.map((i) => (i.id === action.id ? { ...i, qty: Math.max(1, i.qty + action.delta) } : i));
     case "CLEAR":  return [];
     default: return state;
   }
 }
 
-// ── REDIRECT HELPER ───────────────────────────────────────────────────────────
-// Single function used everywhere to decide where to send a user
+// ── ROLE REDIRECT HELPER ──────────────────────────────────────────────────────
 function getPageForRole(role) {
-  if(role === "admin")  return "admin";
-  if(role === "seller") return "seller";
+  if (role === "admin") return "admin";
+  if (role === "seller") return "seller";
   return "shop";
 }
 
@@ -75,7 +74,6 @@ const css = `
   .spinner.dark{border-color:rgba(0,0,0,.1);border-top-color:var(--accent);}
   .loading-text{font-size:13px;color:#a5b4fc;}
 
-  /* AUTH */
   .auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f0f0f 0%,#1e1b4b 60%,#312e81 100%);padding:24px;}
   .auth-card{background:var(--white);border-radius:20px;padding:36px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,.3);}
   .auth-logo{font-family:'DM Serif Display';font-size:26px;text-align:center;margin-bottom:4px;}
@@ -98,7 +96,6 @@ const css = `
   .auth-switch{text-align:center;font-size:13px;color:var(--slate);margin-top:12px;}
   .auth-switch span{color:var(--accent);cursor:pointer;font-weight:600;}
 
-  /* NAV */
   .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:0 24px;height:62px;}
   .nav-logo{font-family:'DM Serif Display';font-size:22px;cursor:pointer;flex-shrink:0;}
   .nav-logo span{color:var(--accent);}
@@ -112,21 +109,18 @@ const css = `
   .nav-btn.primary:hover{background:#1d4ed8;}
   .cart-badge{background:var(--red);color:#fff;border-radius:50%;font-size:10px;font-weight:700;min-width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;padding:0 3px;}
 
-  /* USER DROPDOWN */
   .user-menu{position:relative;}
   .user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid transparent;transition:border-color var(--tr);}
   .user-av:hover{border-color:var(--accent);}
   .user-dd{position:absolute;right:0;top:42px;background:var(--white);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.15);min-width:210px;padding:6px;z-index:200;animation:ddIn .15s;}
   .dd-head{padding:10px 12px;border-bottom:1px solid var(--border);margin-bottom:4px;}
   .dd-name{font-weight:600;font-size:14px;}
-  .dd-email{font-size:11px;color:var(--slate);}
   .dd-role{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-top:2px;}
   .dd-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink);transition:background var(--tr);border:none;background:none;width:100%;text-align:left;}
   .dd-item:hover{background:var(--smoke);}
   .dd-item.danger{color:var(--red);}
   .dd-item.danger:hover{background:var(--redBg);}
 
-  /* HERO */
   .hero{background:linear-gradient(135deg,#0f0f0f 0%,#1e1b4b 60%,#312e81 100%);color:#fff;padding:64px 40px;text-align:center;position:relative;overflow:hidden;}
   .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 120%,rgba(37,99,235,.35) 0%,transparent 70%);}
   .hero-eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#818cf8;border:1px solid rgba(129,140,248,.3);border-radius:40px;padding:4px 12px;margin-bottom:16px;}
@@ -140,14 +134,12 @@ const css = `
   .hero-cta.sell{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);}
   .hero-cta.sell:hover{background:rgba(255,255,255,.08);transform:translateY(-2px);}
 
-  /* STATS */
   .stats-bar{display:flex;justify-content:center;background:var(--white);border-bottom:1px solid var(--border);flex-wrap:wrap;}
   .stat{padding:18px 36px;text-align:center;border-right:1px solid var(--border);flex:1;min-width:130px;}
   .stat:last-child{border-right:none;}
   .stat-n{font-family:'DM Serif Display';font-size:26px;color:var(--accent);}
   .stat-l{font-size:11px;color:var(--slate);margin-top:2px;}
 
-  /* SHOP */
   .shop-layout{display:flex;min-height:80vh;}
   .sidebar{width:210px;flex-shrink:0;padding:24px 16px;background:var(--white);border-right:1px solid var(--border);position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;}
   .sidebar h3{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--slate);margin-bottom:8px;}
@@ -165,7 +157,6 @@ const css = `
   .result-count{font-size:12px;color:var(--slate);}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;}
 
-  /* PRODUCT CARD */
   .card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);transition:all var(--tr);overflow:hidden;display:flex;flex-direction:column;}
   .card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px);}
   .card-img{height:150px;display:flex;align-items:center;justify-content:center;font-size:58px;background:linear-gradient(135deg,#f8f7ff,#eff6ff);position:relative;overflow:hidden;}
@@ -188,7 +179,6 @@ const css = `
   .add-btn:hover{background:#1d4ed8;}
   .add-btn.added{background:var(--green);}
 
-  /* CART */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;animation:fadeIn .2s;}
   .drawer{position:fixed;right:0;top:0;bottom:0;width:min(400px,100vw);background:var(--white);z-index:201;box-shadow:-8px 0 40px rgba(0,0,0,.12);display:flex;flex-direction:column;animation:slideIn .25s cubic-bezier(.4,0,.2,1);}
   .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);}
@@ -216,7 +206,6 @@ const css = `
   .checkout-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all var(--tr);}
   .checkout-btn:hover{opacity:.9;}
 
-  /* CHECKOUT */
   .page{max-width:900px;margin:0 auto;padding:40px 24px;}
   .page h2{font-family:'DM Serif Display';font-size:32px;margin-bottom:24px;}
   .back-btn{background:none;border:none;cursor:pointer;color:var(--slate);font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:5px;padding:0;}
@@ -241,7 +230,6 @@ const css = `
   .fi:focus{border-color:var(--accent);}
   .fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
-  /* ORDERS */
   .orders-page{max-width:760px;margin:0 auto;padding:40px 24px;}
   .orders-page h2{font-family:'DM Serif Display';font-size:32px;margin-bottom:24px;}
   .order-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:18px;margin-bottom:14px;box-shadow:var(--shadow);}
@@ -251,13 +239,11 @@ const css = `
   .order-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:40px;background:var(--goldBg);color:var(--gold);}
   .order-badge.Delivered{background:var(--greenBg);color:var(--green);}
 
-  /* SUCCESS */
   .success-page{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;}
   .success-icon{font-size:72px;margin-bottom:20px;}
   .success-page h2{font-family:'DM Serif Display';font-size:36px;margin-bottom:10px;}
   .success-page p{color:var(--slate);font-size:15px;max-width:380px;line-height:1.6;margin-bottom:8px;}
 
-  /* SELLER DASH */
   .seller-app{display:flex;min-height:100vh;}
   .s-sidebar{width:210px;flex-shrink:0;background:var(--ink);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
   .s-logo{padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,.08);}
@@ -295,7 +281,6 @@ const css = `
   .f-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;margin-bottom:18px;}
   .f-card-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;}
   .f-card-head h3{font-size:14px;font-weight:600;}
-  .f-card-head p{font-size:11px;color:var(--slate);margin-top:1px;}
   .f-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
   .f-body{padding:18px;}
   .field{margin-bottom:16px;}
@@ -362,394 +347,268 @@ const css = `
   .c-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--slate);}
   .c-item.done{color:var(--green);}
   .c-dot{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
-  .c-dot.done{background:var(--greenBg);color:var(--green);var(--green);}
-  .c}
-  .c-dot.todo-dot.todo{background:var(--border);color{background:var(--border);color:var(--sl:var(--slate);}
-  .sub-area{display:flex;gap:8pxate);}
+  .c-dot.done{background:var(--greenBg);color:var(--green);}
+  .c-dot.todo{background:var(--border);color:var(--slate);}
   .sub-area{display:flex;gap:8px;margin-top:18px;}
-  .sub-btn{;margin-top:18px;}
-  .sub-btn{flex:1;flex:1;padding:12px;border-radius:9px;fontpadding:12px;border-radius:9px;font-size:14px-size:14px;font-weight:;font-weight:700;cursor:700;cursor:pointer;transition:all var(--tr);border:nonepointer;transition:all var(--tr);border:none;display:flex;align-items:center;justify;display:flex;align-items:-content:center;gap:6pxcenter;justify-content:center;gap:6px;}
-  .sub;}
-  .sub-btn.publish{background:linear-gradient(135-btn.publish{background:linear-gradient(135deg,var(--accent),var(--acdeg,var(--accent),var(--accent2));color:#fff;}
-  .sub-btn.dcent2));color:#fff;}
- raft{background:var(--smoke);color:var(--ink);border:1.5px solid var .sub-btn.draft{background:var(--smoke);color:var(--ink);border:1.5px solid var(--border);}
-  .sub-btn:disabled{op(--border);}
-  .sub-btn:disabled{opacity:.6;acity:.6;cursor:not-allowed;}
-  .cursor:not-allprod-table{background:var(--white);border-radius:var(--radius);owed;}
-  .prod-table{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--border:1px solid var(--border);overflow:hidden;box-shadowshadow);}
-  .t-head{display:grid;grid:var(--shadow);}
-  .t-head{display:grid;grid-template-columns:2fr 1fr 1-template-columns:fr 1fr 90px;gap:10px;padding:10px 18px;background:var(--2fr 1fr 1fr 1fr 90px;gap:10px;padding:10px 18px;smoke);border-bottom:1px solid var(--borderbackground:var(--smoke);border-bottom:1px solid var(--border);font-size:11px;font);font-size:11px;font-weight:700;text-transform:uppercase;letter-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var-spacing:.05em;color:var(--slate);}
-  .t(--slate);}
-  .t-row{display:grid;grid-template-columns:2fr 1fr 1fr -row{display:grid;grid-template-columns:2fr 1fr1fr 90px;gap:10px;padding 1fr 1fr 90px;gap::12px 18px;border-bottom:1px solid var(--border10px;padding:12px 18px;border-bottom:1px solid var(--border);align-items:);align-items:center;transition:background var(--tr);}
-  .t-row:lastcenter;transition:background var(---child{border-bottom:none;}
-  .ttr);}
+  .sub-btn{flex:1;padding:12px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;transition:all var(--tr);border:none;display:flex;align-items:center;justify-content:center;gap:6px;}
+  .sub-btn.publish{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}
+  .sub-btn.draft{background:var(--smoke);color:var(--ink);border:1.5px solid var(--border);}
+  .sub-btn:disabled{opacity:.6;cursor:not-allowed;}
+  .prod-table{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+  .t-head{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 90px;gap:10px;padding:10px 18px;background:var(--smoke);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--slate);}
+  .t-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 90px;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border);align-items:center;transition:background var(--tr);}
   .t-row:last-child{border-bottom:none;}
- -row:hover{background:var(--smoke);}
-  .p-info{display: .t-row:hover{background:var(--smoke);}
-  .p-info{display:flex;align-items:center;gap:10pxflex;align-items:center;gap:10px;}
-  .p-thumb{width:38px;height;}
-  .p-thumb{width:38px;height:38px;border-radius:8px;background::38px;border-radius:8px;background:linear-gradient(135deg,#f0f4ff,#ede9fe);linear-gradient(135deg,#f0f4ff,#ede9fe);display:flex;align-items:center;justify-content:center;fontdisplay:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden-size:20px;flex-shrink:0;overflow:hidden;}
+  .t-row:hover{background:var(--smoke);}
+  .p-info{display:flex;align-items:center;gap:10px;}
+  .p-thumb{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#f0f4ff,#ede9fe);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;}
   .p-thumb img{width:100%;height:100%;object-fit:cover;}
-  .p;}
-  .p-thumb img{width:100%;height:100%;object-fit:cover;}
-  .-nm{font-weight:600;font-size:12px;}
-  .pp-nm{font-weight:600;font-size:12px;}
-  .p-sk{font-size-sk{font-size:10px;:10px;color:var(--color:var(--slate);marginslate);margin-top:1px-top:1px;}
-  .s-pill{display;}
-  .s-pill{display:inline-flex;align-items:center;gap:3:inline-flex;align-items:center;gap:3px;padding:2px px;padding:2px 9px;border-radius:40px;font-size:10px;font9px;border-radius:40px;font-size:10px;font-weight:600;}
-  .s-pill.active{background:var(--greenBg);color:-weight:600;}
+  .p-nm{font-weight:600;font-size:12px;}
+  .p-sk{font-size:10px;color:var(--slate);margin-top:1px;}
+  .s-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 9px;border-radius:40px;font-size:10px;font-weight:600;}
   .s-pill.active{background:var(--greenBg);color:var(--green);}
-  .s-pill.draft{background:var(--goldBgvar(--green);}
-  .s-pill.draft{background:var(--goldBg);color:var(--);color:var(--gold);}
-  .act-btns{display:gold);}
+  .s-pill.draft{background:var(--goldBg);color:var(--gold);}
   .act-btns{display:flex;gap:5px;}
- flex;gap:5px;}
-  .act-btn{width:28px .act-btn{width:28px;height:28px;border-radius:7px;;height:28px;border-radius:7px;border:1.5px solid varborder:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:12px;display:flex;align(--border);background:var(--white);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all var(--tr);}
-  .act-btn:hover{b-items:center;justify-content:center;transition:all var(--tr);}
+  .act-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all var(--tr);}
   .act-btn:hover{border-color:var(--accent);background:#eff6ff;}
-  .modal-ov{position:fixedorder-color:var(--accent);background:#eff6ff;}
-  .modal-ov{position:fixed;inset:0;background:rgba(0,0,0;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;,.5);z-index:300;display:flex;alignjustify-content:center;padding:24px;-items:center;justify-content:center;padding:24px;animation:fadeIn .2s;}
-  .modal{animation:fadeIn .2s;}
-  .modal{background:var(--white);border-radius:18px;background:var(--white);border-radius:18px;padding:36px 32px;padding:36px 32px;max-width:400px;width:max-width:400px;width:100%;text-align100%;text-align:center;box-shadow:0 :center;box24px 80px rgba(0,0,0,.2);}
-  .-shadow:0 24px 80px rgba(0,0,0,.2);}
-  .modal-iconmodal-icon{font-size:56px;margin-bottom:14px{font-size:56px;margin-bottom:14px;}
-  .modal h2{font-family:'DM Ser;}
-  .modal h2{font-family:'DM Serif Display';font-size:26pxif Display';font-size:26px;margin-bottom:;margin-bottom:7px;}
-  .modal p{font-size:137px;}
-  .modal p{font-size:13px;color:var(--slate);line-height:px;color:var(--slate);line-height1.6;margin-bottom:22px;}
+  .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .2s;}
+  .modal{background:var(--white);border-radius:18px;padding:36px 32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.2);}
+  .modal-icon{font-size:56px;margin-bottom:14px;}
+  .modal h2{font-family:'DM Serif Display';font-size:26px;margin-bottom:7px;}
+  .modal p{font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:22px;}
   .modal-btns{display:flex;gap:8px;}
-  .:1.6;margin-bottom:22px;}
-  .modal-btns{display:flex;gap:8px;}
-  .m-btn{flex:1;padding:11px;border-radius:9px;font-sizem-btn{flex:1;padding:11px;border-radius:9:13px;px;font-size:13px;font-weight:600font-weight:600;cursor:pointer;transition:all;cursor:pointer;transition:all var(--tr);}
-  .m-btn.primary{ var(--tr);}
-  .m-btn.background:var(--accent);color:#fff;border:none;}
-  .m-btn.secondprimary{background:var(--accent);color:#fff;border:none;}
- ary{background: .m-btn.secondary{background:var(--smokevar(--smoke);color:var(--ink););color:var(--ink);border:1border:1.5px solid var(--border);.5px solid var(--border);}
-  .}
-  .toast{position:fixed;bottom:22px;right:22px;backgroundtoast{position:fixed;bottom:22px;right:22px;background:var(--ink);color:#fff;padding:11:var(--ink);color:#fff;padding:11px 16px;border-radius:9px;font-size:13px;font-weight:500;display:px 16px;border-radius:9px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;flex;align-items:center;gap:9px;box-shadow:0 8px 24px rgba(box-shadow:0 8px 24px rgba0,0,0,.2);animation:toast(0,0,0,.2);animation:toastIn .25sIn .25s;z-index:;z-index:400;}
-  .footer{background:var(--ink400;}
-  .footer{background:var(--ink););color:#9ca3af;padding:40pxcolor:#9ca3af;padding:40px;}
-  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr ;}
-  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 11fr;gap:36px;margin-bottom:36px;}
-  .footer-brand h3{font-family:'DMfr;gap:36px;margin-bottom:36px;}
-  .footer-brand h3{font-family:'DM Serif Display';font-size:20px;color:# Serif Display';font-size:20px;color:#fff;margin-bottom:10pxfff;margin-bottom:10px;}
-  .footer-brand h3 span{color:#818cf;}
-  .footer-brand h3 span{8;}
+  .m-btn{flex:1;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--tr);}
+  .m-btn.primary{background:var(--accent);color:#fff;border:none;}
+  .m-btn.secondary{background:var(--smoke);color:var(--ink);border:1.5px solid var(--border);}
+  .toast{position:fixed;bottom:22px;right:22px;background:var(--ink);color:#fff;padding:11px 16px;border-radius:9px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:toastIn .25s;z-index:400;}
+  .footer{background:var(--ink);color:#9ca3af;padding:40px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px;}
+  .footer-brand h3{font-family:'DM Serif Display';font-size:20px;color:#fff;margin-bottom:10px;}
+  .footer-brand h3 span{color:#818cf8;}
   .footer-brand p{font-size:12px;line-height:1.7;max-width:240px;}
- color:#818cf8;}
-  .footer-brand p{font-size:12px;line-height:1.7;max-width:240px;}
-  .footer-col h4{font-size:11px;font-weight:600;color:#fff .footer-col h4{font-size:11px;font-weight:600;color:#fff;margin-bottom:12px;text-transform:uppercase;letter-spacing;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;}
-  .footer-col a{display:block;font-size:.06em;}
-  .footer-col a{display::12px;margin-bottom:7px;color:#9ca3af;cursor:pointer;transition:color var(--tr);block;font-size:12px;margin-bottom:7px;color:#9ca3af;cursor:pointer;transition:color var(--tr);text-decoration:none;}
-  .footer-col a:hover{color:#ffftext-decoration:none;}
-  .footer-col a:hover{;}
-  .footer-bottom{border-top:1px solid #color:#fff;}
-  .footer-bottom{border-top:1f2937;padding-top:20px;display:flex;justify-content:space1px solid #1f2937;padding-top-between;font-size:11px;flex-wrap:wrap:20px;display:flex;justify-content:space-between;font-size:11px;flex-wrap:wrap;gap:6;gap:6px;}
+  .footer-col h4{font-size:11px;font-weight:600;color:#fff;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;}
+  .footer-col a{display:block;font-size:12px;margin-bottom:7px;color:#9ca3af;cursor:pointer;transition:color var(--tr);text-decoration:none;}
+  .footer-col a:hover{color:#fff;}
+  .footer-bottom{border-top:1px solid #1f2937;padding-top:20px;display:flex;justify-content:space-between;font-size:11px;flex-wrap:wrap;gap:6px;}
 
-  @media(max-width:900px){.co-grid,.form-grid{grid-template-columns:1fr}.prepx;}
-
-  @media(max-width:900px){.co-grid,.form-grid{grid-template-columns:view-sticky{position:static}.s-stats{1fr}.preview-sticky{positiongrid-template-columns:repeat(2,1fr)}:static}.s-stats{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr .footer-grid{grid-template-columns:1fr 1fr}}
- 1fr}}
-  @media(max-width:680px){.sidebar,.s @media(max-width:680px){.sidebar,.s-sidebar{display:none}.stats-bar .stat{min-width:50%;border-right:none;border-sidebar{display:none}.stats-bar .stat{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}.t-head,.t-row{grid-template-columns-bottom:1px solid var(--border)}.t-head,.t-row{grid-template-columns:2fr :2fr 1fr 80px}.nav-search{max-width:160px}.hero1fr 80px}.nav-search{max-width:160px}.hero{padding:44px 20px}.footer-grid{{padding:44px 20px}.footer-grid{grid-template-columns:1frgrid-template-columns:1fr}}
+  @media(max-width:900px){.co-grid,.form-grid{grid-template-columns:1fr}.preview-sticky{position:static}.s-stats{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:680px){.sidebar,.s-sidebar{display:none}.stats-bar .stat{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}.t-head,.t-row{grid-template-columns:2fr 1fr 80px}.nav-search{max-width:160px}.hero{padding:44px 20px}.footer-grid{grid-template-columns:1fr}}
 `;
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
+// ── SMALL HELPERS ─────────────────────────────────────────────────────────────
 function Stars({ r }) {
-  const}}
-`;
-
-// ── HELPERS ───────────────────────────────────────────────────────────────────
-function Stars({ r }) {
-  const f=Math.floor(r||4.5), h=(r|| f=Math.floor(r||4.5), h=(r||4.5)%14.5)%1>=.5;
-  return <span className="stars">{"★>=.5;
-  return <span className="stars">{"★".repeat(f)}{h?"½":""}{"".repeat(f)}{h?"½":""}{"☆".repeat(☆".repeat(5-f-(h?1:05-f-(h?1:))}</span0))}</span>;
-}
-function Toast({ t }) { if(!t) return>;
-}
-function Toast({ t }) { if(!t) return null; return <div className="toast"><span null; return <div className="toast"><span>{t.icon}</span>{t.msg}</div>>{t.icon}</span>{t.msg}</div>; }
-function Spin({ dark=false }) {
-  if(dark) return; }
-function Spin({ dark=false }) {
-  if(dark) return <div style={{ <div style={{display:"flex",justifyContent:"display:"flex",justifyContent:"center",padding:center",padding:40}}><div className="spinner40}}><div className="spinner dark"/></div dark"/></div>;
- >;
-  return <div className="loading-screen"><div className return <div className="loading-screen"><div className="loading="loading-logo">Shop<span>Now</span-logo">Shop<span>Now</span></div><div className="spinner"/><div className></div><div className="spinner"/><div className="loading-text">Loading…="loading-text">Loading…</div></div>;
-</div></div>;
-}
-function BtnSpin()}
-function BtnSpin() {
-  return <div style={{ {
-  return <div style={{width:15,width:15,height:15,border:"2px solid rgba(255height:15,border:"2px solid rgba(255,255,255,.3)",border,255,255,.3)",borderTopColor:"#TopColor:"#fff",borderRadius:"50%",animation:"spin .fff",borderRadius:"50%",animation:"spin .7s linear infinite",flexShrink7s linear infinite",flexShrink:0}}/>;
+  const f = Math.floor(r || 4.5);
+  const h = (r || 4.5) % 1 >= 0.5;
+  return <span className="stars">{"★".repeat(f)}{h ? "½" : ""}{"☆".repeat(5 - f - (h ? 1 : 0))}</span>;
 }
 
-// ─:0}}/>;
+function Toast({ t }) {
+  if (!t) return null;
+  return <div className="toast"><span>{t.icon}</span>{t.msg}</div>;
 }
 
-// ── USER D─ USER DROPDOWNROPDOWN ─────────────────────────────────────────────────────────────
-function ─────────────────────────────────────────────────────────────
-function UserMenu({ profile UserMenu({ profile, onPage, onLogout }) {
-  const, onPage, onLogout }) {
-  const [open,set [open,setOpen]=useState(false);
-  const initials=(profile?.Open]=useState(false);
-  const initials=(profile?.full_name||"U").split("full_name||"U"). ").map(nsplit(" ").map(n=>n[0]).join("").=>n[0]).join("").toUpperCase().toUpperCase().slice(0,2);
-  constslice(0, roleLabel = profile?.role2);
-  const roleLabel = profile?.role==="admin" ? "==="admin" ? "🛡️ Admin" : profile🛡️ Admin" : profile?.role==="?.role==="seller" ? "🏪 Seller"seller" ? "🏪 Seller" : " : "🛍️ Buyer";
+function Spin({ dark }) {
+  if (dark) {
+    return <div style={{ display: "flex", justifyContent: "center", padding: 40 }}><div className="spinner dark" /></div>;
+  }
   return (
-   🛍️ Buyer";
+    <div className="loading-screen">
+      <div className="loading-logo">Shop<span>Now</span></div>
+      <div className="spinner" />
+      <div className="loading-text">Loading...</div>
+    </div>
+  );
+}
+
+function BtnSpin() {
+  return <div style={{ width: 15, height: 15, border: "2px solid rgba(255,255,255,.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin .7s linear infinite", flexShrink: 0 }} />;
+}
+
+// ── USER DROPDOWN ─────────────────────────────────────────────────────────────
+function UserMenu({ profile, onPage, onLogout }) {
+  const [open, setOpen] = useState(false);
+  const initials = (profile?.full_name || "U").split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+  const roleLabel = profile?.role === "admin" ? "Admin" : profile?.role === "seller" ? "Seller" : "Buyer";
+
   return (
     <div className="user-menu">
-      <div className="user-menu">
-      <div className="user-av" <div className="user-av" onClick={()=>set onClick={()=>setOpen(o=>!o)}>{initials}</div>
-      {open&&Open(o=>!o)}>{initials}</div>
-      {open&&(
+      <div className="user-av" onClick={() => setOpen((o) => !o)}>{initials}</div>
+      {open && (
         <>
-         (
-        <>
-          <div style={{ <div style={{position:"fixed",position:"fixed",inset:0,zIndex:199inset:0,zIndex:199}} onClick={()=>setOpen(false)}/>
-          <div}} onClick={()=>setOpen(false)}/>
-          <div className="user-dd className="user-dd">
+          <div style={{ position: "fixed", inset: 0, zIndex: 199 }} onClick={() => setOpen(false)} />
+          <div className="user-dd">
             <div className="dd-head">
-            <div className="dd">
-              <div className="dd-name-head">
-              <div className="dd-name">{profile?.full">{profile?.full_name||"User_name||"User"}</div>
-              <div className="dd-role"}</div>
+              <div className="dd-name">{profile?.full_name || "User"}</div>
               <div className="dd-role">{roleLabel}</div>
             </div>
-           ">{roleLabel}</div>
-            </div>
-            <button className="dd <button className="dd-item" onClick={()=>{set-item" onClick={()=>{setOpen(false);onOpen(false);onPage("orders");Page("orders");}}>📦 My Orders</button}}>📦 My Orders</button>
-            {profile?.role===">
-            {profile?.role==="seller"&&seller"&&<button className="dd<button className="dd-item" onClick={()=>{setOpen(false);onPage-item" onClick={()=>{setOpen(false);onPage("seller");}}>🏪("seller");}} Seller Dashboard</button>>🏪 Seller Dashboard</button>}
-            {profile}
-            {profile?.role==="admin"&&?.role==="admin"<button className="dd&&<button className="dd-item" onClick={()=>{setOpen(false);onPage-item" onClick={()=>{setOpen(false);onPage("admin");}}("admin");}}>🛡️ Admin Dashboard</button>}
-            <button className>🛡️ Admin Dashboard</button>}
-           ="dd-item danger" <button className="dd-item danger" onClick={()=>{setOpen(false);onLogout(); onClick={()=>{setOpen(false);onLogout();}}>🚪 Sign Out</button>
-          </div}}>🚪 Sign Out</button>
+            <button className="dd-item" onClick={() => { setOpen(false); onPage("orders"); }}>My Orders</button>
+            {profile?.role === "seller" && (
+              <button className="dd-item" onClick={() => { setOpen(false); onPage("seller"); }}>Seller Dashboard</button>
+            )}
+            {profile?.role === "admin" && (
+              <button className="dd-item" onClick={() => { setOpen(false); onPage("admin"); }}>Admin Dashboard</button>
+            )}
+            <button className="dd-item danger" onClick={() => { setOpen(false); onLogout(); }}>Sign Out</button>
           </div>
-        </>
-     >
         </>
       )}
     </div>
   );
- )}
-    </div>
-  );
 }
 
-// ── AUTH PAGE ─────────────────────────────────────────────────}
-
 // ── AUTH PAGE ─────────────────────────────────────────────────────────────────
-function AuthPage({ onLogin────────────────
 function AuthPage({ onLogin }) {
-  const }) {
-  const [tab,setTab]=useState [tab,setTab]=useState("login");
- ("login");
-  const [role,setRole]=useState("buyer");
-  const [form,setForm]=useState({ const [role,setRole]=useState("buyer");
-  const [form,setFormname:"",email:"",password:"",confirm:""]=useState({name:"",email:"",password:"",confirm:""});
-  const [err,setErr]=useState("});
-  const [err,setErr]=useState(""); const [ok,setOk]=useState("");"); const [ok,setOk]=useState(""); const [loading, const [loading,setLoading]=useState(false);
- setLoading]=useState(false);
-  const set=k=>e=>setForm(f=>({ const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
+  const [tab, setTab] = useState("login");
+  const [role, setRole] = useState("buyer");
+  const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
+  const [err, setErr] = useState("");
+  const [ok, setOk] = useState("");
+  const [loading, setLoading] = useState(false);
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-...f,[k]:e.target.value  const login=async()}));
-
-  const login=async()=>{
-    set=>{
-    setErr(""); setLoading(true);
-   Err(""); setLoading(true);
+  const login = async () => {
+    setErr("");
+    setLoading(true);
     try {
-      const try {
-      const {data,error}=await supabase {data,error}=await supabase.auth.signInWith.auth.signInWithPassword({email:form.email.trim(),password:form.passwordPassword({email:form.email.trim(),password:form.password});
-      if(error});
-      if(error) throw error;
-      
-      //) throw error;
-      
-      // ── NEW: ── NEW: auto-create profile auto-create profile if missing ──
-      let if missing ──
-      let { data { data: prof } = await supabase
-        .: prof } = await supabase
-        .from("profiles")
-        .selectfrom("profiles")
-        .select("*")
-        .eq("id", data.user.id("*")
-        .eq("id", data.user.id)
-        .single)
-        .single();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: form.email.trim(),
+        password: form.password,
+      });
+      if (error) throw error;
 
-      if(!prof) {
-        const { data: new();
+      let { data: prof } = await supabase.from("profiles").select("*").eq("id", data.user.id).single();
 
-      if(!prof) {
+      if (!prof) {
         const { data: newProf } = await supabase
-          .from("profProf } = await supabase
           .from("profiles")
-          .iles")
-          .upsert({
-            id: data.userupsert({
+          .insert({
             id: data.user.id,
-            full_name: data.user.user_metadata?..id,
-            full_name: data.user.user_metadata?.full_name 
-                       ||full_name 
-                       || data.user.email data.user.email.split("@")[0],
-            role.split("@")[0],
-            role: data.user.user: data.user.user_metadata?.role_metadata?.role || "buyer"
+            full_name: data.user.user_metadata?.full_name || data.user.email.split("@")[0],
+            role: data.user.user_metadata?.role || "buyer",
           })
-          || "buyer"
-          })
-          .select()
           .select()
           .single();
-        prof = newProf .single();
         prof = newProf;
       }
 
-      if(!prof) throw new Error(";
+      if (!prof) {
+        prof = {
+          id: data.user.id,
+          full_name: data.user.email.split("@")[0],
+          role: "buyer",
+        };
       }
 
-      if(!prof) throw new ErrorCould not load profile. Try again.");
-      onLogin(data("Could not load profile. Try again.");
-      onLogin(data.user, prof.user, prof);
-    } catch(e){ setErr);
-    } catch(e){ setErr(e.message||"Login failed."); }
-   (e.message||"Login failed."); }
+      onLogin(data.user, prof);
+    } catch (e) {
+      setErr(e.message || "Login failed.");
+    }
     setLoading(false);
-  setLoading(false);
   };
 
-  const register=async()=> };
-
-  const register=async()=>{
-    setErr{
+  const register = async () => {
     setErr("");
-    if(!form.name||!form.email||!form("");
-    if(!form.name||!form.email||!form.password) return setErr("Please fill.password) return setErr("Please fill in all fields.");
-    if(form.password in all fields.");
-    if(form.password.length<6).length<6) return setErr("Password must be at return setErr("Password must be at least 6 characters least 6 characters.");
-    if(form.password!==form.confirm) return setErr(".");
-    if(form.password!==form.confirm) return setErr("PassPasswords do not match.");
-    setwords do not match.");
+    if (!form.name || !form.email || !form.password) return setErr("Please fill in all fields.");
+    if (form.password.length < 6) return setErr("Password must be at least 6 characters.");
+    if (form.password !== form.confirm) return setErr("Passwords do not match.");
     setLoading(true);
-   Loading(true);
     try {
-      const try {
-      const {data,error}=await supabase.auth.signUp({
-        email:form {data,error}=await supabase.auth.signUp({
-        email:form.email.trim(),
-        password:form.password.email.trim(),
-        password:form.password,
-        options:{ data:{ full,
-        options:{ data:{ full_name:form.name_name:form.name, role }, role } }
+      const { data, error } = await supabase.auth.signUp({
+        email: form.email.trim(),
+        password: form.password,
+        options: { data: { full_name: form.name, role } },
       });
-      if(error) throw }
-      });
-      if(error) throw error;
-      if error;
-      if(data.user){
-        await supabase.from(data.user){
-        await supabase.from("profiles").upsert({
-         ("profiles").upsert({
-          id:data.user.id, full_name:form.name, id:data.user.id, full_name:form.name, role
-        }, role
-        },{onConflict:"id"});
-     {onConflict:"id"});
+      if (error) throw error;
+
+      if (data.user) {
+        await supabase.from("profiles").upsert(
+          { id: data.user.id, full_name: form.name, role },
+          { onConflict: "id" }
+        );
       }
-      setOk("Account created! You can now sign }
+
       setOk("Account created! You can now sign in.");
-      set in.");
-      setTab("login"); setForm(f=>({...fTab("login"); setForm(f=>({...f,password:"",confirm:""}));
-    } catch,password:"",confirm:""}));
-    } catch(e){ setErr(e.message||"(e){ setErr(e.message||"Registration failed."); }
-    setLoading(false);
- Registration failed."); }
+      setTab("login");
+      setForm((f) => ({ ...f, password: "", confirm: "" }));
+    } catch (e) {
+      setErr(e.message || "Registration failed.");
+    }
     setLoading(false);
   };
-
-  return (
-    };
 
   return (
     <div className="auth-page">
-      <div className=" <div className="auth-page">
       <div className="auth-card">
-       auth-card">
-        <div className="auth-logo"> <div className="auth-logo">Shop<span>NowShop<span>Now</span></div</span></div>
-        <div className="auth-sub">🇿🇲 Zambia's Modern Marketplace</div>
-        <div className="auth-sub">🇿🇲 Zambia's Modern Marketplace</div>
-        <div>
+        <div className="auth-logo">Shop<span>Now</span></div>
+        <div className="auth-sub">Zambia's Modern Marketplace</div>
         <div className="auth-tabs">
-          <button className={`auth-tab ${tab==="login"?"active":""}`} onClick={()=>{setTab("login");setErr("");setOk("");}}>Sign In</button>
-          <button className={`auth-tab ${tab==="register"?"active":""}`} onClick={()=>{setTab("register");setErr("");setOk("");}}>Create Account</button>
+          <button className={`auth-tab ${tab === "login" ? "active" : ""}`} onClick={() => { setTab("login"); setErr(""); setOk(""); }}>Sign In</button>
+          <button className={`auth-tab ${tab === "register" ? "active" : ""}`} onClick={() => { setTab("register"); setErr(""); setOk(""); }}>Create Account</button>
         </div>
-        {tab==="register"&&(
-          <>
-            <label className="auth-label">I want to…</label>
-            <div className="role-select">
-              <div className={`role-btn ${role==="buyer"?"selected":""}`} onClick={()=>setRole("buyer")}><span className="role-icon">🛍️</span>Shop & Buy</div>
-              <div className={`role-btn ${role==="seller"?"selected":""}`} onClick={()=>setRole("seller")}><span className="role-icon">🏪</span>Sell Products</div>
-            </div>
-            <label className="auth-label">Full Name</label>
-            <input className="auth-input" placeholder="Mwamba Banda" value={form.name} onChange={set("name")}/>
-          </>
-        )}
-        <label className="auth-label">Email Address</label>
-        <input className=" className="auth-tabs">
-          <button className={`auth-tab ${tab==="login"?"active":""}`} onClick={()=>{setTab("login");setErr("");setOk("");}}>Sign In</button>
-          <button className={`auth-tab ${tab==="register"?"active":""}`} onClick={()=>{setTab("register");setErr("");setOk("");}}>Create Account</button>
-        </div>
-        {tab==="register"&&(
-          <>
-            <label className="auth-label">I want to…</label>
-            <div className="role-select">
-              <div className={`role-btn ${role==="buyer"?"selected":""}`} onClick={()=>setRole("buyer")}><span className="role-icon">🛍️</span>Shop & Buy</div>
-              <div className={`role-btn ${role==="seller"?"selected":""}`} onClick={()=>setRole("seller")}><span className="role-icon">🏪</span>Sell Products</div>
-            </div>
-            <label className="auth-label">Full Name</label>
-            <input className="auth-input" placeholder="Mwamba Banda" value={form.name} onChange={set("name")}/>
-          </>
-        )}
-        <label className="auth-label">Email Address</label>
-        <input className="auth-input" type="email" placeholder="you@example.com" value={form.email} onChange={set("email")} onKeyDown={e=>e.key==="Enter"&&(tab==="login"?login():register())}/>
-        <label className="auth-label">Password</labelauth-input" type="email" placeholder="you@example.com" value={form.email} onChange={set("email")} onKeyDown={e=>e.key==="Enter"&&(tab==="login"?login():register())}/>
-        <label className="auth-label">Password</label>
-        <input className="auth-input" type="password">
-        <input className="auth-input" type="password" placeholder="•••• placeholder="••••••••" value={form.password}••••" value={form.password} onChange={set("password")} on onChange={set("password")} onKeyDown={eKeyDown={e=>e.key===>e.key==="Enter"&&="Enter"&&(tab==="(tab==="login"?login():register())}/>
-       login"?login():register())}/>
-        {tab===" {tab==="register"&&register"&&(
-          <>
-           (
-          <>
-            <label <label className="auth className="auth-label">Confirm Password-label">Confirm Password</label>
-           </label>
-            <input className="auth-input" type="password" placeholder <input className="auth-input" type="••••••="password" placeholder••" value={form.confirm}="••••••••" value={form.confirm} onChange={set(" onChange={set("confirmconfirm")} onKeyDown={e")} onKeyDown={e=>e.key===>e.key==="Enter"&&register()}/>
-          </>
-        )}
-       ="Enter"&&register()}/>
-          </>
-        )}
-        {err&& {err&&<div className="auth-err">⚠<div className="auth-err">⚠️ {err}</div>}
-       ️ {err}</div>}
-        {ok&& {ok&&<div className="auth-ok">✅<div className="auth-ok">✅ {ok}</div {ok}</div>}
-        <button className="auth>}
-        <button className="auth-btn" onClick={-btn" onClick={tab==="login"?login:registertab==="login"?login:register} disabled={loading} disabled={loading}>
-          {loading&&<BtnSpin/>}{loading?"Please wait}>
-          {loading&&<BtnSpin/>}{loading…":tab==="login"?"Sign In →":"Create Account →"}
-        </button>
-        <div className="auth-switch">
-          {tab==="login"?<>No account? <span onClick={()=>{setTab("?"Please wait…":tab==="login"?"Sign In →":"Create Account →"}
-        </button>
-        <div className="auth-switch">
-          {tab==="login"?<>No account? <span onClick={()=>register");setErr("");}}>Create one free</span></>
-            :<>Have an account? <span onClick={()=>{setTab("login");setErr("");}}>Sign in</span></>}
-        </div>
-      </div>
-    </div>
-  );
-}
 
-// ── PRODUCT CARD ─────────────────{setTab("register");setErr("");}}>Create one free</span></>
-            :<>Have an account? <span onClick={()=>{setTab("login");setErr("");}}>Sign in</span></>}
+        {tab === "register" && (
+          <>
+            <label className="auth-label">I want to...</label>
+            <div className="role-select">
+              <div className={`role-btn ${role === "buyer" ? "selected" : ""}`} onClick={() => setRole("buyer")}>
+                <span className="role-icon">🛍️</span>Shop & Buy
+              </div>
+              <div className={`role-btn ${role === "seller" ? "selected" : ""}`} onClick={() => setRole("seller")}>
+                <span className="role-icon">🏪</span>Sell Products
+              </div>
+            </div>
+            <label className="auth-label">Full Name</label>
+            <input className="auth-input" placeholder="Mwamba Banda" value={form.name} onChange={set("name")} />
+          </>
+        )}
+
+        <label className="auth-label">Email Address</label>
+        <input
+          className="auth-input"
+          type="email"
+          placeholder="you@example.com"
+          value={form.email}
+          onChange={set("email")}
+          onKeyDown={(e) => { if (e.key === "Enter") (tab === "login" ? login() : register()); }}
+        />
+
+        <label className="auth-label">Password</label>
+        <input
+          className="auth-input"
+          type="password"
+          placeholder="********"
+          value={form.password}
+          onChange={set("password")}
+          onKeyDown={(e) => { if (e.key === "Enter") (tab === "login" ? login() : register()); }}
+        />
+
+        {tab === "register" && (
+          <>
+            <label className="auth-label">Confirm Password</label>
+            <input
+              className="auth-input"
+              type="password"
+              placeholder="********"
+              value={form.confirm}
+              onChange={set("confirm")}
+              onKeyDown={(e) => { if (e.key === "Enter") register(); }}
+            />
+          </>
+        )}
+
+        {err && <div className="auth-err">{err}</div>}
+        {ok && <div className="auth-ok">{ok}</div>}
+
+        <button className="auth-btn" onClick={tab === "login" ? login : register} disabled={loading}>
+          {loading && <BtnSpin />}
+          {loading ? "Please wait..." : tab === "login" ? "Sign In" : "Create Account"}
+        </button>
+
+        <div className="auth-switch">
+          {tab === "login" ? (
+            <>No account? <span onClick={() => { setTab("register"); setErr(""); }}>Create one free</span></>
+          ) : (
+            <>Have an account? <span onClick={() => { setTab("login"); setErr(""); }}>Sign in</span></>
+          )}
         </div>
       </div>
     </div>
@@ -757,293 +616,220 @@ function AuthPage({ onLogin }) {
 }
 
 // ── PRODUCT CARD ──────────────────────────────────────────────────────────────
-function Product─────────────────────────────────────────────
-function ProductCard({ product,Card({ product, onAdd, justAdded }) {
-  onAdd, justAdded }) {
-  const isE= const isE=product.image_url&&product.image_url.lengthproduct.image_url&&product.image_url.length<=4;
- <=4;
-  const bc=product const bc=product.badge?`badge-${.badge?`badge-${product.badge.split(" ")[product.badge.split0]}`:"(" ")[0]}`:"";
-  return (
-    <div className="card">
-     ";
+function ProductCard({ product, onAdd, justAdded }) {
+  const isEmoji = product.image_url && product.image_url.length <= 4;
+  const bc = product.badge ? `badge-${product.badge.split(" ")[0]}` : "";
+
   return (
     <div className="card">
       <div className="card-img">
-        <div className="card-img">
-        {isE? {isE?<span>{product.image_url}</span<span>{product>:product.image_url?<img.image_url}</span>:product.image_url?<img src src={product.image_url} alt={product.name}/>:={product.image_url} alt={product.name}/>:<span><span>🛍️</🛍️</span>}
-       span>}
-        {product.badge&&<span className={`card-badge ${bc}`}>{product.badge}</span>}
+        {isEmoji ? <span>{product.image_url}</span> : product.image_url ? <img src={product.image_url} alt={product.name} /> : <span>🛍️</span>}
+        {product.badge && <span className={`card-badge ${bc}`}>{product.badge}</span>}
       </div>
-      <div className=" {product.badge&&<span className={`card-badge ${bc}`}>{product.badge}</span>}
-      </div>
-     card-body">
-        <div className="card-cat">{ <div className="card-body">
+      <div className="card-body">
         <div className="card-cat">{product.category}</div>
-        <div className="card-name">{product.nameproduct.category}</div>
         <div className="card-name">{product.name}</div>
-        <div className="card}</div>
-        <div className="card-seller">by-seller">by {product.seller_name||"ShopNow"}</div>
-        <div {product.seller_name||"ShopNow"}</div>
-        <div className="card-d className="card-desc">{product.description}</div>
-       esc">{product.description}</div>
-        <div className=" <div className="card-foot">
-          <div className="card-foot">
-          <div className="card-price">{Zcard-price">{ZMW(product.price)}</div>
-         MW(product.price)}</div>
-          <div className="card-stars"><Stars r={ <div className="card-stars"><Stars r={productproduct.rating}/>.rating}/> {product.rating||4.5 {product.rating||4.5}</div>
-       }</div>
+        <div className="card-seller">by {product.seller_name || "ShopNow"}</div>
+        <div className="card-desc">{product.description}</div>
+        <div className="card-foot">
+          <div className="card-price">{ZMW(product.price)}</div>
+          <div className="card-stars"><Stars r={product.rating} /> {product.rating || 4.5}</div>
         </div>
-        </div>
-        {product.stock_qty<=8 {product.stock_qty<=8&&product.stock&&product.stock_qty>0&&<div style_qty>0&&<div style={{fontSize:10,color:"var(--red)",={{fontSize:10,color:"var(--red)",fontWeight:500,marginTop:3}}>fontWeight:500,marginTop:3}}>⚡ Only {product.stock_qty} left</div⚡ Only {product.stock_qty} left</div>}
-        {product.stock_qty===0&&>}
-        {product.stock_qty===0&&<div style={{<div style={{fontSize:10,color:"varfontSize:10,color:"var(--red)",font(--red)",fontWeight:500,marginTop:3Weight:500,marginTop:3}}>}}>❌❌ Out of stock</div>}
-        <button className={`add-btn ${justAdded?"added":""}`} onClick={()=>product.stock_qty>0&&on Out of stock</div>}
-        <button className={`add-btn ${justAdded?"added":""}`} onClick={()=>product.stock_qty>0&&onAdd(product)} style={{opacity:product.stock_qty===0?.5:1}}>
-Add(product)} style={{opacity:product.stock_qty===0?.5:1}}>
-          {          {justAdded?"✓ Added!":product.stock_qty===0?"Out of Stock":"AddjustAdded?"✓ Added!":product.stock_qty===0?"Out of Stock":"Add to Cart"}
-        to Cart"}
+        {product.stock_qty <= 8 && product.stock_qty > 0 && (
+          <div style={{ fontSize: 10, color: "var(--red)", fontWeight: 500, marginTop: 3 }}>Only {product.stock_qty} left</div>
+        )}
+        {product.stock_qty === 0 && (
+          <div style={{ fontSize: 10, color: "var(--red)", fontWeight: 500, marginTop: 3 }}>Out of stock</div>
+        )}
+        <button
+          className={`add-btn ${justAdded ? "added" : ""}`}
+          onClick={() => product.stock_qty > 0 && onAdd(product)}
+          style={{ opacity: product.stock_qty === 0 ? 0.5 : 1 }}
+        >
+          {justAdded ? "Added!" : product.stock_qty === 0 ? "Out of Stock" : "Add to Cart"}
         </button>
       </div>
-    </button>
-      </div>
     </div>
-  </div>
   );
-}
-
-// ── );
 }
 
 // ── CART DRAWER ───────────────────────────────────────────────────────────────
 function CartDrawer({ cart, dispatch, onClose, onCheckout }) {
-  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const ship=sub>5000?0:150; const total=sub+ship CART DRAWER ───────────────────────────────────────────────────────────────
-function CartDrawer({ cart, dispatch, onClose, onCheckout }) {
-  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const ship=sub>5000?0:150; const total=sub+ship;
+  const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const ship = sub > 5000 ? 0 : 150;
+  const total = sub + ship;
+
   return (
-    <><div className="overlay" onClick={onClose;
-  return (
-    <><div className="overlay" onClick={onClose}/>
-    <div className="drawer">
-      <div className="drawer-head"><h2>🛒 Cart ({cart.reduce}/>
-    <div className="drawer">
-      <div className="drawer-head"><h2>🛒 Cart ({cart.reduce((s,i)=>s+i.qty,0)})</h2><button className="((s,i)=>s+i.qty,0)})</h2><button className="close-btn" onClick={onClose}>✕</button></div>
-     close-btn" onClick={onClose}>✕</button></div>
-      <div className="drawer-items">
-        {cart.length===0? <div className="drawer-items">
-        {cart.length===0?<div className="empty-cart"><span>🛍️</span><p>Your cart is empty</p></div>
-          :cart.map(item=>{
-            const isE=item.image_url&&item.image_url.length<=4;
-            return (
-              <div key={item.id} className="cart-item">
-                <div className="ci-img">{isE?<span>{item.image_url}</span>:item.image_url?<div className="empty-cart"><span>🛍️</span><p>Your cart is empty</p></div>
-          :cart.map(item=>{
-            const isE=item.image_url&&item.image_url.length<=4;
-            return (
-              <div key={item.id} className="cart-item">
-                <div className="ci-img">{isE?<span>{item.image_url}</span>:item.image_url?<img src={item.image_url} alt=""/>:<span>🛍️</span>}</div>
-                <div className="ci-info">
-                  <div className="ci-name">{item.name}</div>
-                  <div className="ci-price">{ZMW(item.price)} each</div>
-                  <div className="qty-ctrl">
-                    <button className="qty-btn" onClick={()=>dispatch({type:"QTY",id<img src={item.image_url} alt=""/>:<span>🛍️</span>}</div>
-                <div className="ci-info">
-                  <div className="ci-name">{item.name}</div>
-                  <div className="ci-price">{ZMW(item.price)} each</div>
-                  <div className="qty-ctrl">
-                    <button className="qty-btn" onClick={()=>dispatch({type:"QTY",id:item.id,delta:-1})}>−</button>
-                    <span className="qty-n">{item.qty}</span>
-                    <button className="qty-btn" onClick={()=>dispatch({type:"QTY",id:item.id,delta:1})}>+</button:item.id,delta:-1})}>−</button>
-                    <span className="qty-n">{item.qty}</span>
-                    <button className="qty-btn" onClick={()=>dispatch({type:"QTY",id:item.id,delta:1})}>+</button>
-                    <span style={{marginLeft:"auto",fontWeight:600,fontSize:13}}>{ZMW(item.price*item.qty)}</span>
-                  </div>
-                </div>
-                <button className="rm-btn" onClick={()=>dispatch({type:"REMOVE",id:item.id})}>🗑</button>
-              </div>
-            );
-          })}
-      </div>
-      {cart.length>0&&(
-        <div className>
-                    <span style={{marginLeft:"auto",fontWeight:600,fontSize:13}}>{ZMW(item.price*item.qty)}</span>
-                  </div>
-                </div>
-                <button className="rm-btn" onClick={()=>dispatch({type:"REMOVE",id:item.id})}>🗑</button>
-              </div>
-            );
-          })}
-      </div>
-      {cart.length>0&&(
-        <div className="drawer-foot">
-          <div className="sub-row"><span>Subtotal</span><span>{="drawer-foot">
-          <div className="sub-row"><span>Subtotal</span><span>{ZMW(sub)}</span></div>
-          <div className="sub-rowZMW(sub)}</span></div>
-          <div className="sub-row"><span>Delivery"><span>Delivery</span><span>{ship===</span><span0?"Free>{ship===0?"Free 🎉": 🎉":ZMW(ship)}</span></ZMW(ship)}</span></div>
-          {div>
-          {ship>0&&<div className="sub-row" style={{ship>0&&<div className="sub-row" style={{color:"var(--accent)",fontSize:11}}>Spend {ZMWcolor:"var(--accent)",fontSize:11}}>Spend {ZMW(5000-sub)} more for free delivery!</div>}
-          <div className="total-row"><span>(5000-sub)} more for free delivery!</div>}
-          <div className="total-rowTotal</span><span>{ZMW(total"><span>Total</span><span>{ZMW(total)}</span></div>
-          <button className="check)}</span></div>
-          <button className="checkout-btn" onClickout-btn" onClick={onCheckout}>Proceed to={onCheckout}>Proceed to Checkout →</button>
-        </ Checkout →</button>
+    <>
+      <div className="overlay" onClick={onClose} />
+      <div className="drawer">
+        <div className="drawer-head">
+          <h2>Cart ({cart.reduce((s, i) => s + i.qty, 0)})</h2>
+          <button className="close-btn" onClick={onClose}>x</button>
         </div>
-      )}
-    </div></>
+        <div className="drawer-items">
+          {cart.length === 0 ? (
+            <div className="empty-cart"><span>🛍️</span><p>Your cart is empty</p></div>
+          ) : (
+            cart.map((item) => {
+              const isE = item.image_url && item.image_url.length <= 4;
+              return (
+                <div key={item.id} className="cart-item">
+                  <div className="ci-img">{isE ? <span>{item.image_url}</span> : item.image_url ? <img src={item.image_url} alt="" /> : <span>🛍️</span>}</div>
+                  <div className="ci-info">
+                    <div className="ci-name">{item.name}</div>
+                    <div className="ci-price">{ZMW(item.price)} each</div>
+                    <div className="qty-ctrl">
+                      <button className="qty-btn" onClick={() => dispatch({ type: "QTY", id: item.id, delta: -1 })}>-</button>
+                      <span className="qty-n">{item.qty}</span>
+                      <button className="qty-btn" onClick={() => dispatch({ type: "QTY", id: item.id, delta: 1 })}>+</button>
+                      <span style={{ marginLeft: "auto", fontWeight: 600, fontSize: 13 }}>{ZMW(item.price * item.qty)}</span>
+                    </div>
+                  </div>
+                  <button className="rm-btn" onClick={() => dispatch({ type: "REMOVE", id: item.id })}>x</button>
+                </div>
+              );
+            })
+          )}
+        </div>
+        {cart.length > 0 && (
+          <div className="drawer-foot">
+            <div className="sub-row"><span>Subtotal</span><span>{ZMW(sub)}</span></div>
+            <div className="sub-row"><span>Delivery</span><span>{ship === 0 ? "Free" : ZMW(ship)}</span></div>
+            {ship > 0 && <div className="sub-row" style={{ color: "var(--accent)", fontSize: 11 }}>Spend {ZMW(5000 - sub)} more for free delivery!</div>}
+            <div className="total-row"><span>Total</span><span>{ZMW(total)}</span></div>
+            <button className="checkout-btn" onClick={onCheckout}>Proceed to Checkout</button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
-// ── CHECKOUT ──────────────────────────────────────────────────────────────────
+// ── CHECKOUT PAGE ─────────────────────────────────────────────────────────────
 function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
-  const [pay,setPay]=useState("airtel"); const [loading,setLoading]=useState(false);
-  const [form,setForm]=useState({fname:profile?.full_name?.split(" ")[0]||"",lname:profile?.full_name?.split(" ")[1]||"",phone:"",address:"",city:"Lusaka",mobile:""});
-  const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
-  const sub=cart.reduce((s,i)=>s+i.price*i.qdiv>
-      )}
-    </div></>
-  );
-}
+  const [pay, setPay] = useState("airtel");
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    fname: profile?.full_name?.split(" ")[0] || "",
+    lname: profile?.full_name?.split(" ")[1] || "",
+    phone: "",
+    address: "",
+    city: "Lusaka",
+    mobile: "",
+  });
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const ship = sub > 5000 ? 0 : 150;
+  const total = sub + ship;
 
-// ── CHECKOUT ──────────────────────────────────────────────────────────────────
-function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
-  const [pay,setPay]=useState("airtel"); const [loading,setLoading]=useState(false);
-  const [form,setForm]=useState({fname:profile?.full_name?.split(" ")[0]||"",lname:profile?.full_name?.split(" ")[1]||"",phone:"",address:"",city:"Lusaka",mobile:""});
-  const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
-  const sub=cart.reduce((s,i)=>s+i.price*ity,0);
-  const ship=sub>5000?0:150; const total=sub+ship;
-  const PAYS=[{id:"airtel",icon:"📱",label:"Airtel Money"},{id:"mtn",icon:"🟡",label:"MTN Money"},{id:"zamtel",icon:"🟢",label:"Zamtel"},{id:"visa",icon:"💳",label:"Visa/MC"}];
+  const PAYS = [
+    { id: "airtel", icon: "📱", label: "Airtel Money" },
+    { id: "mtn", icon: "🟡", label: "MTN Money" },
+    { id: "zamtel", icon: "🟢", label: "Zamtel" },
+    { id: "visa", icon: "💳", label: "Visa/MC" },
+  ];
 
-  const place=async()=>{
-    if(!form.fname||!form.phone||!form.address){showToast("Fill in all required fields","⚠️");return;}
+  const place = async () => {
+    if (!form.fname || !form.phone || !form.address) {
+      showToast("Fill in all required fields", "warn");
+      return;
+    }
     setLoading(true);
     try {
-      const orderNum=`ORD-${Date.now()}`;
-      const {data:order,error}=await supabase.from("orders").insert({
-        buyer_id:user.id,order_number:orderNum,status:"Processing",total_amount:total,
-        shipping_address:{name:`${form.fname} ${form.lname}`,phone:form.phone,line1:form.address,city:form.city},
-        payment_method:pay,payment_status:"pending",
-      }).select().single();
-      if(error) throw error;
-      await supabase.from("order_items").insert(
-        cart.map(i=>({.qty,0);
-  const ship=sub>5000?0:150; const total=sub+ship;
-  const PAYS=[{id:"airtel",icon:"📱",label:"Airtel Money"},{id:"mtn",icon:"🟡",label:"MTN Money"},{id:"zamtel",icon:"🟢",label:"Zamtel"},{id:"visa",icon:"💳",label:"Visa/MC"}];
+      const orderNum = `ORD-${Date.now()}`;
+      const { data: order, error } = await supabase
+        .from("orders")
+        .insert({
+          buyer_id: user.id,
+          order_number: orderNum,
+          status: "Processing",
+          total_amount: total,
+          shipping_address: { name: `${form.fname} ${form.lname}`, phone: form.phone, line1: form.address, city: form.city },
+          payment_method: pay,
+          payment_status: "pending",
+        })
+        .select()
+        .single();
+      if (error) throw error;
 
-  const place=async()=>{
-    if(!form.fname||!form.phone||!form.address){showToast("Fill in all required fields","⚠️");return;}
-    setLoading(true);
-    try {
-      const orderNum=`ORD-${Date.now()}`;
-      const {data:order,error}=await supabase.from("orders").insert({
-        buyer_id:user.id,order_number:orderNum,status:"Processing",total_amount:total,
-        shipping_address:{name:`${form.fname} ${form.lname}`,phone:form.phone,line1:form.address,city:form.city},
-        payment_method:pay,payment_status:"pending",
-      }).select().single();
-      if(error) throw error;
       await supabase.from("order_items").insert(
-        cart.map(i=>({order_id:order.id,product_id:typeof i.id==="string"&&i.id.startsWith("f")?null:i.id,product_name:i.name,product_image:i.image_url,quantity:i.qty,unit_price:i.price}))
+        cart.map((i) => ({
+          order_id: order.id,
+          product_id: typeof i.id === "string" && i.id.startsWith("f") ? null : i.id,
+          product_name: i.name,
+          product_image: i.image_url,
+          quantity: i.qty,
+          unit_price: i.price,
+        }))
       );
-      onSuccess(orderNum,total,pay);
-    } catch(e){ showToast("Error: "+e.message,"❌"); }
-    setLoading(false);
-  };
 
-  return (
-    <div className="order_id:order.id,product_id:typeof i.id==="string"&&i.id.startsWith("f")?null:i.id,product_name:i.name,product_image:i.image_url,quantity:i.qty,unit_price:i.price}))
-      );
-      onSuccess(orderNum,total,pay);
-    } catch(e){ showToast("Error: "+e.message,"❌"); }
+      onSuccess(orderNum, total, pay);
+    } catch (e) {
+      showToast("Error: " + e.message, "error");
+    }
     setLoading(false);
   };
 
   return (
     <div className="page">
-      <button className="back-btn" onClick={onBack}>← Back to Cart</button>
-      <h2>Checkout</h2>
-      <div className="co-gridpage">
-      <button className="back-btn" onClick={onBack}>← Back to Cart</button>
+      <button className="back-btn" onClick={onBack}>Back to Cart</button>
       <h2>Checkout</h2>
       <div className="co-grid">
-        <div">
         <div>
-          <div>
-          <div className="co-se className="co-sec">
-            <h3>c">
-            <h3>📦 Delivery Details</📦 Delivery Details</h3>
-           h3>
+          <div className="co-sec">
+            <h3>Delivery Details</h3>
             <div className="fr">
-              <div className=" <div className="fr">
-              <div className="fgfg"><label>First"><label>First Name *</label><input className Name *</label><input className="fi" value={form.fname="fi" value={form.fname} onChange={set} onChange={set("fname")("fname")}/></div}/></div>
-              <div className="fg"><label>
-              <div className="fg"><label>Last Name</label><input className="fi" value={form.lname>Last Name</label><input className="fi" value} onChange={set("lname")}/></div={form.lname} onChange={set("lname")}/></div>
+              <div className="fg"><label>First Name *</label><input className="fi" value={form.fname} onChange={set("fname")} /></div>
+              <div className="fg"><label>Last Name</label><input className="fi" value={form.lname} onChange={set("lname")} /></div>
             </div>
+            <div className="fg"><label>Phone *</label><input className="fi" placeholder="+260 97 000 0000" value={form.phone} onChange={set("phone")} /></div>
+            <div className="fg"><label>Address *</label><input className="fi" placeholder="House no, Street" value={form.address} onChange={set("address")} /></div>
+            <div className="fg">
+              <label>City</label>
+              <select className="fi" value={form.city} onChange={set("city")}>
+                {CITIES.map((c) => <option key={c}>{c}</option>)}
+              </select>
             </div>
-            <div className="fg"><label>
-            <div className="fg"><label>Phone *</label><input className>Phone *</label><input className="fi" placeholder="+260 97 000 0000"="fi" placeholder="+260 97 000 0000" value={form. value={form.phone} onChange={set("phone")}/></div>
-            <div className="fg"><label>Address *</label><input className="fi" placeholder="House no, Street" valuephone} onChange={set("phone")}/></div>
-            <div className="fg"><label>Address *</label><input className="fi" placeholder="House no, Street" value={form.address} onChange={set("address")}/></div>
-            <div className="fg"><label>City</label><select className="fi" value={form.city} onChange={set("city")}>{CITIES.map(c=><option key={c}>{c}</option>)}</select></div={form.address} onChange={set("address")}/></div>
-            <div className="fg"><label>City</label><select className="fi" value={form.city} onChange={set("city")}>{CITIES.map(c=><option key={c}>{c}</option>)}</select></div>
           </div>
           <div className="co-sec">
-            <h3>💰 Payment Method</h3>
-           >
-          </div>
-          <div className="co-sec">
-            <h3>💰 Payment Method</h3>
-            <div className="pay-methods">{PA <div className="pay-methods">{PAYS.map(m=>(
-              <button key={m.id} className={`YS.map(m=>(
-              <button key={m.id} className={`pay-m ${pay===m.id?"sel":""}`} onClick={()=>setPay(m.id)}>
-                <span className="pay-icon">{m.icon}</span>{m.label}
-              </button>
-            ))}</div>
-            {(pay==="airtel"pay-m ${pay===m.id?"sel":""}`} onClick={()=>setPay(m.id)}>
-                <span className="pay-icon">{m.icon}</span>{m.label}
-              </button>
-            ))}</div>
-            {(pay==="airtel"||pay==="mtn"||pay==="zamtel")&&(
-              <><div className="fg"><label>Mobile Number *</label><input className="fi" placeholder="+260 97 000 0000" value={form.mobile} onChange={set("mobile")}/></div>
-              <div className="zmw-note">📲 Enter your number. You'll receive a payment prompt for {ZMW(total)}.</div></>
+            <h3>Payment Method</h3>
+            <div className="pay-methods">
+              {PAYS.map((m) => (
+                <button key={m.id} className={`pay-m ${pay === m.id ? "sel" : ""}`} onClick={() => setPay(m.id)}>
+                  <span className="pay-icon">{m.icon}</span>{m.label}
+                </button>
+              ))}
+            </div>
+            {(pay === "airtel" || pay === "mtn" || pay === "zamtel") && (
+              <>
+                <div className="fg"><label>Mobile Number *</label><input className="fi" placeholder="+260 97 000 0000" value={form.mobile} onChange={set("mobile")} /></div>
+                <div className="zmw-note">Enter your number. You will receive a payment prompt for {ZMW(total)}.</div>
+              </>
             )}
-            {pay==="visa"&&(
-              <><div className="fg"><label>Card Number</label><input className="fi" placeholder="4242 4242 4242 4242"/></div>
-              <div className="fr"><div className="fg"><label>Expiry</label><input className="fi" placeholder="MM/YY"/></div><div className="fg"><label>CVV</label><input className="fi" placeholder="123"/></div></div></>
+            {pay === "visa" && (
+              <>
+                <div className="fg"><label>Card Number</label><input className="fi" placeholder="4242 4242 4242 4242" /></div>
+                <div className="fr">
+                  <div className="fg"><label>Expiry</label><input className="fi" placeholder="MM/YY" /></div>
+                  <div className="fg"><label>CVV</label><input className="fi" placeholder="123" /></div>
+                </div>
+              </>
             )}
           </div>
         </div>
         <div>
           <div className="co-summary">
             <h3>Order Summary</h3>
-            {cart.map(i=><div key={i.id} className="sum-item"><span>{i.name} ×{i.qty}</span><span>{ZMW(i.price*i.qty)}</span></div>)}
-            <div className="sum-item"><span>Delivery</span><span>{ship===0?"Free":ZMW(ship)}</span></||pay==="mtn"||pay==="zamtel")&&(
-              <><div className="fg"><label>Mobile Number *</label><input className="fi" placeholder="+260 97 000 0000" value={form.mobile} onChange={set("mobile")}/></div>
-              <div className="zmw-note">📲 Enter your number. You'll receive a payment prompt for {ZMW(total)}.</div></>
-            )}
-            {pay==="visa"&&(
-              <><div className="fg"><label>Card Number</label><input className="fi" placeholder="4242 4242 4242 4242"/></div>
-              <div className="fr"><div className="fg"><label>Expiry</label><input className="fi" placeholder="MM/YY"/></div><div className="fg"><label>CVV</label><input className="fi" placeholder="123"/></div></div></>
-            )}
-          </div>
-        </div>
-        <div>
-          <div className="co-summary">
-            <h3>Order Summary</h3>
-            {cart.map(i=><div key={i.id} className="sum-item"><span>{i.name} ×{i.qty}</span><span>{ZMW(i.price*i.qty)}</span></div>)}
-            <div className="sum-item"><span>Delivery</span><span>{ship===0?"Free":ZMW(ship)}</span></div>
+            {cart.map((i) => (
+              <div key={i.id} className="sum-item"><span>{i.name} x{i.qty}</span><span>{ZMW(i.price * i.qty)}</span></div>
+            ))}
+            <div className="sum-item"><span>Delivery</span><span>{ship === 0 ? "Free" : ZMW(ship)}</span></div>
             <div className="sum-total"><span>Total</span><span>{ZMW(total)}</span></div>
             <button className="place-btn" onClick={place} disabled={loading}>
-              {loading&&<BtnSpin/>}{loading?"Placing Order…":"Place Order →"}
+              {loading && <BtnSpin />}{loading ? "Placing Order..." : "Place Order"}
             </button>
-            <div className="secure">🔒 Secured &amp; Protected</div>
-          </div>
-        </div>
-     div>
-            <div className="sum-total"><span>Total</span><span>{ZMW(total)}</span></div>
-            <button className="place-btn" onClick={place} disabled={loading}>
-              {loading&&<BtnSpin/>}{loading?"Placing Order…":"Place Order →"}
-            </button>
-            <div className="secure">🔒 Secured &amp; Protected</div>
+            <div className="secure">Secured & Protected</div>
           </div>
         </div>
       </div>
@@ -1052,1062 +838,669 @@ function CheckoutPage({ cart, user, profile, onSuccess, onBack, showToast }) {
 }
 
 // ── ORDERS PAGE ───────────────────────────────────────────────────────────────
-function OrdersPage({ user, onBack </div>
-    </div>
-  );
-}
+function OrdersPage({ user, onBack }) {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-// ── ORDERS PAGE ───────────────────────────────────────────────────────────────
-function OrdersPage({ user }) {
-  const [orders,setOrders]=useState, onBack }) {
-  const [orders,setOrders]=useState([]); const [loading,setLoading]=useState(true);
-  useEffect(()=>{
-    supabase.from("orders").select("*, order_items(*)").eq("buyer_id([]); const [loading,setLoading]=useState(true);
-  useEffect(()=>{
-    supabase.from("orders").select("*, order_items(*)").eq("buyer_id",user.id).order("created_at",{ascending:false})
-     ",user.id).order("created_at",{ascending:false})
-      .then(({data})=>{setOrders(data||[] .then(({data})=>{setOrders(data||[]);setLoading(false);});
-  },[user.id);setLoading(false);});
-  },[user.id]);
+  useEffect(() => {
+    supabase
+      .from("orders")
+      .select("*, order_items(*)")
+      .eq("buyer_id", user.id)
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        setOrders(data || []);
+        setLoading(false);
+      });
+  }, [user.id]);
+
   return (
     <div className="orders-page">
-     ]);
-  return (
-    <div className="orders-page">
-      <button className="back-btn" onClick={onBack}>← Back to Shop</button <button className="back-btn" onClick={onBack}>>
+      <button className="back-btn" onClick={onBack}>Back to Shop</button>
       <h2>My Orders</h2>
-      {loading?<Spin← Back to Shop</button>
-      <h2>My Orders</h2>
-      {loading?<Spin dark/>
-        :orders.length===0
-          ? dark/>
-        :orders.length===0
-          ?<div style={{text<div style={{textAlign:"center",Align:"center",padding:"60px 0",colorpadding:"60px 0",color:"var(--sl:"var(--slate)"}}><div style={{fontate)"}}Size:48,marginBottom:12><div style={{fontSize:48,marginBottom:12}}>📦}}>📦</div><p style={{fontWeight</div><p:600}}>No orders yet</p></div style={{fontWeight:600}}>No orders yet</>
-          :orders.mapp></div>
-          :orders.map(o=>(
-            <div key={(o=>(
-            <div key={o.id} classNameo.id} className="order-card">
-              <div className="order-head">
-                <span className="order-num">{o.order_number}</span>
-                <span className="order-date">{new="order-card">
-              <div className="order-head">
-                <span className="order-num">{o.order_number}</span>
-                <span className=" Date(o.created_at).toLocaleDateString("en-Zorder-date">{new Date(o.created_at).toLocaleDateString("en-ZM",{day:"numeric",month:"short",yearM",{day:"numeric",month:"short",year:"numeric"})}</span>
-                <span className={`:"numeric"})}</span>
-                <span className={`order-badge ${o.status}`}>{o.status}</spanorder-badge ${o.status}`}>{o.status}</span>
-              </div>
-              <div style={{fontSize>
-              </div>
-              <div style={{fontSize:13,color:"var(--slate)",marginBottom:13,color:"var(--slate)",marginBottom:6}}>{o.order_items?.map(i:6}}>{o.order_items?.map(i=>`${i.product_name} ×${i.quantity}`).join("=>`${i.product_name} ×${i.quantity · ")}</div>
-             }`).join(" <div style={{fontWeight: · ")}</div>
-              <div style={{fontWeight:700,700,fontSize:14}}>Total:fontSize:14}}>Total: {ZMW(o {ZMW(o.total_amount)}</div>
-             .total_amount)}</div>
-              <div style={{fontSize:12,color:"var(-- <div style={{fontSize:12,color:"var(--slate)",marginTop:2}}>via {oslate)",marginTop:2}}>via {o.p.payment_method?.toUpperCase()}</div>
-            </ayment_method?.toUpperCase()}</div>
-          ))
-      }
-    </div>
- div>
+      {loading ? (
+        <Spin dark />
+      ) : orders.length === 0 ? (
+        <div style={{ textAlign: "center", padding: "60px 0", color: "var(--slate)" }}>
+          <div style={{ fontSize: 48, marginBottom: 12 }}>📦</div>
+          <p style={{ fontWeight: 600 }}>No orders yet</p>
+        </div>
+      ) : (
+        orders.map((o) => (
+          <div key={o.id} className="order-card">
+            <div className="order-head">
+              <span className="order-num">{o.order_number}</span>
+              <span className="order-date">{new Date(o.created_at).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" })}</span>
+              <span className={`order-badge ${o.status}`}>{o.status}</span>
             </div>
-          ))
-      }
+            <div style={{ fontSize: 13, color: "var(--slate)", marginBottom: 6 }}>
+              {o.order_items?.map((i) => `${i.product_name} x${i.quantity}`).join(", ")}
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 14 }}>Total: {ZMW(o.total_amount)}</div>
+            <div style={{ fontSize: 12, color: "var(--slate)", marginTop: 2 }}>via {o.payment_method?.toUpperCase()}</div>
+          </div>
+        ))
+      )}
     </div>
   );
 }
 
-// ─ );
-}
+// ── SELLER DASHBOARD ──────────────────────────────────────────────────────────
+function SellerDash({ user, profile, onExit, showToast }) {
+  const [tab, setTab] = useState("list");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [drag, setDrag] = useState(false);
+  const [images, setImages] = useState([]);
+  const [primaryImg, setPrimaryImg] = useState(0);
+  const [settings, setSettings] = useState({ published: true, freeShipping: false, trackInventory: true });
+  const [form, setForm] = useState({ name: "", category: "", price: "", comparePrice: "", sku: "", stock: "", description: "" });
+  const fileRef = useRef();
+  const addRef = useRef();
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-// ── SELLER DASHBOARD─ SELLER ────────────────────────────────────────────────────────── DASHBOARD ──────────────────────────────────────────────────────────
-function SellerDash({ user, profile, onExit, show
-function SellerDash({ user, profile, onExitToast }) {
-  const [nav,setNav]=use, showToast }) {
-  const [nav,setNav]=useState("products");State("products"); const [tab,setTab]=useState("list");
-  const [products,setProducts]= const [tab,setTab]=useState("list");
-  const [productsuseState([]); const [loading,setLoading]=use,setProducts]=useState([]); const [loading,setLoading]=useState(true);State(true); const [saving const [saving,setSaving]=,setSaving]=useState(false);
-  constuseState(false);
-  const [showModal,setShowModal]=useState(false); const [drag,set [showModal,setShowModal]=useState(false); constDrag]=useState(false);
-  const [drag,setDrag]=useState(false);
-  const [images,set [images,setImages]=useState([]); const [primaryImg,setPrimaryImg]=useState(0Images]=useState([]); const [primaryImg,setPrimaryImg]=useState(0);
-  const [settings,setSettings]=useState({published:true,freeShipping:false,trackInventory:true});
-  const [form,setForm]=useState({name:"",category:"",price:"",comparePrice:"",sku:"",stock:"",description:""});
-  const fileRef=useRef(); const add);
-  const [settings,setSettings]=useState({published:true,freeShipping:false,trackInventory:true});
-  const [form,setForm]=useState({name:"",category:"",price:"",comparePrice:"",sku:"",stock:"",description:""});
-  const fileRef=useRef(); const addRef=useRef();
-  const set=k=>eRef=useRef();
-  const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
-  useEffect(()=>{ loadProducts(); },[]=>setForm(f=>({...f,[k]:e.target.value}));
-
-  useEffect(()=>{ loadProducts(); },[]);
-
-  const load);
-
-  const loadProducts=async()=>{
-    setProducts=async()=>{
+  const loadProducts = async () => {
     setLoading(true);
-   Loading(true);
-    const {data:seller}=await const {data:s supabase.from("sellers").select("id").eq("user_id",usereller}=await supabase.from("sellers").select("id").eq("user_id",user.id)..id).single();
-    if(seller){
-      const {data:prodssingle();
-    if(seller){
-      const {}=await supabase.from("products").select("*").eqdata:prods}=await supabase.from("products").("seller_id",seller.id).order("created_at",select("*").eq("seller_id",seller.id).order{ascending:("created_at",{ascending:false});
-      setfalse});
-      setProducts(prodsProducts(prods||[]);
-    }
-    setLoading||[]);
+    const { data: seller } = await supabase.from("sellers").select("id").eq("user_id", user.id).single();
+    if (seller) {
+      const { data: prods } = await supabase.from("products").select("*").eq("seller_id", seller.id).order("created_at", { ascending: false });
+      setProducts(prods || []);
     }
     setLoading(false);
   };
 
-  const handleFiles(false);
-  };
+  const handleFiles = useCallback(
+    (files) => {
+      const imgs = Array.from(files).slice(0, 8 - images.length).map((f) => ({ url: URL.createObjectURL(f), file: f }));
+      setImages((p) => [...p, ...imgs]);
+      showToast(`${imgs.length} image(s) added`, "ok");
+    },
+    [images]
+  );
 
-  const handleFiles=useCallback((=useCallback((files)=>{
-    constfiles)=>{
-    const imgs=Array.from(files).slice(0,8-images.length).map(f=>({url:URL imgs=Array.from(files).slice(0,8-images.length).map(f=>({url:URL.createObjectURL(f),file:f}));
-    setImages.createObjectURL(f),file:f}));
-    setImages(p=>[...p,...imgs]); showToast(`${imgs.length} image(p=>[...p,...imgs]); showToast(`${im(s) added`,"🖼gs.length} image(s) added`,"🖼️");
-  },[images]);
-
-  const checks=[
-    {label:"Product name",done:form.name.length>2},{label:"Category",done:!!form.category},
-    {label:"Price set",done:!!form.price},{label:"Description",done:form.description.length>10},
-    {label:"Stock quantity",done:!!form.stock},
+  const checks = [
+    { label: "Product name", done: form.name.length > 2 },
+    { label: "Category", done: !!form.category },
+    { label: "Price set", done: !!form.price },
+    { label: "Description", done: form.description.length > 10 },
+    { label: "Stock quantity", done: !!form.stock },
   ];
-  const pct=Math.round(checks.filter(c=>c.done).length/checks.length*100);
+  const pct = Math.round((checks.filter((c) => c.done).length / checks.length) * 100);
 
-  const publish=async(draft=false)=>{
-    if(!form.name) return showToast("Add a product name","⚠️");
-    if(!form.price) return showToast("Set a price","⚠️");
+  const publish = async (draft) => {
+    if (!form.name) return showToast("Add a product name", "warn");
+    if (!form.price) return showToast("Set a price", "warn");
     setSaving(true);
     try {
-      let {data:seller}=await supabase.from("sellers").select("id").eq("user_id",user.id).single();
-      if(!seller){
-       ️");
-  },[images]);
-
-  const checks=[
-    {label:"Product name",done:form.name.length>2},{label:"Category",done:!!form.category},
-    {label:"Price set",done:!!form.price},{label:"Description",done:form.description.length>10},
-    {label:"Stock quantity",done:!!form.stock},
-  ];
-  const pct=Math.round(checks.filter(c=>c.done).length/checks.length*100);
-
-  const publish=async(draft=false)=>{
-    if(!form.name) return showToast("Add a product name","⚠️");
-    if(!form.price) return showToast("Set a price","⚠️");
-    setSaving(true);
-    try {
-      let {data:seller}=await supabase.from("sellers").select("id").eq("user_id",user.id).single();
-      if(!seller){
-        const {data:ns}=await supabase.from("sellers").insert({user_id:user.id,store_name const {data:ns}=await supabase.from("sellers").insert({user_id:user.id,store_name:(profile?.full_name||"Seller")+"'s Store",status:(profile?.full_name||"Seller")+"'s Store",status:"approved"}).select().single();
-        seller=ns;
+      let { data: seller } = await supabase.from("sellers").select("id").eq("user_id", user.id).single();
+      if (!seller) {
+        const { data: ns } = await supabase
+          .from("sellers")
+          .insert({ user_id: user.id, store_name: (profile?.full_name || "Seller") + "'s Store", status: "approved" })
+          .select()
+          .single();
+        seller = ns;
       }
-     :"approved"}).select().single();
-        seller=ns const {error}=;
-      }
-      const {error}=await supabase.fromawait supabase.from("products").insert({
-        seller_id("products").insert({
-        seller_id:seller.id,name:seller.id,name:form.name,:form.name,description:form.description,
-        price:parseFloat(form.price),compare_price:form.comparePrice?description:form.description,
-        price:parseFloat(form.price),compare_price:form.comparePriceparseFloat(form.comparePrice):null,
-        category:form.category||"Other",stock_qty?parseFloat(form.comparePrice):null,
-        category:form.category||"Other",stock_qty:parseInt(form.stock)||:parseInt(form.stock)||0,
-        badge:draft?"0,
-        badge:draft?"":"New",status:draft?"draft":"active",image_url:"":"New",status:draft?"draft":"active",image_url:"🛍️",
+
+      const { error } = await supabase.from("products").insert({
+        seller_id: seller.id,
+        name: form.name,
+        description: form.description,
+        price: parseFloat(form.price),
+        compare_price: form.comparePrice ? parseFloat(form.comparePrice) : null,
+        category: form.category || "Other",
+        stock_qty: parseInt(form.stock) || 0,
+        badge: draft ? "" : "New",
+        status: draft ? "draft" : "active",
+        image_url: "🛍️",
       });
-      if(error) throw🛍️",
-      });
-      error;
-      showToast(draft?"Saved as draft if(error) throw error;
-      showToast(draft?"Saved as draft!":"Product published!":"Product published!","✅");
-      setForm!","✅");
-      setForm({name:"",({name:"",category:"",price:"",comparecategory:"",price:"",comparePrice:"",sku:"",stock:"",description:""}); setImages([]Price:"",sku:"",stock:"",description:""}); setImages([]);
-      if(!draft) setShowModal(true);
-      if(!draft) setShowModal(true);
-      loadProducts(); setTab("list);
-      loadProducts(); setTab("list");
-    } catch(e){ showToast("Error: "+e.message,"");
-    } catch(e){ showToast("Error: "+❌"); }
+      if (error) throw error;
+
+      showToast(draft ? "Saved as draft!" : "Product published!", "ok");
+      setForm({ name: "", category: "", price: "", comparePrice: "", sku: "", stock: "", description: "" });
+      setImages([]);
+      if (!draft) setShowModal(true);
+      loadProducts();
+      setTab("list");
+    } catch (e) {
+      showToast("Error: " + e.message, "error");
+    }
     setSaving(false);
   };
 
- e.message,"❌"); }
-    setSaving(false);
-  };
-
-  const deleteProduct=async(id)=>{
-    if(!window.confirm("Delete this product?")) const deleteProduct=async(id)=>{
-    if(!window return;
-    await supabase.from("products.confirm("Delete this product?")) return;
-    await supabase.from("products").delete().").delete().eq("id",eq("id",id);
-    setProducts(prev=>prev.filter(p=>p.id!==id);
-    setProducts(prev=>prev.filter(p=>id)); showToast("Deleted","🗑️p.id!==id)); showToast("Deleted","");
-  };
-
-  return (
-    <div🗑️");
+  const deleteProduct = async (id) => {
+    if (!window.confirm("Delete this product?")) return;
+    await supabase.from("products").delete().eq("id", id);
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+    showToast("Deleted", "ok");
   };
 
   return (
     <div className="seller-app">
-      <aside className="seller-app">
-      <aside className="s-side className="s-sidebar">
-        <div className="s-logobar">
-        <div className="s-logo"><h"><h1>Shop<span>Now</span></h1><p>Seller Dashboard</p></div>
+      <aside className="s-sidebar">
+        <div className="s-logo"><h1>Shop<span>Now</span></h1><p>Seller Dashboard</p></div>
         <nav className="s-nav">
-          <div1>Shop<span>Now</span></h1><p>Seller Dashboard</p></div>
-        <nav className="s-nav">
-          <div className="s-sec"> className="s-sec">Main</div>
-          {Main</div>
-          {[{id:"products",icon:"[{id:"📦",labelproducts",icon:"📦",label:"Products"},{id:"orders",icon:":"Products"},{id:"orders🛒",label:"Orders"},{id",icon:"🛒",label:"Orders"},{id:"analytics",icon:"📈:"analytics",icon:"📈",label:"Analytics"}].map(i=>(
-            <button key={",label:"Analytics"}].map(i=>(
-           i.id} className={`s-item ${ <button key={i.id} className={`s-item ${nav===i.id?"active":""}`} onClicknav===i.id?"active":""}`} onClick={()={()=>setNav(i.id)}>{i.icon} {i=>setNav(i.id)}>{i.icon} {i.label}</button>
-          ))}
-        </nav>
-       .label}</button>
-          ))}
+          <div className="s-sec">Main</div>
+          <button className="s-item active">Products</button>
         </nav>
         <div className="s-foot">
-          <div className="s <div className="s-foot">
           <div className="s-profile">
-            <div className="s-av">{(profile?.full-profile">
-            <div className="s-av">{(profile?.full_name||"S").split("_name||"S").split(" ").map(n=>n[0]).join("").slice(0, ").map(n=>n[0]).join("").slice(0,2).toUpperCase2).to()}</divUpperCase()}</div>
-            <div>
-            <div><div className="s><div className="s-name">{profile?.full_name||"Seller"}</div><div className="-name">{profile?.full_name||"Seller"}</divs-status">✅ Active Seller</div></div>
+            <div className="s-av">{(profile?.full_name || "S").split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}</div>
+            <div><div className="s-name">{profile?.full_name || "Seller"}</div><div className="s-status">Active Seller</div></div>
           </div>
-         ><div className="s-status">✅ Active Seller</div></div>
-          </div>
-          <button className="s-item" style={{marginTop: <button className="s-item" style8,color:"#f87171"}} onClick={={{marginTop:8,color:"#f87171"}} onClick={onExit}>onExit}>🛍️ Back🛍️ Back to Shop</button>
-        </div>
-      </aside to Shop</button>
+          <button className="s-item" style={{ marginTop: 8, color: "#f87171" }} onClick={onExit}>Back to Shop</button>
         </div>
       </aside>
-      <div>
-      <div className="s-main className="s-main">
+
+      <div className="s-main">
         <header className="s-topbar">
-         ">
-        <header className="s-topbar">
-          < <div><h2>Products</h2><p>div><h2>Products</h2><p>Manage your listings</p></div>
-          <div styleManage your listings</p></div>
-          <div style={{display:"flex",gap:8}}>
-            <button className="tb-btn" onClick={={{display:"flex",gap:8}}>
-            <button className="tb-btn" onClick={onExit}>onExit}>🛍️ View Shop</button🛍️ View Shop</button>
-            <button className>
-            <button className="tb-btn primary" onClick={()=>setTab("add")}>+ Add Product</button="tb-btn primary" onClick={()=>setTab("add")}>+ Add Product</button>
+          <div><h2>Products</h2><p>Manage your listings</p></div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button className="tb-btn" onClick={onExit}>View Shop</button>
+            <button className="tb-btn primary" onClick={() => setTab("add")}>+ Add Product</button>
           </div>
         </header>
-        <div>
-          </div>
-        </header>
+
         <div className="s-content">
-          <div className="s-st className="s-content">
-          <divats">
-            {[{icon:"📦",label className="s-stats">
-            {[{icon:"📦",label:"Products",value:"Products",value:products.length,bg:"#eff:products.length,b6ff"},{icon:"✅",label:"Active",value:products.filterg:"#eff6ff"},{icon:"✅",label:"Active",value(p=>p.status==="active").length,bg:":products.filter(p=>p.status==="active").length,bg#f0fdf4"},{icon:"📝:"#f0fdf4"},{icon:"📝",label:"Drafts",value:products.filter(p=>p.status==="draft").length",label:"Drafts",value:products.filter(p=>p.status==="draft").length,bg:"#fffbeb"},{icon:"💰",label:"Revenue,bg:"#fffbeb"},{icon:"💰",label:"Revenue",value:"K",value:"K —",bg:"#fdf4 —",bg:"ff"}].map(s=>(
-              <div key={#fdf4ff"}].map(s=>(
-              <div key={s.label} classNames.label} className="s-stat">
-                <div className="s-stat">
-                <div className="s-stat-top="s-stat-top"><div className="s-icon" style={{background:s.bg}}>{s"><div className="s-icon" style={{background:s.icon}</div></div>
-                <div className="s-num">{s.bg}}>{s.icon}</div></div>
-                <div className="s-num">{s.value}</div><div className="s-lbl">{s.value}</div><div className="s-lbl">{s.label}</.label}</div>
+          <div className="s-stats">
+            {[
+              { label: "Products", value: products.length, bg: "#eff6ff" },
+              { label: "Active", value: products.filter((p) => p.status === "active").length, bg: "#f0fdf4" },
+              { label: "Drafts", value: products.filter((p) => p.status === "draft").length, bg: "#fffbeb" },
+              { label: "Revenue", value: "K -", bg: "#fdf4ff" },
+            ].map((s) => (
+              <div key={s.label} className="s-stat">
+                <div className="s-stat-top"><div className="s-icon" style={{ background: s.bg }}>•</div></div>
+                <div className="s-num">{s.value}</div>
+                <div className="s-lbl">{s.label}</div>
               </div>
             ))}
           </div>
-              </div>
-            ))}
-          </div>
+
           <div className="tabs">
-            <button className={`tab ${tab==="add"?"active":""}`div>
-          <div className="tabs">
-            <button className={`tab ${tab==="add"?"} onClick={()=>setTab("add")}>➕ Add Product</button>
-            <button classNameactive":""}`} onClick={()=>setTab("add")}>➕ Add Product</button>
-           ={`tab ${tab==="list" <button className={`tab ${tab==="list"?"active":""?"active":""}`} onClick={()}`} onClick={()=>setTab("list")}>📋 My Products ({products.length})</button>
+            <button className={`tab ${tab === "add" ? "active" : ""}`} onClick={() => setTab("add")}>Add Product</button>
+            <button className={`tab ${tab === "list" ? "active" : ""}`} onClick={() => setTab("list")}>My Products ({products.length})</button>
           </div>
 
-          {=>setTab("list")}>📋 My Products ({products.length})</button>
-          </div>
-
-          {tab==="add"&&(
+          {tab === "add" && (
             <div className="form-grid">
               <div>
-               tab==="add"&&(
-            <div className="form-grid">
-              <div>
-                <div className=" <div className="f-card">
-                  <div className="f-card-headf-card">
-                  <div className="f-card-head"><div className="f-icon" style={{background:"#eff"><div className="f-icon" style={{background:"#eff6ff"}}>📝</div><div><h3>Basic Info</h36ff"}}>📝</div><div><h3>Basic></div></div Info</h3></div></div>
-                  <div>
+                <div className="f-card">
+                  <div className="f-card-head"><div className="f-icon" style={{ background: "#eff6ff" }}>i</div><div><h3>Basic Info</h3></div></div>
                   <div className="f-body">
-                    <div className="field"><label>Product Name className="f-body">
-                    <div className="field"><label>Product Name <span <span className="req">*</span></label><input className=" className="req">*</span></label><input className="input" placeholder="input" placeholder="e.g. Hande.g. Handmade Zambian Basket" valuemade Zambian Basket" value={form.name} onChange={set("name")={form.name} onChange={set("name")}/></div}/></div>
-                    <div className="field"><label>Description <span className="req">*</span></>
-                    <div className="field"><label>Description <span className="req">label><textarea className="textarea" placeholder="Describe your product*</span></label><textarea className="textarea" placeholder="Describe your product……" value={form.description} onChange={set("description" value={form.description} onChange={set("description")}/></div>
-                    <div className="field"><label>Category")}/></div>
-                    <div className="field</label>
-                     "><label>Category</label>
-                      <select className="select <select className="select" value={form.category} onChange={set("category")}><option value" value={form.category} onChange={set("category")="">Select…</option>{SELLER_CATS}><option value="">Select…</option>{SELLER_CATS.map.map(c=><option key={c}>{c}</option>)}</select>
-                    </div>
-                  </(c=><option key={c}>{c}</option>)}</select>
+                    <div className="field"><label>Product Name <span className="req">*</span></label><input className="input" placeholder="e.g. Handmade Zambian Basket" value={form.name} onChange={set("name")} /></div>
+                    <div className="field"><label>Description <span className="req">*</span></label><textarea className="textarea" placeholder="Describe your product..." value={form.description} onChange={set("description")} /></div>
+                    <div className="field">
+                      <label>Category</label>
+                      <select className="select" value={form.category} onChange={set("category")}>
+                        <option value="">Select...</option>
+                        {SELLER_CATS.map((c) => <option key={c}>{c}</option>)}
+                      </select>
                     </div>
                   </div>
                 </div>
+
                 <div className="f-card">
-                  <div className="f-card-head"><divdiv>
-                </div>
-                <div className="f-card">
-                  <div className="f-card-head"><div className="f-icon" style={{background:"#f className="f-icon" style={{background:"#fdf4ff"df4ff"}}>🖼️</div}}>🖼️</div><div><h3>Images</h3></div></div>
-                 ><div><h3>Images</h3></div <div className="f-body">
-                    {images.length===></div>
+                  <div className="f-card-head"><div className="f-icon" style={{ background: "#fdf4ff" }}>i</div><div><h3>Images</h3></div></div>
                   <div className="f-body">
-                    {images.length===0?(
-0?(
-                      <div className={`img-zone ${                      <div className={`img-zone ${drag?"dragdrag?"drag":""}`} onDragOver={e=>{e":""}`} onDragOver={e=>{e.preventDefault();setDrag.preventDefault();setDrag(true);}} onDragLeave={()=>setDrag(false)} onDrop={e=>{e.preventDefault(true);}} onDragLeave={()=>setDrag(false)} onDrop={e=>{e.preventDefault();setDrag(false();setDrag(false);handleFiles(e.dataTransfer.files);handleFiles(e.dataTransfer.files);}} onClick={());}} onClick={()=>fileRef.current.click()}>
-                        <input ref={fileRef} type=>fileRef.current.click()}>
-                        <input ref={fileRef} type="file" accept="image/*" multiple style={{="file" accept="image/*" multiple style={{position:"absolute",inset:0,opacity:0,cursor:"position:"absolute",inset:0,opacity:0,cursor:"pointer"}} onChange={e=>handleFiles(e.target.files)}/>
-                       pointer"}} onChange={e=>handleFiles(e.target.files)}/>
-                        <div style={{fontSize:36,marginBottom:8}}>📸</div <div style={{fontSize:36,marginBottom:8}}>📸</div>
-                        <div style={{fontWeight:600,fontSize>
-                        <div style={{fontWeight:600,fontSize:13,marginBottom:3}}>Drop images or click to browse:13,marginBottom:3}}>Drop images or click to browse</div>
-                        <div style={{fontSize:12</div>
-                        <div style={{,color:"var(--slate)"}}>JPG, PNG, WebP — Max fontSize:12,color:"var(--slate)"}}>JPG, PNG, WebP — Max 5MB</div>
+                    {images.length === 0 ? (
+                      <div
+                        className={`img-zone ${drag ? "drag" : ""}`}
+                        onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
+                        onDragLeave={() => setDrag(false)}
+                        onDrop={(e) => { e.preventDefault(); setDrag(false); handleFiles(e.dataTransfer.files); }}
+                        onClick={() => fileRef.current.click()}
+                      >
+                        <input ref={fileRef} type="file" accept="image/*" multiple style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer" }} onChange={(e) => handleFiles(e.target.files)} />
+                        <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 3 }}>Drop images or click to browse</div>
+                        <div style={{ fontSize: 12, color: "var(--slate)" }}>JPG, PNG, WebP - Max 5MB</div>
                       </div>
-                    ):(
-                      <>
-                        <div className="img-grid5MB</div>
+                    ) : (
+                      <div className="img-grid">
+                        {images.map((img, i) => (
+                          <div key={i} className={`img-thumb ${i === primaryImg ? "primary" : ""}`}>
+                            <img src={img.url} alt="" />
+                            {i === primaryImg && <span className="pri-badge">Cover</span>}
+                            <div className="thumb-ov">
+                              {i !== primaryImg && <button className="t-btn star" onClick={() => setPrimaryImg(i)}>*</button>}
+                              <button className="t-btn del" onClick={() => { setImages((p) => p.filter((_, j) => j !== i)); if (primaryImg >= i && primaryImg > 0) setPrimaryImg((p) => p - 1); }}>x</button>
+                            </div>
+                          </div>
+                        ))}
+                        {images.length < 8 && (
+                          <div className="add-more" onClick={() => addRef.current.click()}>
+                            <input ref={addRef} type="file" accept="image/*" multiple style={{ display: "none" }} onChange={(e) => handleFiles(e.target.files)} />
+                            <span style={{ fontSize: 20 }}>+</span>Add
+                          </div>
+                        )}
                       </div>
-                    ):(
-                      <>
-                        <div className="img-grid">
-                          {images.map((img,i)=>(
-                            <div key={i} className={`img-thumb ${i===">
-                          {images.map((img,i)=>(
-                            <div key={i} className={`img-thumb ${i===primaryImg?"primaryImg?"primary":""}`}>
-                              <img src={img.urlprimary":""}`}>
-                              <img src={img.url} alt=""/>
-                              {i===primaryImg&&} alt=""/>
-                              {i===primaryImg&&<span className="pri-badge">Cover</span>}
-                              <div className="thumb-ov<span className="pri-badge">Cover</span>}
-                              <div className="thumb-ov">
-                                {i!==primaryImg&&<button className">
-                                {i!==primaryImg&&<button className="t-btn star" onClick={()=>setPrimaryImg="t-btn star" onClick={()=>setPrimaryImg(i)}>⭐</(i)}>⭐</button>}
-                                <button classNamebutton>}
-                                <button className="t-btn del" onClick={()=>{setImages(p=>p.filter((="t-btn del" onClick={()=>{setImages(p=>p.filter((_,j)=>j!_,j)=>j!==i));if(primaryImg>=i&&primaryImg>0)==i));if(primaryImg>=i&&primaryImg>0)setPrimaryImg(p=>p-1setPrimaryImg(p=>p-1);}}>🗑</button>
-                              </div);}}>🗑</button>
-                              </div>
-                            </div>
-                          ))}
-                          {images.length<8&&<div className="add-more" onClick>
-                            </div>
-                          ))}
-                          {images.length<8&&<div className="add-more" onClick={()=>addRef.current.click()}><input ref={addRef} type="={()=>addRef.current.click()}><input ref={addRef} type="file" accept="image/*" multiple style={{display:"none"}} onChangefile" accept="image/*" multiple style={{display:"none"}} onChange={e=>handle={e=>handleFiles(e.target.files)}/><span style={{fontSize:20}}>+</span>Files(e.target.files)}/><span style={{fontSize:20}}>+</span>Add</Add</div>div>}
-                        </div}
-                        </div>
-                      </>
                     )}
                   </div>
                 </div>
-                <div>
-                      </>
-                    )}
-                  </div>
-                </div className="f-card">
-                  <div className="f-card-head"><div className="f-icon" style={{>
+
                 <div className="f-card">
-                  <div className="f-card-head"><div className="f-icon" style={{background:"#fbackground:"#f0fdf4"}}>💰</div><div><h3>0fdf4"}}>💰</div><divPricing (ZMW)</h3></div></div><h3>Pricing (ZMW)</h3></div></div>
+                  <div className="f-card-head"><div className="f-icon" style={{ background: "#f0fdf4" }}>K</div><div><h3>Pricing (ZMW)</h3></div></div>
                   <div className="f-body">
-                    <div>
-                  <div className="f-body className="f-row">
-                      <div className="field"><label>Selling Price <span className="req">*</span></label">
                     <div className="f-row">
-                      <div className="field"><label>Selling Price <span className="req">*</><div className="pfspan></label><div className="pfx"><span className="pfx-l">Kx"><span className="pfx-l">K</span</span><input className="pfx-i" type="number" min="0"><input className="pfx-i" type="number" placeholder="0.00" value={form.price} onChange min="0" placeholder="0.00" value={form.price} onChange={set("price")}/></div></div={set("price")}/></div></div>
-                      <div className>
-                      <div className="field"><label>Compare-at</label><div className="field"><label>Compare-at</label><div className="pfx="pfx"><span className="pfx-l">K</span><input className="pfx"><span className="pfx-l">K</span><input-i" type="number" min="0" placeholder=" className="pfx-i" type="number" min="Was price" value={form.comparePrice} onChange={set("comparePrice")0" placeholder="Was price" value={form.comparePrice} onChange={set("comparePrice")}/></div></div>
-                    </div>
-                  </}/></div></div>
+                      <div className="field"><label>Selling Price <span className="req">*</span></label><div className="pfx"><span className="pfx-l">K</span><input className="pfx-i" type="number" min="0" placeholder="0.00" value={form.price} onChange={set("price")} /></div></div>
+                      <div className="field"><label>Compare-at</label><div className="pfx"><span className="pfx-l">K</span><input className="pfx-i" type="number" min="0" placeholder="Was price" value={form.comparePrice} onChange={set("comparePrice")} /></div></div>
                     </div>
                   </div>
                 </div>
+
                 <div className="f-card">
-                 div>
-                </div>
-                <div className="f-card">
-                  <div className="f-card-head"><div className="f-icon <div className="f-card-head"><div className="f-icon" style={{background:"#fffbeb"}}>📦</div><div" style={{background:"#fffbeb"}}>📦</div><div><h3>Inventory</h3></div></div><h3>Inventory</h3></div></div>
+                  <div className="f-card-head"><div className="f-icon" style={{ background: "#fffbeb" }}>S</div><div><h3>Inventory</h3></div></div>
                   <div className="f-body">
                     <div className="f-row">
-                      <div className="field"><label>
-                  <div className="f-body">
-                    <div className="f-row">
-                      <div className="field"><label>SKU</>SKU</label><input classNamelabel><input className="input" placeholder="HMB-001" value={form.sku} onChange={set("="input" placeholder="HMB-001" value={form.sku} onChange={set("sku")}/></div>
-                      <div className="field"><label>Stocksku")}/></div>
-                      <div className="field"><label>Stock Q Qty <span className="req">*</span></label><input className="input" type="number" min="0" placeholderty <span className="req">*</span></label><input className="input" type="number" min="0" placeholder="0" value="0" value={form.stock} onChange={set("stock")}/></div>
-                   ={form.stock} onChange={set("stock") </div>
-                  </div>
-                </div>
-                <div className="f-card">
-                  <div className="}/></div>
+                      <div className="field"><label>SKU</label><input className="input" placeholder="HMB-001" value={form.sku} onChange={set("sku")} /></div>
+                      <div className="field"><label>Stock Qty <span className="req">*</span></label><input className="input" type="number" min="0" placeholder="0" value={form.stock} onChange={set("stock")} /></div>
                     </div>
                   </div>
                 </div>
+
                 <div className="f-card">
-                  <div className="f-card-headf-card-head"><div className="f-icon" style={{background:"#f0fdf4"><div className="f-icon" style={{"}}>⚙️</divbackground:"#f0fdf4"}}>⚙️</div><div><div><h3>Settings</h3></><h3>Settings</h3></div></divdiv></div>
+                  <div className="f-card-head"><div className="f-icon" style={{ background: "#f0fdf4" }}>O</div><div><h3>Settings</h3></div></div>
                   <div className="f-body">
-                    {[{key:"published",label:"Publish>
-                  <div className="f-body">
-                    {[{key:"published", immediately",desc:"Make visible to buyers now"},{keylabel:"Publish immediately",desc:"Make visible to buyers now"},{key:"freeShipping",label:"Free delivery",desc:"Offer free delivery":"freeShipping",label:"Free delivery",desc:"Offer free delivery"},{key:"trackInventory",label:"Track inventory",desc},{key:"trackInventory",label:"Track inventory",desc:"Auto-reduce stock on each sale"}].map(s=>(
-:"Auto-reduce stock on each sale"}].map                      <div key={s.key} className="toggle-row">
-                        <div><div className="toggle(s=>(
+                    {[
+                      { key: "published", label: "Publish immediately", desc: "Make visible to buyers now" },
+                      { key: "freeShipping", label: "Free delivery", desc: "Offer free delivery" },
+                      { key: "trackInventory", label: "Track inventory", desc: "Auto-reduce stock on each sale" },
+                    ].map((s) => (
                       <div key={s.key} className="toggle-row">
-                        <div><div className-lbl">{s.label}</div><div className="toggle-desc">{s.desc}</div="toggle-lbl">{s.label}</div><div className="toggle-desc">{s></div>
-                        <label className="toggle"><input type="checkbox" checked.desc}</div></div>
-                        <label className="toggle"><input type="checkbox" checked={settings[s.key]} onChange={e=>setSettings={settings[s.key]} onChange={e=>setSettings(p=>({(p=>({...p,[s.key]:e.target.checked}))}/><span className="...p,[s.key]:e.target.checked}))}/tslider"/></label>
+                        <div><div className="toggle-lbl">{s.label}</div><div className="toggle-desc">{s.desc}</div></div>
+                        <label className="toggle">
+                          <input type="checkbox" checked={settings[s.key]} onChange={(e) => setSettings((p) => ({ ...p, [s.key]: e.target.checked }))} />
+                          <span className="tslider" />
+                        </label>
                       </div>
                     ))}
                   </div>
                 </div>
-               ><span className="tslider"/></label>
-                      </div>
-                    ))}
-                  </div>
-                </div <div className="sub-area">
-                  <button className="sub-btn draft" onClick={()>
+
                 <div className="sub-area">
-                  <button className="sub-btn draft" onClick={()=>publish(true)} disabled={saving}>💾=>publish(true)} disabled={saving}>💾 Save Draft</button>
-                  <button className="sub-btn publish" onClick={()=>publish(false Save Draft</button>
-                  <button className="sub-btn publish" onClick={()=>publish(false)} disabled={saving}>{saving)} disabled={saving}>{saving?<><BtnSpin/> Saving…</>?<><BtnSpin/> Saving:"🚀 Publish Product"}</button>
-                </div…</>:"🚀 Publish Product"}</button>
+                  <button className="sub-btn draft" onClick={() => publish(true)} disabled={saving}>Save Draft</button>
+                  <button className="sub-btn publish" onClick={() => publish(false)} disabled={saving}>
+                    {saving ? <><BtnSpin /> Saving...</> : "Publish Product"}
+                  </button>
                 </div>
               </div>
+
               <div className="preview-sticky">
-                <div className="prev-lbl">>
-              </div>
-              <div className="preview-sticky">
-                <div className="prev-lbl">👁️ Live Preview</div>
-                <div className👁️ Live Preview</div>
-                <div className="p-card="p-card">
+                <div className="prev-lbl">Live Preview</div>
+                <div className="p-card">
                   <div className="p-img">
-                    {images.length>0?<img src={images">
-                  <div className="p-img">
-                    {images.length>0?<img src={images[primaryImg]?.url} alt=""/>[primaryImg]?.url} alt=""/>:<div className="p:<div className="p-placeholder"><span>🖼️</span><p style={{font-placeholder"><span>🖼️</spanSize:11,color:"var(--slate)"}}>No image yet><p style={{fontSize:11,color:"var(--slate)"}}>No image yet</p></div</p></div>}
-                    {form.comparePrice&&parseFloat(form.comparePrice)>parseFloat>}
-                    {form.comparePrice&&parseFloat(form.compare(form.price||0)&&<div className="p-badge">SALE</div>}
+                    {images.length > 0 ? (
+                      <img src={images[primaryImg]?.url} alt="" />
+                    ) : (
+                      <div className="p-placeholder"><p style={{ fontSize: 11, color: "var(--slate)" }}>No image yet</p></div>
+                    )}
+                    {form.comparePrice && parseFloat(form.comparePrice) > parseFloat(form.price || 0) && <div className="p-badge">SALE</div>}
                   </div>
-                  <divPrice)>parseFloat(form.price||0)&&<div className="p-badge">SALE</div>}
-                  </div>
-                  <div className="p-body className="p-body">
-                    <div className="p-cat">{form.category||"Category"}</div">
-                    <div className="p-cat">{form.category||"Category"}</div>
-                    <div className="p-name">{form.name||">
-                    <div className="p-name">{form.name||"Your Product Name"Your Product Name"}</div>
-                    <div className="}</div>
-                    <div className="p-desc">{p-desc">{form.description||"Description will appear here…"}</div>
+                  <div className="p-body">
+                    <div className="p-cat">{form.category || "Category"}</div>
+                    <div className="p-name">{form.name || "Your Product Name"}</div>
+                    <div className="p-desc">{form.description || "Description will appear here..."}</div>
                     <div className="p-foot">
-                      <span className="p-priceform.description||"Description will appear here…"}</div>
-                    <div className="p-foot">
-                      <span">{form.price?ZMW(parseFloat(form.price)):"K 0.00"}</span>
-                      className="p-price">{form.price?ZMW(parseFloat(form.price)):"K 0.00"}</ <span className={`p-stock ${parseInt(form.stockspan>
-                      <span className={`p-stock ${parseInt(form.stock||0)===||0)===0?"low":"ok"}`}>{0?"low":"ok"}`}>{parseInt(form.stock||0)parseInt(form.stock||0)===0?"Out of stock":parseInt(form.stock||0)<=5?`===0?"Out of stock":parseInt(form.stock||0)<=⚡ ${form.stock} left`:"✓ In stock"}</span5?`⚡ ${form.stock} left`:"✓ In stock"}</span>
-                    </div>
-                    <button className="p-add">Add to Cart>
+                      <span className="p-price">{form.price ? ZMW(parseFloat(form.price)) : "K 0.00"}</span>
+                      <span className={`p-stock ${parseInt(form.stock || 0) === 0 ? "low" : "ok"}`}>
+                        {parseInt(form.stock || 0) === 0 ? "Out of stock" : parseInt(form.stock || 0) <= 5 ? `${form.stock} left` : "In stock"}
+                      </span>
                     </div>
                     <button className="p-add">Add to Cart</button>
                   </div>
-               </button>
+                </div>
+                <div className="completeness">
+                  <div className="comp-head"><span>Completeness</span><span className="comp-pct">{pct}%</span></div>
+                  <div className="prog-track"><div className="prog-fill" style={{ width: `${pct}%` }} /></div>
+                  <div className="comp-items">
+                    {checks.map((c) => (
+                      <div key={c.label} className={`c-item ${c.done ? "done" : ""}`}>
+                        <div className={`c-dot ${c.done ? "done" : "todo"}`}>{c.done ? "+" : "."}</div>{c.label}
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="completeness </div>
-                <div className="completeness">
-                  <div className="comp-head"><span>Completeness</span><span className="comp">
-                  <div className="comp-head"><span>Completeness</span><span className="comp-pct">{pct}%</span></div>
-                  <div className="prog-track"><div className-pct">{pct}%</span></div>
-                  <div className="prog-track"><div className="prog-fill="prog-fill" style={{width:`${pct}%`}}" style={{width:`${pct}%`}}/></div>
-                  <div/></div>
-                  <div className="comp-items">{checks.map(c=>(
-                    <div className="comp-items">{checks.map(c=>(
-                    <div key={c.label key={c.label} className={`c-item ${c.done?"done":} className={`c-item ${c.done?"done":""}`}><div className={`c""}`}><div className={`c-dot ${c.done?"done":"todo"}`}>{c.done?"✓":"-dot ${c.done?"done":"todo"}`}>{c.done?"✓":"·"}</div>{c.label}</div>
-                  )·"}</div>{c.label}</div>
-                  ))}</div)}</div>
-                </div>
               </div>
             </div>
           )}
 
-         >
+          {tab === "list" && (
+            <div className="prod-table">
+              <div className="t-head"><span>Product</span><span>Price</span><span>Stock</span><span>Status</span><span>Actions</span></div>
+              {loading ? (
+                <Spin dark />
+              ) : products.length === 0 ? (
+                <div style={{ padding: 40, textAlign: "center", color: "var(--slate)" }}>
+                  <p>No products yet!</p>
                 </div>
-              </div>
-            </div {tab==="list"&&(
-            <div className>
-          )}
-
-          {tab==="list"&&(
-            <div className="prod-table="prod-table">
-              <div className">
-              <div className="t-head"><span>Product</span><span>Price</span="t-head"><span>Product</span><span>Price</span><span>><span>Stock</span><span>Status</span><span>Actions</Stock</span><span>Status</span><span>Actions</span></divspan></div>
-              {loading?<Spin dark/>
-                :products.length===0
-                  ?>
-              {loading?<Spin dark/>
-                :products.length===0
-                  ?<div style={{padding:"40px",<div style={{padding:"40px",textAlign:"centertextAlign:"center",color:"var(--slate)"}}><div style",color:"var(--slate)"}}><div style={{fontSize:40,marginBottom:10}}>={{fontSize:40,marginBottom:10}}>📦</div><p>No products yet!</p></div>
-                  :products.map(p=>(
-                   📦</div><p>No products yet!</p></div>
-                  :products.map(p=>(
-                    <div key={p.id} className="t-row">
-                      <div className=" <div key={p.id} className="t-row">
-                      <div className="p-info">
-                        <div className="p-thumb">{p-info">
-                        <div className="p-thumb">{p.image_url&&p.image_url.length<=4?p.image_url:"🛍p.image_url&&p.image_url.length<=4?p.image_url:"🛍️"}</div️"}</div>
-                        <div><div className=">
-                        <div><div classNamep-nm">{p.name}</div><div className="p-sk">{p="p-nm">{p.name}</div><div className="p-sk">{p.category}</div></div>
-                      </div>
-                      <div style={{fontWeight:600,fontSize:13.category}</div></div>
-                      </div>
-                      <div style={{fontWeight:600,fontSize:13}}>{Z}}>{ZMW(p.price)}</div>
-                      <div style={{MW(p.price)}</div>
-                      <div style={{fontSize:12,color:p.stock_qty===0?"var(--red)":fontSize:12,color:p.stock_qty===0?"varp.stock_qty<=5?"var(--gold)(--red)":p.stock_qty<=5?"":"var(--green)",fontWeight:500}}>
-                       var(--gold)":"var(--green)",fontWeight:500}}>
-                        {p.stock {p.stock_qty===0?"Out":p_qty===0.stock_qty<=5?`⚡ ${p.stock_qty}`:`${p.stock_qty} units`}
-                      </div?"Out":p.stock_qty<=5?`⚡ ${p.stock_qty}`:`${p.stock_qty} units`}
-                      </div>
-                      <div>
-                      <div><span className={`s-pill ${p.status==="draft"?"draft":"active><span className={`s-pill ${p.status==="draft"?""}`}>{p.status==="draft"?"draft":"active"}`}>{p.status==="draft"?"✏️ Draft":"✏️ Draft":"✅ Active"}</span></div>
-                      <div className✅ Active"}</span></div>
-                      <div className="act-bt="act-btns">
-                        <button className="act-btn" onClick={()=>setTab("ns">
-                        <button className="act-btn" onClick={()=>setTab("add")}>add")}>✏️</button>
-                        <button✏️</button className="act-btn" onClick={()=>>
-                        <button className="act-btn" onClick={()=>deleteProduct(p.id)}>🗑</button>
-                      </div>
-                   deleteProduct(p.id)}>🗑</button>
-                      </div>
+              ) : (
+                products.map((p) => (
+                  <div key={p.id} className="t-row">
+                    <div className="p-info">
+                      <div className="p-thumb">{p.image_url && p.image_url.length <= 4 ? p.image_url : "📦"}</div>
+                      <div><div className="p-nm">{p.name}</div><div className="p-sk">{p.category}</div></div>
                     </div>
- </div>
-                  ))
-              }
-            </div                  ))
-              }
+                    <div style={{ fontWeight: 600, fontSize: 13 }}>{ZMW(p.price)}</div>
+                    <div style={{ fontSize: 12, color: p.stock_qty === 0 ? "var(--red)" : p.stock_qty <= 5 ? "var(--gold)" : "var(--green)", fontWeight: 500 }}>
+                      {p.stock_qty === 0 ? "Out" : p.stock_qty <= 5 ? `${p.stock_qty}` : `${p.stock_qty} units`}
+                    </div>
+                    <div><span className={`s-pill ${p.status === "draft" ? "draft" : "active"}`}>{p.status === "draft" ? "Draft" : "Active"}</span></div>
+                    <div className="act-btns">
+                      <button className="act-btn" onClick={() => setTab("add")}>Edit</button>
+                      <button className="act-btn" onClick={() => deleteProduct(p.id)}>Del</button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           )}
         </div>
       </div>
-      {showModal&&>
-          )}
+
+      {showModal && (
+        <div className="modal-ov">
+          <div className="modal">
+            <h2>Product Published!</h2>
+            <p>Live on ShopNow and saved to the database!</p>
+            <div className="modal-btns">
+              <button className="m-btn secondary" onClick={() => { setShowModal(false); setTab("list"); }}>View All</button>
+              <button className="m-btn primary" onClick={() => setShowModal(false)}>Add Another</button>
+            </div>
+          </div>
         </div>
-      </div>
-      {showModal&&(
-        <div(
-        <div className="modal-ov"><div className className="modal-ov"><div className="modal">
-         ="modal">
-          <div className="modal-icon">🎉</div><h2>Product <div className="modal-icon">🎉</div><h2>Product Published!</h2 Published!</h2>
-          <>
-          <p>Live on ShopNow and saved to the database!</p>
-          <divp>Live on ShopNow and saved to the database!</p>
-          <div className="modal-btns">
-            <button className="m-btn secondary" className="modal-btns">
-            <button className="m-btn secondary" onClick={()=>{ onClick={()=>{setShowModal(false);setTab("list");}}>View All</buttonsetShowModal(false);setTab("list");}}>View All</button>
-            <button className="m-btn primary" onClick={()>
-            <button className="m-btn primary" onClick={()=>setShowModal(false)}>Add Another</button=>setShowModal(false)}>Add Another</button>
-          </div>
-          </div>
-        </div></div>
       )}
     </div>
   );
 }
 
-// ═════>
-        </div></div>
-      )}
-    </div>
-  );
-}
-
-// ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════════
 // MAIN APP
-// ══════════════════════════════════════════════════════════════════════════
-// MAIN APP
-// ══════════════════════════════════════════════════════════════════════════════════════════════
-export default function═════════════
+// ══════════════════════════════════════════════════════════════════════════════
 export default function App() {
-  const [authLoading,setAuthLoading App() {
-  const [authLoading,setAuthLoading] = useState(true);
-  const [user,setUser] = useState(true);
-  const [user,setUser]               = useState(null);
-  const [profile,setProfile]         = useState(null);
- ]               = useState(null);
-  const [profile,setProfile]         = useState(null);
-  const [page,setPage]               = useState("shop");
-  const const [page,setPage]               = useState("shop");
-  const [cart,dispatch]              = useReducer(cartReducer, [cart,dispatch]              = useReducer(cartReducer,[]);
-  const [cartOpen,setCartOpen]       = useState(false);
-  const[]);
-  const [cartOpen,setCartOpen]       = useState(false [dbProducts,setDbProducts]   = useState([]);
-  const [category,setCategory]       = useState(");
-  const [dbProducts,setDbProducts]   = useState([]);
-  const [category,setCategory]       = useState("All");
-  constAll");
-  const [search,setSearch]           = useState("");
-  const [maxPrice,setMaxPrice] [search,setSearch]           = useState("");
-  const [maxPrice,       = useState(10000);
- setMaxPrice]       = useState(10000);
-  const [sort, const [sort,setSort]               = useState("default");
-  const [justAdded,setsetSort]               = useState("default");
-  const [justAdded,setJustAdded]JustAdded]     = useState(null);
-  const [toast,setToast     = useState(null);
-  const [toast]             = useState(null);
-  const,setToast]             = useState(null);
-  const [orderData,setOrderData]     = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [page, setPage] = useState("shop");
+  const [cart, dispatch] = useReducer(cartReducer, []);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [dbProducts, setDbProducts] = useState([]);
+  const [category, setCategory] = useState("All");
+  const [search, setSearch] = useState("");
+  const [maxPrice, setMaxPrice] = useState(10000);
+  const [sort, setSort] = useState("default");
+  const [justAdded, setJustAdded] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [orderData, setOrderData] = useState(null);
 
-  const showToast=(msg, [orderData,setOrderData]     = useState(null);
+  const showToast = (msg, icon) => {
+    setToast({ msg, icon: icon || "ok" });
+    setTimeout(() => setToast(null), 2800);
+  };
 
-  const showicon="✅")=>Toast=(msg,icon="✅"){ setToast({msg,icon}); setTimeout(()=>setToast(null),280=>{ setToast({msg,icon}); setTimeout(()=>setToast(null),2800); };
-
-  // ── Load profile and redirect based on role ─────────────────────────0); };
-
-  // ── Load profile and redirect based on role ───────
   const loadProfileAndRedirect = async (authUser) => {
-    try──────────────────────────────
-  const loadProfileAndRedirect = async (authUser) => {
-      const { data: prof } = await supabase
-        .from("profiles")
-        {
     try {
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", authUser.id)
-        .single();
-
-      setUser(authUser);
-      setProfile .select("*")
-        .eq("id", authUser.id)
-        .single();
-
+      const { data: prof } = await supabase.from("profiles").select("*").eq("id", authUser.id).single();
       setUser(authUser);
       setProfile(prof);
-
-      // ──(prof);
-
-      // ── THIS IS THE KEY THIS IS THE KEY FIX ──
-      const role = prof FIX ──
       const role = prof?.role || "buyer";
-      setPage(getPage?.role || "buyer";
       setPage(getPageForRole(role));
-
       return prof;
-    } catch(e) {
-     ForRole(role));
-
-      return prof;
-    } catch(e) {
-      console.error("Profile load error:", e);
-      setPage("shop");
-      console.error("Profile load error:", e);
+    } catch (e) {
       setPage("shop");
       return null;
     }
   };
 
-  // ── Check session on mount return null;
-    }
-  };
-
-  // ── Check session on mount ───────────────── ────────────────────────────────────────────────
-  useEffect(()───────────────────────────────
-  useEffect(()=>{
-    sup=>{
-    supabase.auth.getSession().then(async({data:{session}})=>{
-      if(session?.user){
-        await loadProfileAndRedirect(sessionabase.auth.getSession().then(async({data:{session}})=>{
-      if(session?.user){
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user) {
         await loadProfileAndRedirect(session.user);
       }
       setAuthLoading(false);
     });
 
-    const {data.user);
-      }
-      setAuthLoading:{subscription}} = supabase.auth.onAuthStateChange(false);
-    });
-
-    const {data:{subscription}} = supabase.auth.onAuthStateChange(async(event, session(async(event, session)=>{
-      if(event === "SIGNED_OUT"){
-        setUser)=>{
-      if(event === "SIGNED_OUT"){
-        setUser(null); setProfile(null); setProfile(null); setPage("shop"); dispatch({type:"C(null); setPage("shop"); dispatch({typeLEAR"});
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
+      if (event === "SIGNED_OUT") {
+        setUser(null);
+        setProfile(null);
+        setPage("shop");
+        dispatch({ type: "CLEAR" });
       }
     });
-    return ()=>subscription.unsubscribe();
-  },[]:"CLEAR"});
-      }
-    });
-    return ()=>subscription.unsubscribe();
-  },[]);
 
-  //);
+    return () => subscription.unsubscribe();
+  }, []);
 
-  // ── Load products ─────────────────────────────────────────────────────────
-  useEffect(()=>{
-    sup ── Load products ─────────────────────────────────────────────────────────
-  useEffect(()=>{
-    supabase.from("abase.from("products")
-      .products")
+  useEffect(() => {
+    supabase
+      .from("products")
       .select("*, sellers(store_name)")
-      .select("*, sellers(store_name)")
-      .eq("status","active")
-      .order("created_ateq("status","active")
-      .order("created_at",{ascending:false})
-      .then(({data, error})=>{
-        console.log("PRODUCTS FROM DB",{ascending:false})
-      .then(({data, error})=>{
-        console.log("PRODUCTS FROM DB:", data:", data);
-        console.log("FETCH ERROR:", error);
-        if(data){
-          set);
-        console.log("FETCH ERROR:", error);
-        ifDbProducts(data.map(p=>({...p, seller(data){
-          setDbProducts(data.map(p=>({_name:p.sellers?.store_name||"Seller"}...p, seller_name:p.sellers?.store_name||)));
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Product fetch error:", error);
+          return;
+        }
+        if (data) {
+          setDbProducts(data.map((p) => ({ ...p, seller_name: p.sellers?.store_name || "Seller" })));
         }
       });
-  },[]);
+  }, []);
 
-  const all"Seller"})));
-        }
-      });
-  },[]);
+  const allProducts = [...dbProducts, ...FALLBACK.filter((f) => !dbProducts.find((d) => d.name === f.name))];
 
-  const allProducts = [...dbProducts,...FALLBACK.filter(f=>!dbProductsProducts = [...dbProducts,...FALLBACK.filter(f=>!dbProducts.find(d=>d.find(d=>d.name===f.name))];
-
-  // ── Login handler ─────────────────────────────────────────────────────────.name===f.name))];
-
-  // ── Login handler ─────────────────────────────────────────────────────────
-  const handleLogin = async (authUser, prof) => {
-    setUser(authUser
   const handleLogin = async (authUser, prof) => {
     setUser(authUser);
     setProfile(prof);
-    const role = prof?.role || ");
-    setProfile(prof);
     const role = prof?.role || "buyer";
-    const destination = getPageForRole(buyer";
-    const destination = getPageForRole(role);
-    setPage(destinationrole);
-    setPage(destination);
-    const welcomeMap);
-    const welcomeMap = { admin:"Admin", seller:"Seller", buyer:"" };
-    = { admin:"Admin", seller:"Seller", buyer showToast(`Welcome${welcomeMap[role]?" "+welcomeMap[role]:""}, ${prof?.full_name?.split:"" };
-    showToast(`Welcome${welcomeMap[role]?" "+welcomeMap[role]:""}, ${prof?.full_name?.split(" ")[0]||"there"}! ${(" ")[0]||"there"}! ${role==="admin"?"🛡️":rolerole==="admin"?"🛡️":==="seller"?"🏪":"👋"}`,"🎉");
-  };
-
-  const handleLogout =role==="seller"?"🏪":"👋"}`,"🎉");
+    setPage(getPageForRole(role));
+    showToast(`Welcome, ${prof?.full_name?.split(" ")[0] || "there"}!`, "ok");
   };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    setUser(null); setProfile(null);
-    dispatch({ async () => {
-    await supabase.auth.signOut();
-    setUser(null); setProfile(nulltype:"CLEAR"});
+    setUser(null);
+    setProfile(null);
+    dispatch({ type: "CLEAR" });
     setPage("shop");
-    showToast("Signed out successfully","👋");
+    showToast("Signed out successfully", "ok");
   };
 
-  const handleAdd = (p) =>);
-    dispatch({type:"CLEAR"});
-    setPage("shop");
-    showToast("Signed out successfully","👋");
+  const handleAdd = (p) => {
+    dispatch({ type: "ADD", product: p });
+    setJustAdded(p.id);
+    setTimeout(() => setJustAdded(null), 1500);
+    showToast(`${p.name} added`, "ok");
   };
 
-  const handleAdd = ( {
-    dispatch({type:"ADD",product:p});
-    setJustAdded(p.idp) => {
-    dispatch({type:"ADD",product:p});
-    setJustAdded(p.id); setTimeout(()=>setJustAdded(null),1500); setTimeout(()=>setJustAdded(null),1500);
-    showToast(`${);
-    showToast(`${p.name} added`,"🛒");
-  };
-
-  let filtered =p.name} added`,"🛒");
-  };
-
-  let filtered = allProducts.filter allProducts.filter(p=>
-    (category==="All"||p.category(p=>
-    (category==="All"||p===category)&&
-    p.price<=maxPrice&&.category===category)&&
-    p.price<=maxPrice&&
-    (p
-    (p.name.toLowerCase().includes(search.toLowerCase())||.name.toLowerCase().includes(search.toLowerCase())||p.category.toLowerCase().includes(search.toLowerCase()))
+  let filtered = allProducts.filter(
+    (p) =>
+      (category === "All" || p.category === category) &&
+      p.price <= maxPrice &&
+      (p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase()))
   );
-  if(sort==="p.category.toLowerCase().includes(search.toLowerCase()))
-  );
-  ifprice-asc")  filtered.sort(((sort==="price-asc")  filtered.sort((a,b)=>a.price-b.price);
-  if(sorta,b)=>a.price-b.price);
-  if(sort==="price-d==="price-desc") filtered.sort((a,b)=>esc") filtered.sort((a,b)=>b.price-a.priceb.price-a.price);
-  if(sort==="rating")     filtered.sort((a,b)=);
-  if(sort==="rating")     filtered.sort>(b.rating||4.5)-(a.rating((a,b)=>(b.rating||4.5)-(a.rating||4.5||4.5));
+  if (sort === "price-asc") filtered.sort((a, b) => a.price - b.price);
+  if (sort === "price-desc") filtered.sort((a, b) => b.price - a.price);
+  if (sort === "rating") filtered.sort((a, b) => (b.rating || 4.5) - (a.rating || 4.5));
 
-  const cartCount = cart.reduce((s,i)=>));
+  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
 
-  const cartCount = cart.reduce((ss+i.qty,0);
+  if (authLoading) {
+    return (
+      <>
+        <style>{css}</style>
+        <Spin />
+      </>
+    );
+  }
 
-  // ──,i)=>s+i.qty,0);
+  if (page === "admin") {
+    return (
+      <>
+        <style>{css}</style>
+        <AdminDashboard user={user} profile={profile} onExit={() => setPage("shop")} />
+        <Toast t={toast} />
+      </>
+    );
+  }
 
-  // ── RENDER ─ RENDER ─────────────────────────────────────────────────────────────────
-  if(a────────────────────────────────────────────────────────────────
-  if(authLoading) returnuthLoading) return (<><style>{css}</style><Spin/></>);
+  if (!user) {
+    return (
+      <>
+        <style>{css}</style>
+        <AuthPage onLogin={handleLogin} />
+        <Toast t={toast} />
+      </>
+    );
+  }
 
-  // Admin (<><style>{css}</style><Spin/></>);
-
-  // Admin
-  if(page==="admin") return (
-   
-  if(page==="admin") return (
-    <>
-      <style>{css}</style>
-      <AdminDashboard <>
-      <style>{css}</style>
-      <AdminDashboard user={user} profile={profile} onExit={()=>setPage("shop user={user} profile={profile} onExit={()=>setPage("shop")}/>
-      <Toast t={toast}/>
-    </>
-  );
-
-  //")}/>
-      <Toast t={to Auth
-  if(!user) return (<><style>{css}</style><AuthPage onLogin={handleLogin}/ast}/>
-    </>
-  );
-
-  // Auth
-  if(!user) return (<><style>{css}</style><AuthPage onLogin={handleLogin}/><Toast t={><Toast t={toast}/></>);
-
-  // Seller
-  if(page==="seller") return (
-    <>
-      <styletoast}/></>);
-
-  // Seller
-  if(page==="seller") return (
-    <>
-      <style>{css}</style>
-      <SellerDash user={user>{css}</style>
-      <SellerDash user={user} profile={profile} onExit={()=>setPage("shop")} showToast={showToast}/>
-      <Toast} profile={profile} onExit={()=>setPage("shop")} showToast={showToast}/>
-      <Toast t={toast}/>
-    </>
-  );
+  if (page === "seller") {
+    return (
+      <>
+        <style>{css}</style>
+        <SellerDash user={user} profile={profile} onExit={() => setPage("shop")} showToast={showToast} />
+        <Toast t={toast} />
+      </>
+    );
+  }
 
   return (
     <>
       <style>{css}</style>
 
-      {/* t={toast}/>
-    </>
-  );
-
-  return (
-    <>
-      <style>{css}</style>
-
-      {/* NAV */}
       <nav className="nav">
-        <div className="nav-l NAV */}
-      <nav className="nav">
-        <div className="nav-logo" onClick={()=>setPage("shop")}>Shop<span>Now</ogo" onClick={()=>setPage("shop")}>Shop<span>Now</span></div>
-        {page==="shop"&&(<div className="nav-search"><span style={{color:"#9ca3af"}}>🔍</spanspan></div>
-        {page==="shop"&&(<div className="nav-search"><span style={{color:"#9ca3af"}}>🔍</span><input placeholder="Search products…"><input placeholder="Search products…" value={search} onChange={e=> value={search} onChange={e=>setSearch(e.targetsetSearch(e.target.value)}/></div>)}
-        <div className="nav-actions.value)}/></div>)}
-        <div className">
-          {profile?.role==="nav-actions">
-          {profile?.role==="seller"&&="seller"&&<button className="nav-btn" onClick={()=>setPage("seller")}><button className="nav-btn" onClick={()=>setPage("seller")}>🏪 My Store🏪 My Store</button>}
-          {profile?.role==="admin</button>}
-          {profile?.role==="admin"&&<button"&&<button className="nav-btn" style={{borderColor:"#7c3aed className="nav-btn" style={{borderColor:"#7c3aed",color:"#",color:"#7c3aed"}} onClick={()=>setPage7c3aed"}} onClick={()=>setPage("admin")}>🛡️ Admin</button>}
-          <button className="nav-btn("admin")}>🛡️ Admin</button>}
-          <button primary" onClick={()=>{setCartOpen(true);if(page!=="shop")setPage("shop");}}> className="nav-btn primary" onClick={()=>{setCartOpen(true);if(page!=="shop")setPage("shop");}}>🛒 {cartCount>0&&<span className="cart-badge">{cartCount}</span>🛒 {cartCount>0&&<span className="cart-badge">{cartCount}</span>}</button>
-          <UserMenu profile={profile} onPage={setPage}</button>
-          <UserMenu profile={profile} onPage={setPage} onLogout={handleLogout}/>
-        </div>
-      </nav} onLogout={handleLogout}/>
+        <div className="nav-logo" onClick={() => setPage("shop")}>Shop<span>Now</span></div>
+        {page === "shop" && (
+          <div className="nav-search">
+            <span style={{ color: "#9ca3af" }}>Q</span>
+            <input placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} />
+          </div>
+        )}
+        <div className="nav-actions">
+          {profile?.role === "seller" && <button className="nav-btn" onClick={() => setPage("seller")}>My Store</button>}
+          {profile?.role === "admin" && <button className="nav-btn" style={{ borderColor: "#7c3aed", color: "#7c3aed" }} onClick={() => setPage("admin")}>Admin</button>}
+          <button className="nav-btn primary" onClick={() => { setCartOpen(true); if (page !== "shop") setPage("shop"); }}>
+            Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+          </button>
+          <UserMenu profile={profile} onPage={setPage} onLogout={handleLogout} />
         </div>
       </nav>
 
-      {/*>
-
-      {/* SHOP */}
-      {page==="shop"&&(
+      {page === "shop" && (
         <>
           <div className="hero">
-            <div className="hero-eyeb SHOP */}
-      {page==="shop"&&(
-        <>
-          <div className="hero">
-            <div className="hero-eyebrow">✦ Zambia's Modern Marketplace</div>
-           row">✦ Zambia's Modern Marketplace</div>
-            <h1>Everything <h1>Everything you need,<br/><em>nothing you don't.</em></h you need,<br/><em>nothing you don't1>
-            <p>Shop from local sellers. Pay with Airtel.</em></h1>
-            <p>Shop from local sellers. Pay with Airt, MTN or card.</p>
+            <div className="hero-eyebrow">Zambia's Modern Marketplace</div>
+            <h1>Everything you need,<br /><em>nothing you don't.</em></h1>
+            <p>Shop from local sellers. Pay with Airtel, MTN or card.</p>
             <div className="hero-ctas">
-             el, MTN or card.</p>
-            <div className="hero-ct <button className="hero-cta shop" onClick={()=>document.querySelector(".shopas">
-              <button className="hero-cta shop" onClick={()=>document.querySelector(".shop-layout")?.scrollIntoView({behavior:"smooth"})}>Browse Products</button>
-              {profile?.-layout")?.scrollIntoView({behavior:"smooth"})}>Browse Products</button>
-              {profile?.role==="sellerrole==="seller"
-                ?<button className="hero"
-                ?<button className="hero-cta sell-cta sell" onClick={()=>setPage("seller")}>🏪 My Dashboard →</" onClick={()=>setPage("seller")}>🏪 My Dashboard →</button>
-                :button>
-                :<button className="hero-cta sell" onClick={()=>showToast("Register as a seller to start listing<button className="hero-cta sell" onClick={()=>showToast("Register as a seller to start listing!","!","🏪")}>Start Selling →</button>
-              }
-            </div🏪")}>Start Selling →</button>
-              }
+              <button className="hero-cta shop" onClick={() => document.querySelector(".shop-layout")?.scrollIntoView({ behavior: "smooth" })}>Browse Products</button>
+              {profile?.role === "seller" ? (
+                <button className="hero-cta sell" onClick={() => setPage("seller")}>My Dashboard</button>
+              ) : (
+                <button className="hero-cta sell" onClick={() => showToast("Register as a seller to start listing!", "info")}>Start Selling</button>
+              )}
             </div>
           </div>
-          </div>
+
           <div className="stats-bar">
-            {[[">
-          <div className="stats-bar">
-            {[["50K50K+","Happy Buyers"],[`${allProducts.length}`,"Products"],+","Happy Buyers"],[`${allProducts.length}`,"Products"],["4.9★","Avg Rating"],["🇿🇲","Zambia-W["4.9★","Avg Rating"],["🇿🇲","Zambia-Wide"]].map(([n,l])=>(
-              <div key={ide"]].map(([n,l])=>(
-              <div key={l} className="stat"><div className="stat-n">{n}</divl} className="stat"><div className="stat-n">{n}</div><div className="stat-l">{l}</><div className="stat-l">{l}</div></divdiv></div>
+            {[["50K+", "Happy Buyers"], [`${allProducts.length}`, "Products"], ["4.9", "Avg Rating"], ["ZM", "Zambia-Wide"]].map(([n, l]) => (
+              <div key={l} className="stat"><div className="stat-n">{n}</div><div className="stat-l">{l}</div></div>
             ))}
           </div>
+
           <div className="shop-layout">
             <div className="sidebar">
               <h3>Categories</h3>
-              {CATEGORIES.map(c=>(
-                <button key={c} className={`cat-btn ${category===c?"active":""}`} onClick={()=>setCategory>
-            ))}
-          </div>
-          <div className="shop-layout">
-            <div className="sidebar">
-              <h3>Categories</h3>
-              {CATEGORIES.map(c=>(
-                <button key={c} className={`cat-btn ${category===c?"active":""}`} onClick(c)}>
-                  {c==="All"?"={()=>setCategory(c)}>
-                  {c==="All"?"🏪":c==🏪":c==="Home"?"🏠":c==="Fashion"?"="Home"?"🏠":c==="Fashion👗":c==="Kitchen"?"🍳":""?"👗":c==="Kitchen"?"🍳":"💻"} {c💻"} {c}
-                </button>
+              {CATEGORIES.map((c) => (
+                <button key={c} className={`cat-btn ${category === c ? "active" : ""}`} onClick={() => setCategory(c)}>{c}</button>
               ))}
-              <div className="}
-                </button>
-              ))}
-              <div className="filter-secfilter-sec">
-                <h3 style={{marginTop:0}}>Max Price (ZMW)</h3">
-                <h3 style={{marginTop:0}}>Max Price (ZMW)</h3>
+              <div className="filter-sec">
+                <h3 style={{ marginTop: 0 }}>Max Price (ZMW)</h3>
                 <div className="price-range">
-                  <input type="range" min={500} max={10000} step={100} value={max>
-                <div className="price-range">
-                  <input type="range" min={500} max={10000} step={100} value={maxPrice} onChange={e=>setMaxPrice(+e.targetPrice} onChange={e=>setMaxPrice(+e.target.value)}/>
-                  <span className="price-lbl">Up to K {.value)}/>
-                  <span className="price-lbl">maxPrice.toLocaleString()}</span>
+                  <input type="range" min={500} max={10000} step={100} value={maxPrice} onChange={(e) => setMaxPrice(+e.target.value)} />
+                  <span className="price-lbl">Up to K {maxPrice.toLocaleString()}</span>
                 </div>
               </div>
-              <divUp to K {maxPrice.toLocaleString()}</span>
-                </div>
-              </div className="filter-sec">
-                <h>
               <div className="filter-sec">
-                <h3 style={{3 style={{marginTop:0}}>Sort By</h3>
-                <select className="sort-sel" value={sortmarginTop:0}}>Sort By</h3>
-                <select className="sort-sel} onChange={e=>setSort(e.target.value)}>
-                  <option value" value={sort} onChange={e=>setSort(e.target.value)}>
-                  <option value="default">Featured="default">Featured</option>
-                  <option value="price-asc">Price: Low</option>
-                  <option value="price-asc">Price: Low → High</option>
-                  <option value="price-desc → High</option>
-                  <option value="price-desc">Price: High → Low</option>
-                  <option value="rating">Top Rated</option>
-                </">Price: High → Low</option>
+                <h3 style={{ marginTop: 0 }}>Sort By</h3>
+                <select className="sort-sel" value={sort} onChange={(e) => setSort(e.target.value)}>
+                  <option value="default">Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
                   <option value="rating">Top Rated</option>
                 </select>
               </div>
             </div>
-            <div classNameselect>
-              </div>
-            </div>
-            <div className="shop-main="shop-main">
+            <div className="shop-main">
               <div className="sec-header">
-                <h2 className="sec-title">{category==="All"?"All Products":category">
-              <div className="sec-header">
-                <h2 className="sec-title">{category==="All"?"All Products":category}</h}</h2>
+                <h2 className="sec-title">{category === "All" ? "All Products" : category}</h2>
                 <span className="result-count">{filtered.length} products</span>
               </div>
-              {filtered.length===0
-                ?<div2>
-                <span className="result-count">{filtered.length} products</span>
-              </div>
-              {filtered.length===0
-                ?<div style={{textAlign style={{textAlign:"center",padding:"60px 20px",color:"center",padding:"60px 20px",color:"#9ca:"#9ca3af"}}><div style={{fontSize:44,marginBottom:10}}>3af"}}><div style={{fontSize:44,marginBottom:10}}>🔍</div><p>No products match your filters.</p></div🔍</div><p>No products match your filters.</p></div>
-                :<div className="grid">{filtered.map(p=><ProductCard>
-                :<div className="grid">{filtered.map(p=><ProductCard key={p.id} product={p} onAdd={ key={p.id} product={p} onAdd={handleAdd} justhandleAdd} justAdded={justAdded===p.id}/>)}</div>
-              }
+              {filtered.length === 0 ? (
+                <div style={{ textAlign: "center", padding: "60px 20px", color: "#9ca3af" }}>
+                  <p>No products match your filters.</p>
+                </div>
+              ) : (
+                <div className="grid">
+                  {filtered.map((p) => (
+                    <ProductCard key={p.id} product={p} onAdd={handleAdd} justAdded={justAdded === p.id} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-          <footer className="Added={justAdded===p.id}/>)}</div>
-              }
-            </div>
-          </div>
-          <footer classNamefooter">
-            <div className="footer">
-            <div className="footer="footer-grid">
-              <div className="footer-brand"><h3>Shop<span-grid">
-              <div className="footer-brand"><h3>Now</span></h3><p>Zamb>Shop<span>Now</span></h3><p>Zambia's modern marketplaceia's modern marketplace. Quality products, zero compromise.</p></div>
-              {. Quality products, zero compromise.</p></div>
-              {[{title[{title:"Shop",links:["All Products","Home","Fashion","Kitchen:"Shop",links:["All Products","Home","Fashion","Kitchen","Tech"]},{title:"Sell",links:["Start Selling","Seller FAQ","Pricing","Tech"]},{title:"Sell",links:["Start Selling","Seller FAQ","P"]},{title:"Help",links:["Help Center","Returns","Track Orderricing"]},{title:"Help",links:["Help Center","Returns","Track Order","Contact"]}].map(col=>(
-                <div key={col.title} className="footer","Contact"]}].map(col=>(
-                <div key={col.title-col"><h4>{col.title}</h4>{col.links.map(l=><a key={l}>{l} className="footer-col"><h4>{col.title}</h4>{col.links.map(l=><a key={l}>{l}</a>)}}</a>)}</div>
+
+          <footer className="footer">
+            <div className="footer-grid">
+              <div className="footer-brand"><h3>Shop<span>Now</span></h3><p>Zambia's modern marketplace. Quality products, zero compromise.</p></div>
+              {[
+                { title: "Shop", links: ["All Products", "Home", "Fashion", "Kitchen", "Tech"] },
+                { title: "Sell", links: ["Start Selling", "Seller FAQ", "Pricing"] },
+                { title: "Help", links: ["Help Center", "Returns", "Track Order", "Contact"] },
+              ].map((col) => (
+                <div key={col.title} className="footer-col"><h4>{col.title}</h4>{col.links.map((l) => <a key={l}>{l}</a>)}</div>
               ))}
             </div>
-            <div className="footer-bottom"><span</div>
-              ))}
-            </div>
-            <div className="footer-bottom>© 2026 Shop"><span>© 2026 ShopNow Zambia. AllNow Zambia. All rights reserved.</span><span>Privacy · Terms</span></div>
+            <div className="footer-bottom"><span>2026 ShopNow Zambia. All rights reserved.</span><span>Privacy. Terms</span></div>
           </footer>
         </>
       )}
 
-      {page== rights reserved.</span><span>Privacy · Terms</span></div>
-          </footer>
-        </>
-      )="orders"&&<OrdersPage user={user} onBack={()=>set}
+      {page === "orders" && <OrdersPage user={user} onBack={() => setPage("shop")} />}
 
-      {page==="orders"&&<OrdersPage user={user} onBack={()=>setPage("shop")}/>}
-      {page==="checkout"&&<CheckoutPage cart={cart}Page("shop")}/>}
-      {page==="checkout"&&<CheckoutPage cart={cart} user={user} user={user} profile={profile} onSuccess={(num,total,pay)=>{setOrderData({num,total,pay});setPage("success");}} onBack={()=>{setCartOpen(true profile={profile} onSuccess={(num,total,pay)=>{setOrderData({num,total,pay});setPage("success");}} onBack={()=>{);setPage("shop");}} showToast={showToast}/>}
+      {page === "checkout" && (
+        <CheckoutPage
+          cart={cart}
+          user={user}
+          profile={profile}
+          onSuccess={(num, total, pay) => { setOrderData({ num, total, pay }); setPage("success"); }}
+          onBack={() => { setCartOpen(true); setPage("shop"); }}
+          showToast={showToast}
+        />
+      )}
 
-     setCartOpen(true);setPage("shop");}} showToast={showToast}/>}
-
-      {page===" {page==="success"&&orderData&&(
-        <div className="success"&&orderData&&(
+      {page === "success" && orderData && (
         <div className="success-page">
-         success-page">
-          <div className="success-icon">🎊</div>
-          <h2>Order Placed!</h2 <div className="success-icon">🎊</div>
           <h2>Order Placed!</h2>
-          <p>Your order has been saved. You'll receive confirmation shortly.</p>
-          <p style={{fontSize:12,color:"#9ca3af">
-          <p>Your order has been saved. You'll receive confirmation shortly.</p>
-          <p style={{fontSize:12,color:"#9ca3af"}}>Order:}}>Order: <strong style={{ <strong style={{color:"var(--accent)"}}>{orderData.num}</strong></p>
-          <pcolor:"var(--accent)"}}>{orderData.num}</strong></p>
-          <p style={{fontSize:12,color:"#9ca3af",marginBottom:28}} style={{fontSize:12,color:"#9ca3af",marginBottom:28}}>Total: <strong>{ZMW(orderData.total)}</strong> via {orderData.pay}</>Total: <strong>{ZMW(orderData.total)}</strong> via {orderData.pay}</pp>
-          <div style={{display:"flex",gap:10,flexWrap:">
-          <div style={{display:"flex",gap:10,flexWrap:"wrap",justifyContent:"center"}}>
-            <button className="herowrap",justifyContent:"center"}}>
-            <button className="hero-cta shop" style={{border:"1.5px solid #e-cta shop" style={{border:"1.5px solid #e5e7eb5e7eb"}} onClick={()=>{dispatch({type:"CLEAR"});"}} onClick={()=>{dispatch({type:"CLEAR"});setPage("shop");}}>← Continue Shopping</button>
-            <button className="hero-setPage("shop");}}>← Continue Shopping</button>
-            <button className="hero-cta sell" onClick={()=>{dispatch({type:"cta sell" onClick={()=>{dispatch({type:"CLEAR"});setPage("orders");}}>CLEAR"});setPage("orders");}}📦 View Orders</button>
+          <p>Your order has been saved. You will receive confirmation shortly.</p>
+          <p style={{ fontSize: 12, color: "#9ca3af" }}>Order: <strong style={{ color: "var(--accent)" }}>{orderData.num}</strong></p>
+          <p style={{ fontSize: 12, color: "#9ca3af", marginBottom: 28 }}>Total: <strong>{ZMW(orderData.total)}</strong> via {orderData.pay}</p>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
+            <button className="hero-cta shop" style={{ border: "1.5px solid #e5e7eb" }} onClick={() => { dispatch({ type: "CLEAR" }); setPage("shop"); }}>Continue Shopping</button>
+            <button className="hero-cta sell" onClick={() => { dispatch({ type: "CLEAR" }); setPage("orders"); }}>View Orders</button>
           </div>
-       >📦 View Orders</button>
-          </ </div>
-      )}
-
-      {cartOpen&&<CartDrawer cart={cart} dispatch={dispatch} onClose={()=>setCartOpen(false)} onCheckout={()=>{setCartdiv>
         </div>
       )}
 
-      {cartOpen&&<CartDrawer cart={cart} dispatch={dispatch} onClose={()=>setCartOpen(false)} onCheckout={()=>{setCartOpen(false);setPageOpen(false);setPage("checkout");}}/>("checkout");}}/>}
-      <Toast t={toast}/>
-   }
-      <Toast t={toast}/>
+      {cartOpen && <CartDrawer cart={cart} dispatch={dispatch} onClose={() => setCartOpen(false)} onCheckout={() => { setCartOpen(false); setPage("checkout"); }} />}
+      <Toast t={toast} />
     </>
   );
 }
