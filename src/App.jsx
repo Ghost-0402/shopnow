@@ -5,33 +5,20 @@ import AdminDashboard from "./AdminDashboard";
 // ── CURRENCY ──────────────────────────────────────────────────────────────────
 const ZMW = (v) => `K ${(parseFloat(v) || 0).toLocaleString("en-ZM", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-// ── FALLBACK PRODUCTS ─────────────────────────────────────────────────────────
-const FALLBACK = [
-  { id: "f1",  name: "Arc Desk Lamp",        category: "Home",    price: 2363, rating: 4.8, reviews_count: 214,  badge: "Bestseller", image_url: "🪔", description: "360° adjustable arm, warm/cool modes.", stock_qty: 12, seller_name: "ShopNow Official" },
-  { id: "f2",  name: "Merino Wool Tee",      category: "Fashion", price: 1723, rating: 4.6, reviews_count: 389,  badge: "New",        image_url: "👕", description: "Ultra-soft 100% merino, odor-resistant.", stock_qty: 8,  seller_name: "ShopNow Official" },
-  { id: "f3",  name: "Ceramic Pour-Over",    category: "Kitchen", price: 1431, rating: 4.9, reviews_count: 502,  badge: "Top Rated",  image_url: "☕", description: "Hand-thrown ceramic dripper + carafe.", stock_qty: 20, seller_name: "ShopNow Official" },
-  { id: "f4",  name: "Wireless Earbuds Pro", category: "Tech",    price: 3949, rating: 4.7, reviews_count: 1203, badge: "Hot",        image_url: "🎧", description: "ANC, 30hr battery, IPX5.", stock_qty: 5,  seller_name: "ShopNow Official" },
-  { id: "f5",  name: "Linen Throw Blanket",  category: "Home",    price: 2067, rating: 4.5, reviews_count: 167,  badge: "",           image_url: "🛋️", description: "Stone-washed linen, 130x170cm.", stock_qty: 15, seller_name: "ShopNow Official" },
-  { id: "f6",  name: "Leather Card Wallet",  category: "Fashion", price: 1113, rating: 4.8, reviews_count: 723,  badge: "Bestseller", image_url: "👛", description: "Full-grain leather, slim 4mm, RFID.", stock_qty: 30, seller_name: "ShopNow Official" },
-  { id: "f7",  name: "Matcha Whisk Kit",     category: "Kitchen", price: 1007, rating: 4.7, reviews_count: 298,  badge: "",           image_url: "🍵", description: "Bamboo chasen, chawan bowl, scoop.", stock_qty: 18, seller_name: "ShopNow Official" },
-  { id: "f8",  name: "USB-C Hub 8-in-1",    category: "Tech",    price: 1564, rating: 4.6, reviews_count: 891,  badge: "New",        image_url: "🔌", description: "4K HDMI, 100W PD, SD/TF, 3xUSB-A.", stock_qty: 22, seller_name: "ShopNow Official" },
-  { id: "f9",  name: "Soy Candle Set",       category: "Home",    price: 1219, rating: 4.9, reviews_count: 445,  badge: "Top Rated",  image_url: "🕯️", description: "Set of 3: cedar, fig, bergamot.", stock_qty: 10, seller_name: "ShopNow Official" },
-  { id: "f10", name: "Slim Fit Chinos",      category: "Fashion", price: 2597, rating: 4.5, reviews_count: 312,  badge: "",           image_url: "👖", description: "Stretch cotton, tapered cut, 5 colors.", stock_qty: 7,  seller_name: "ShopNow Official" },
-  { id: "f11", name: "Cold Brew Maker",      category: "Kitchen", price: 1193, rating: 4.8, reviews_count: 567,  badge: "Hot",        image_url: "🫙", description: "1L borosilicate glass, fine-mesh filter.", stock_qty: 14, seller_name: "ShopNow Official" },
-  { id: "f12", name: "Mechanical Keyboard",  category: "Tech",    price: 3419, rating: 4.7, reviews_count: 2041, badge: "Bestseller", image_url: "⌨️", description: "TKL, hot-swap switches, per-key RGB.", stock_qty: 6,  seller_name: "ShopNow Official" },
-];
-
-const CATEGORIES  = ["All", "Home", "Fashion", "Kitchen", "Tech"];
-const CITIES      = ["Lusaka", "Kitwe", "Ndola", "Livingstone", "Chipata", "Solwezi", "Kabwe", "Chingola"];
 const SELLER_CATS = ["Home & Living", "Fashion", "Kitchen", "Electronics & Tech", "Health & Beauty", "Sports", "Baby & Kids", "Food", "Other"];
+// Buyer sidebar uses the exact same list sellers pick from, so a product's
+// category always matches a real filter button (no more silent mismatches).
+const CATEGORIES = ["All", ...SELLER_CATS];
+const CITIES = ["Lusaka", "Kitwe", "Ndola", "Livingstone", "Chipata", "Solwezi", "Kabwe", "Chingola"];
 
 // ── CART REDUCER ──────────────────────────────────────────────────────────────
 function cartReducer(state, action) {
   switch (action.type) {
     case "ADD": {
+      const addQty = action.qty || 1;
       const ex = state.find((i) => i.id === action.product.id);
-      if (ex) return state.map((i) => (i.id === action.product.id ? { ...i, qty: i.qty + 1 } : i));
-      return [...state, { ...action.product, qty: 1 }];
+      if (ex) return state.map((i) => (i.id === action.product.id ? { ...i, qty: i.qty + addQty } : i));
+      return [...state, { ...action.product, qty: addQty }];
     }
     case "REMOVE": return state.filter((i) => i.id !== action.id);
     case "QTY":    return state.map((i) => (i.id === action.id ? { ...i, qty: Math.max(1, i.qty + action.delta) } : i));
@@ -376,6 +363,24 @@ const css = `
   .modal h2{font-family:'DM Serif Display';font-size:26px;margin-bottom:7px;}
   .modal p{font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:22px;}
   .modal-btns{display:flex;gap:8px;}
+  .card{cursor:pointer;}
+  .pd-modal{background:var(--white);border-radius:18px;max-width:820px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);position:relative;}
+  .pd-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--white);cursor:pointer;font-size:14px;z-index:2;}
+  .pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+  @media(max-width:640px){.pd-grid{grid-template-columns:1fr;}}
+  .pd-img{background:var(--smoke);display:flex;align-items:center;justify-content:center;min-height:280px;border-radius:18px 0 0 18px;overflow:hidden;}
+  @media(max-width:640px){.pd-img{border-radius:18px 18px 0 0;}}
+  .pd-img img{width:100%;height:100%;object-fit:cover;}
+  .pd-info{padding:32px;display:flex;flex-direction:column;}
+  .pd-name{font-family:'DM Serif Display';font-size:26px;margin:6px 0 8px;line-height:1.15;}
+  .pd-stars{font-size:12px;color:var(--slate);display:flex;align-items:center;gap:6px;margin:6px 0 14px;}
+  .pd-price{font-size:24px;font-weight:700;}
+  .pd-compare{font-size:12px;color:var(--slate);text-decoration:line-through;margin-bottom:8px;}
+  .pd-desc{font-size:13px;color:var(--slate);line-height:1.7;margin:14px 0 18px;}
+  .pd-qty-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+  .pd-qty{display:flex;align-items:center;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .pd-qty button{width:32px;height:32px;border:none;background:var(--smoke);cursor:pointer;font-size:16px;}
+  .pd-qty span{width:36px;text-align:center;font-size:14px;font-weight:600;}
   .m-btn{flex:1;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--tr);}
   .m-btn.primary{background:var(--accent);color:#fff;border:none;}
   .m-btn.secondary{background:var(--smoke);color:var(--ink);border:1.5px solid var(--border);}
@@ -616,12 +621,12 @@ function AuthPage({ onLogin }) {
 }
 
 // ── PRODUCT CARD ──────────────────────────────────────────────────────────────
-function ProductCard({ product, onAdd, justAdded }) {
+function ProductCard({ product, onAdd, onView, justAdded }) {
   const isEmoji = product.image_url && product.image_url.length <= 4;
   const bc = product.badge ? `badge-${product.badge.split(" ")[0]}` : "";
 
   return (
-    <div className="card">
+    <div className="card" onClick={() => onView(product)} role="button" tabIndex={0}>
       <div className="card-img">
         {isEmoji ? <span>{product.image_url}</span> : product.image_url ? <img src={product.image_url} alt={product.name} /> : <span>🛍️</span>}
         {product.badge && <span className={`card-badge ${bc}`}>{product.badge}</span>}
@@ -643,11 +648,64 @@ function ProductCard({ product, onAdd, justAdded }) {
         )}
         <button
           className={`add-btn ${justAdded ? "added" : ""}`}
-          onClick={() => product.stock_qty > 0 && onAdd(product)}
+          onClick={(e) => { e.stopPropagation(); product.stock_qty > 0 && onAdd(product); }}
           style={{ opacity: product.stock_qty === 0 ? 0.5 : 1 }}
         >
           {justAdded ? "Added!" : product.stock_qty === 0 ? "Out of Stock" : "Add to Cart"}
         </button>
+      </div>
+    </div>
+  );
+}
+
+// ── PRODUCT DETAIL MODAL ─────────────────────────────────────────────────────
+function ProductDetailModal({ product, onClose, onAdd }) {
+  const [qty, setQty] = useState(1);
+  if (!product) return null;
+  const isEmoji = product.image_url && product.image_url.length <= 4;
+  const max = product.stock_qty > 0 ? product.stock_qty : 1;
+
+  return (
+    <div className="modal-ov" onClick={onClose}>
+      <div className="pd-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="pd-close" onClick={onClose} aria-label="Close">✕</button>
+        <div className="pd-grid">
+          <div className="pd-img">
+            {isEmoji ? <span style={{ fontSize: 90 }}>{product.image_url}</span> : product.image_url ? <img src={product.image_url} alt={product.name} /> : <span style={{ fontSize: 90 }}>🛍️</span>}
+          </div>
+          <div className="pd-info">
+            <div className="card-cat">{product.category}</div>
+            <h2 className="pd-name">{product.name}</h2>
+            <div className="card-seller">by {product.seller_name || "ShopNow"}</div>
+            <div className="pd-stars"><Stars r={product.rating} /> {product.rating || 4.5} {product.reviews_count ? `(${product.reviews_count} reviews)` : ""}</div>
+            <div className="pd-price">{ZMW(product.price)}</div>
+            {product.compare_price > product.price && (
+              <div className="pd-compare">was {ZMW(product.compare_price)}</div>
+            )}
+            <p className="pd-desc">{product.description || "No description provided."}</p>
+            {product.stock_qty > 0 ? (
+              <div className="pd-qty-row">
+                <span>Quantity</span>
+                <div className="pd-qty">
+                  <button onClick={() => setQty((q) => Math.max(1, q - 1))}>−</button>
+                  <span>{qty}</span>
+                  <button onClick={() => setQty((q) => Math.min(max, q + 1))}>+</button>
+                </div>
+                {product.stock_qty <= 8 && <span style={{ fontSize: 11, color: "var(--red)" }}>Only {product.stock_qty} left</span>}
+              </div>
+            ) : (
+              <div style={{ fontSize: 12, color: "var(--red)", fontWeight: 600, margin: "10px 0" }}>Out of stock</div>
+            )}
+            <button
+              className="add-btn"
+              disabled={product.stock_qty === 0}
+              style={{ opacity: product.stock_qty === 0 ? 0.5 : 1 }}
+              onClick={() => { onAdd(product, qty); onClose(); }}
+            >
+              {product.stock_qty === 0 ? "Out of Stock" : `Add ${qty} to Cart`}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -1265,6 +1323,7 @@ export default function App() {
   const [justAdded, setJustAdded] = useState(null);
   const [toast, setToast] = useState(null);
   const [orderData, setOrderData] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const showToast = (msg, icon) => {
     setToast({ msg, icon: icon || "ok" });
@@ -1322,7 +1381,7 @@ export default function App() {
       });
   }, []);
 
-  const allProducts = [...dbProducts, ...FALLBACK.filter((f) => !dbProducts.find((d) => d.name === f.name))];
+  const allProducts = dbProducts;
 
   const handleLogin = async (authUser, prof) => {
     setUser(authUser);
@@ -1341,8 +1400,8 @@ export default function App() {
     showToast("Signed out successfully", "ok");
   };
 
-  const handleAdd = (p) => {
-    dispatch({ type: "ADD", product: p });
+  const handleAdd = (p, qty = 1) => {
+    dispatch({ type: "ADD", product: p, qty });
     setJustAdded(p.id);
     setTimeout(() => setJustAdded(null), 1500);
     showToast(`${p.name} added`, "ok");
@@ -1478,7 +1537,7 @@ export default function App() {
               ) : (
                 <div className="grid">
                   {filtered.map((p) => (
-                    <ProductCard key={p.id} product={p} onAdd={handleAdd} justAdded={justAdded === p.id} />
+                    <ProductCard key={p.id} product={p} onAdd={handleAdd} onView={setSelectedProduct} justAdded={justAdded === p.id} />
                   ))}
                 </div>
               )}
@@ -1528,6 +1587,7 @@ export default function App() {
       )}
 
       {cartOpen && <CartDrawer cart={cart} dispatch={dispatch} onClose={() => setCartOpen(false)} onCheckout={() => { setCartOpen(false); setPage("checkout"); }} />}
+      {selectedProduct && <ProductDetailModal product={selectedProduct} onClose={() => setSelectedProduct(null)} onAdd={handleAdd} />}
       <Toast t={toast} />
     </>
   );
