@@ -917,9 +917,13 @@ function SellerDash({ user, profile, onExit, showToast }) {
 
   const handleFiles = useCallback(
     (files) => {
-      const imgs = Array.from(files).slice(0, 8 - images.length).map((f) => ({ url: URL.createObjectURL(f), file: f }));
+      const incoming = Array.from(files);
+      const tooBig = incoming.filter((f) => f.size > 5 * 1024 * 1024);
+      const valid = incoming.filter((f) => f.size <= 5 * 1024 * 1024).slice(0, 8 - images.length);
+      const imgs = valid.map((f) => ({ url: URL.createObjectURL(f), file: f }));
       setImages((p) => [...p, ...imgs]);
-      showToast(`${imgs.length} image(s) added`, "ok");
+      if (imgs.length > 0) showToast(`${imgs.length} image(s) added`, "ok");
+      if (tooBig.length > 0) showToast(`${tooBig.length} image(s) skipped — over 5MB`, "warn");
     },
     [images]
   );
@@ -948,6 +952,23 @@ function SellerDash({ user, profile, onExit, showToast }) {
         seller = ns;
       }
 
+      // Upload the chosen cover image to Supabase Storage (falls back to
+      // the placeholder emoji only if the seller didn't add any photos).
+      let imageUrl = "🛍️";
+      if (images.length > 0) {
+        const primary = images[primaryImg] || images[0];
+        if (primary?.file) {
+          const ext = (primary.file.name.split(".").pop() || "jpg").toLowerCase();
+          const path = `${seller.id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+          const { error: upErr } = await supabase.storage
+            .from("product-images")
+            .upload(path, primary.file, { cacheControl: "3600", upsert: false });
+          if (upErr) throw upErr;
+          const { data: pub } = supabase.storage.from("product-images").getPublicUrl(path);
+          imageUrl = pub.publicUrl;
+        }
+      }
+
       const { error } = await supabase.from("products").insert({
         seller_id: seller.id,
         name: form.name,
@@ -958,7 +979,7 @@ function SellerDash({ user, profile, onExit, showToast }) {
         stock_qty: parseInt(form.stock) || 0,
         badge: draft ? "" : "New",
         status: draft ? "draft" : "active",
-        image_url: "🛍️",
+        image_url: imageUrl,
       });
       if (error) throw error;
 
@@ -976,7 +997,14 @@ function SellerDash({ user, profile, onExit, showToast }) {
 
   const deleteProduct = async (id) => {
     if (!window.confirm("Delete this product?")) return;
+    const target = products.find((p) => p.id === id);
     await supabase.from("products").delete().eq("id", id);
+    // Best-effort cleanup of the stored image so deleted products don't
+    // leave orphaned files in the bucket.
+    if (target?.image_url && target.image_url.includes("product-images/")) {
+      const path = target.image_url.split("/product-images/")[1];
+      if (path) await supabase.storage.from("product-images").remove([path]);
+    }
     setProducts((prev) => prev.filter((p) => p.id !== id));
     showToast("Deleted", "ok");
   };
